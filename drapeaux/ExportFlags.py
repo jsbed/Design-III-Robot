@@ -22,5 +22,5 @@ if __name__ == "__main__":
             for filename in os.listdir(GIF_DIRECTORY):         
                 fig = Image.open(os.path.join(GIF_DIRECTORY, filename))
                 fig_rgb = fig.convert("RGB")
-                file.write(", ".join([os.path.splitext(filename)[0]] + 
+                file.write(", ".join([os.path.splitext(filename)[0].split("_")[1]] + 
                                      [COLORS[fig_rgb.getpixel(position)] for position in SQUARE_CENTERS]) + "\n")
