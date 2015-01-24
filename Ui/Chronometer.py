@@ -27,7 +27,10 @@ class Chronometer(ObserverSubject):
         self.notify(NEW_TIME_UPDATE)
     
     def get_time(self):
-        return "%02d:%02d" % divmod(self._time/1000, 60)
+        min_sec, ms = divmod(self._time/10, 100)
+        m, s = divmod(min_sec, 60)
+        
+        return "%02d:%02d:%02d" % (m, s, ms)
     
     def _increment_time(self):
         self._time += INTERVAL
