@@ -1,5 +1,5 @@
 import socket
-import sys
+
 
 PORT = 10000
 IP = '132.203.92.207'
@@ -8,16 +8,18 @@ IP = '132.203.92.207'
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = (IP, PORT)
 
-print >>sys.stderr, 'connecting to %s port %s' % server_address
+print('connecting to %s port %s' % server_address)
 
 while True:
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect(server_address)
-        message=raw_input('Message: ')
+        message = input('Message: ')
+        
         if message=='quit':
             break
-        sock.sendall(message)
-    except:
+        sock.sendall(bytes(message, "utf-8"))
+    except Exception as e:
+        print (e)
         break
 sock.close()
