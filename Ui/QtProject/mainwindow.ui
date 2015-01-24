@@ -139,7 +139,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="questionLabel_2">
+      <widget class="QLabel" name="chronometerLabel">
        <property name="font">
         <font>
          <pointsize>19</pointsize>
@@ -297,6 +297,24 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>Clear</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="restartChrono">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>20</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Restart</string>
     </property>
    </widget>
   </widget>
