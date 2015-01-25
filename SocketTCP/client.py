@@ -2,7 +2,7 @@ import socket
 import cv2
 
 PORT = 10000
-IP = '192.168.2.22'
+IP = '192.168.2.10'
 
 cap = cv2.VideoCapture(0)
 
