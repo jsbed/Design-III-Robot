@@ -3,3 +3,4 @@ syntax: glob
 *.pro.user*
 *~
 *.pyc
+*.idea/*
