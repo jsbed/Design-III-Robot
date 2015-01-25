@@ -8,14 +8,14 @@ IP = '192.168.2.10'
 cap = cv2.VideoCapture(0)
 
 # Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_address = (IP, PORT)
 
 print('connecting to %s port %s' % server_address)
 
 while True:
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.connect(server_address)
         ret, frame = cap.read()
         frame = cv2.resize(frame, (120, 90))
