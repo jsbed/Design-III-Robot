@@ -4,7 +4,7 @@ import numpy
 
 
 PORT = 10000
-IP = '192.168.2.22'
+IP = '192.168.2.10'
 BUFFER_SIZE = 1024000
 
 # Create a TCP/IP socket
