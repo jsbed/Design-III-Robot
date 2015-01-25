@@ -8,4 +8,4 @@ sentence = r.json()["question"]
 tokens = nltk.word_tokenize(sentence)
 tagged = nltk.pos_tag(tokens)
 entities = nltk.chunk.ne_chunk(tagged)
-print(tokens, tagged, entities)
+print(sentence, tokens, tagged, entities, sep="\n")
