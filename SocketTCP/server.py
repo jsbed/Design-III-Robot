@@ -3,9 +3,9 @@ import cv2
 import numpy
 
 
-PORT = 10000
-IP = '192.168.2.10'
-BUFFER_SIZE = 10000
+PORT = 3000
+IP = '192.168.0.25'
+BUFFER_SIZE = 1000000
 
 
 # Create a UDP socket
