@@ -18,6 +18,7 @@ sock.bind(server_address)
 while True:
     try:
         data = sock.recv(BUFFER_SIZE)
+        print(data)
         nparr = numpy.fromstring(data, numpy.uint8)
         img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         c = cv2.waitKey(1)
