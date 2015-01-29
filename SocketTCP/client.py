@@ -19,9 +19,10 @@ time.sleep(1)
 while True:
     try:
         cap.grab()
+        flag, frame = cap.retrieve(None, cv2.CAP_OPENNI_BGR_IMAGE)
+        #cv2.imshow("nofucksgiven", frame)
         frame = cv2.resize(frame, (560, 420))
         cv2.imshow("nofucksgiven", frame)
-        frame = cv2.resize(frame, (560, 420))
         if not flag: continue
         encoded = cv2.imencode('.jpg', frame)[1].tostring()
         sock.sendall(encoded)
