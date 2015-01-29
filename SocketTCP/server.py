@@ -2,9 +2,11 @@ import socket
 import cv2
 import numpy
 
+from sh import hostname
+
 
 PORT = 3000
-IP = '192.168.0.25'
+IP = str(hostname('-I'))
 BUFFER_SIZE = 1000000
 
 
