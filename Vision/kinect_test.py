@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import sys, time, cv2
+import sys, time, cv2, os
+
+SS_DIRECTORY = "Screenshots" 
+
+if not os.path.exists(SS_DIRECTORY):
+    os.makedirs(SS_DIRECTORY)
+
+SS_COUNT = len(os.listdir(SS_DIRECTORY))
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
 cv2.namedWindow('Affichage RGB')
@@ -31,3 +38,9 @@ while True:
 	cc = cv2.waitKey(10) # Necessaire pour l'affichage effectif des images
 	if cc == 27: # Touche Echap quitte
 		break
+
+	if cc == 10: # Touche Enter 
+		cv2.imwrite(os.path.join(SS_DIRECTORY, "ss_{}.jpg".format(str(SS_COUNT))), img_i)
+		SS_COUNT += 1
+    
+	#if cc != -1 : print(cc)
