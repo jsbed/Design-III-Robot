@@ -10,7 +10,6 @@ for _ in range(500):
     r = requests.get(server_address, verify=False)
     questions.append(r.json()["question"])
 questions = set(questions)
-print(questions)
-with open(FILENAME, 'a') as questions_file:
+with open(FILENAME, 'w') as questions_file:
     for question in questions:
         questions_file.write(question + '\n')
