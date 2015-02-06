@@ -1,4 +1,3 @@
-from Country.CountryRepository import CountryRepository
 from Color import Color
 
 
@@ -9,28 +8,26 @@ class FlagCreator:
         self._cube_order = []
         self._creation_zone_height = 0
         self._creation_zone_width = 0
-        self._country = CountryRepository().get(country)
+        self._country = country
 
         for color in self._country.flag:
             if color != Color.NONE:
                 self._cube_order.append(color)
 
-        for width in self._country.flag[:3]:
-            if width != Color.NONE:
-                self._creation_zone_width += 1
+    def get_has_next_cubes(self):
+        return self._has_next_cubes
 
-        for height in self._country.flag[:3]:
-            if height != Color.NONE:
-                self._creation_zone_height += 1
-                break
-        for height in self._country.flag[3:6]:
-            if height != Color.NONE:
-                self._creation_zone_height += 1
-                break
-        for height in self._country.flag[6:9]:
-            if height != Color.NONE:
-                self._creation_zone_height += 1
-                break
+    def get_cube_order(self):
+        return self._cube_order
+
+    def get_creation_zone_height(self):
+        return self._creation_zone_height
+
+    def get_creation_zone_width(self):
+        return self._creation_zone_width
+
+    def get_country(self):
+        return self._country
 
     def next_cube(self):
         try:
