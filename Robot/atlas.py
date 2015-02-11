@@ -1,6 +1,6 @@
 import requests
 
-from Robot.configuration.Config import Config
+from Robot.configuration.config import Config
 
 
 def get_question():
