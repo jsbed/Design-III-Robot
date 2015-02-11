@@ -18,12 +18,14 @@ if not os.path.exists(DATA_DIRECTORY):
 
 DATA_COUNT = len(os.listdir(DATA_DIRECTORY))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('img')
 parser.add_argument('-d', "--data", dest="data")
 args = parser.parse_args()
 
-img_bgr = cv2.imread(args.img, cv2.IMREAD_COLOR)
+
+img_bgr = cv2.imread(args.img, cv2.IMREAD_COLOR)   
 
 def nothing(x):
     pass
@@ -67,18 +69,23 @@ while True:
     high_v = cv2.getTrackbarPos('High-V','mask')
     
     # define range of blue color in HSV
-    lower = np.array([low_h, low_s, low_v])
-    upper = np.array([high_h, high_s, high_v])
+    lower_lower_red = np.array([low_h, low_s, low_v])
+    lower_upper_red = np.array([180, high_s, high_v])
+    upper_lower_red = np.array([0, low_s, low_v])
+    upper_upper_red = np.array([high_h, high_s, high_v])
+    
 
     # Threshold the HSV image to get only blue colors
-    mask = cv2.inRange(img_hsv, lower, upper)
+    mask_lower = cv2.inRange(img_hsv, lower_lower_red, lower_upper_red)
+    mask_upper = cv2.inRange(img_hsv, upper_lower_red, upper_upper_red)
+    mask = mask_lower + mask_upper
 
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(img_bgr,img_bgr, mask= mask)
 
-    cv2.imshow('mask',mask)
-    cv2.imshow('res', res)	
 
+    cv2.imshow('mask', mask)
+    cv2.imshow('res', res)	
 
     cc = cv2.waitKey(10) # Necessaire pour l'affichage effectif des images
     if cc == 1048586: # Touche Enter (save data)

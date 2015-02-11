@@ -6,22 +6,16 @@ import argparse
 
 DATA_DIRECTORY = "Data-HSV" 
 
-LOW_H = 0
-LOW_S = 1
-LOW_V = 2
-HIGH_H = 3
-HIGH_S = 4
-HIGH_V = 5
-
 if not os.path.exists(DATA_DIRECTORY):
     os.makedirs(DATA_DIRECTORY)
 
 DATA_COUNT = len(os.listdir(DATA_DIRECTORY))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('img')
-parser.add_argument('-d', "--data", dest="data")
 args = parser.parse_args()
+
 
 img_bgr = cv2.imread(args.img, cv2.IMREAD_COLOR)
 
@@ -39,24 +33,12 @@ cv2.createTrackbar('High-S','mask',0,255,nothing)
 cv2.createTrackbar('Low-V','mask',0,255,nothing)
 cv2.createTrackbar('High-V','mask',0,255,nothing)
 
-if (args.data):
-    # Load data
-    with open(args.data) as file:
-        data = file.readline().split(", ")
-        for i in range(len(data)):
-            data[i] = int(data[i])
-    
-    cv2.setTrackbarPos('Low-H','mask', data[LOW_H])
-    cv2.setTrackbarPos('High-H','mask', data[HIGH_H])
-    cv2.setTrackbarPos('Low-S','mask', data[LOW_S])
-    cv2.setTrackbarPos('High-S','mask', data[HIGH_S])
-    cv2.setTrackbarPos('Low-V','mask', data[LOW_V])
-    cv2.setTrackbarPos('High-V','mask', data[HIGH_V])
-
 cv2.imshow("real", img_bgr);
 
 while True:
-    img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+    img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HLS)
+    cv2.imshow('mask', img_gray)
+
     
     # get current positions of trackers
     low_h = cv2.getTrackbarPos('Low-H','mask')
@@ -71,13 +53,13 @@ while True:
     upper = np.array([high_h, high_s, high_v])
 
     # Threshold the HSV image to get only blue colors
-    mask = cv2.inRange(img_hsv, lower, upper)
+    mask = cv2.inRange(img_gray, lower, upper)
 
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(img_bgr,img_bgr, mask= mask)
 
     cv2.imshow('mask',mask)
-    cv2.imshow('res', res)	
+    cv2.imshow('res', res)    
 
 
     cc = cv2.waitKey(10) # Necessaire pour l'affichage effectif des images
