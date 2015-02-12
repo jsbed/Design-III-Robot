@@ -2,7 +2,7 @@
 
 import sys, time, cv2, os
 
-SS_DIRECTORY = "Screenshots" 
+SS_DIRECTORY = "screenshots" 
 
 if not os.path.exists(SS_DIRECTORY):
     os.makedirs(SS_DIRECTORY)
@@ -33,7 +33,8 @@ while True:
 	# Affichage
 	cv2.imshow('Affichage RGB', img_i)
 	cv2.imshow('Affichage profondeur', img_p)
-	cv2.imshow('Affichage Gris', img_g)
+
+	#cv2.imshow('Affichage Gris', img_g)
 
 	cc = cv2.waitKey(10) # Necessaire pour l'affichage effectif des images
 	if cc == 27: # Touche Echap quitte
@@ -41,6 +42,8 @@ while True:
 
 	if cc == 10: # Touche Enter 
 		cv2.imwrite(os.path.join(SS_DIRECTORY, "ss_{}.jpg".format(str(SS_COUNT))), img_i)
+		cv2.imwrite(os.path.join(SS_DIRECTORY, "ss_{}_p.jpg".format(str(SS_COUNT))), img_p)
+		print("ss_" + str(SS_COUNT) + " taken")
 		SS_COUNT += 1
     
 	#if cc != -1 : print(cc)
