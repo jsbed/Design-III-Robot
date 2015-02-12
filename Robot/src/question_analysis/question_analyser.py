@@ -1,0 +1,1 @@
+FIELDS_ALIAS = {'capital': ['capital', 'name']}
