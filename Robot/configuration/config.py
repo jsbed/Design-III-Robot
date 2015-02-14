@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-from  Robot.utilities.singleton import Singleton
+from Robot.utilities.singleton import Singleton
 
 
 CONFIG_FILE_NAME = "config.ini"
@@ -15,7 +15,7 @@ class Config(metaclass=Singleton):
         self._parser = ConfigParser()
         self._parameters = {}
 
-    def loadConfig(self):
+    def load_config(self):
         self._parser.read(CONFIG_FILE_NAME)
         self._parameters = self._parser.defaults()
 
@@ -24,6 +24,9 @@ class Config(metaclass=Singleton):
 
     def get_kinect_connection_port(self):
         return self._get_parameter(PARAMETER_KINECT_CONNECTION_PORT)
+
+    def get_country_data_path(self):
+        return self._get_parameter('CountryDataPath')
 
     def _get_parameter(self, parameter):
         if parameter.lower() in self._parameters:

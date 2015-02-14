@@ -1,9 +1,13 @@
 import re
 
+
 class Matchers(object):
 
     def __init__(self):
-        pass
+        self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith()]
+
+    def __iter__(self):
+        return iter(self._matchers)
 
 
 class CapitalIs(object):
