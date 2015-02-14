@@ -1,5 +1,10 @@
 import re
 
+class Matchers(object):
+
+    def __init__(self):
+        pass
+
 
 class CapitalIs(object):
 

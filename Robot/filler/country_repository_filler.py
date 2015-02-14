@@ -1,7 +1,7 @@
 import csv
 
-from Color import Color
-from Country.CountryRepository import CountryRepository
+from Robot.color import Color
+from Robot.country.country_repository import CountryRepository
 
 
 def fill_repository_from_file(file_path):

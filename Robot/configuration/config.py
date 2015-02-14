@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-from  Utilities.Singleton import Singleton
+from  Robot.utilities.singleton import Singleton
 
 
 CONFIG_FILE_NAME = "config.ini"

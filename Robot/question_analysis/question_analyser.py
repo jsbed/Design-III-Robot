@@ -6,3 +6,4 @@ class QuestionAnalyser(object):
         pass
 
     def answer_question(self, question):
+        pass
