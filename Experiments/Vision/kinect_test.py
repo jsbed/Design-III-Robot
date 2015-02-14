@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import sys, time, cv2, os
+import numpy as np
 
-SS_DIRECTORY = "screenshots" 
+SS_DIRECTORY = "screenshots"
 
 if not os.path.exists(SS_DIRECTORY):
     os.makedirs(SS_DIRECTORY)
@@ -29,7 +30,7 @@ while True:
 	# Pas d'image, peut se produire si on boucle trop vite
 	if not flags_i or not flags_p or not flags_g:
 		continue
-
+	
 	# Affichage
 	cv2.imshow('Affichage RGB', img_i)
 	cv2.imshow('Affichage profondeur', img_p)
@@ -41,8 +42,8 @@ while True:
 		break
 
 	if cc == 10: # Touche Enter 
+		np.save(os.path.join(SS_DIRECTORY, "ss_{}_p".format(str(SS_COUNT))), img_p)
 		cv2.imwrite(os.path.join(SS_DIRECTORY, "ss_{}.jpg".format(str(SS_COUNT))), img_i)
-		cv2.imwrite(os.path.join(SS_DIRECTORY, "ss_{}_p.jpg".format(str(SS_COUNT))), img_p)
 		print("ss_" + str(SS_COUNT) + " taken")
 		SS_COUNT += 1
     
