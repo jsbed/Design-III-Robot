@@ -12,6 +12,7 @@ class CapitalIs(object):
         capital_match = self._regex.search(question)
         if capital_match:
             info = {self._info_name: re.compile(capital_match.group(1))}
+        return info
 
 
 class CapitalStartsWith(object):
