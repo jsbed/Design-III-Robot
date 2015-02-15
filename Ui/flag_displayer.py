@@ -31,8 +31,11 @@ class FlagDisplayer():
         for index, label in enumerate(self._flag_labels):
             label.setPixmap(COLOR_LABELS[country.flag[index]])
 
+        self._widget.countryLabel.setText(country_name)
         self._widget.flag_structure_label.raise_()
 
     def remove_country(self):
+        self._widget.countryLabel.setText("")
+
         for label in self._flag_labels:
             label.setPixmap("")
