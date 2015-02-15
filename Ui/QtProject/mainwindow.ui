@@ -195,7 +195,7 @@
     <property name="geometry">
      <rect>
       <x>960</x>
-      <y>340</y>
+      <y>360</y>
       <width>351</width>
       <height>201</height>
      </rect>
@@ -285,7 +285,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>1060</x>
-      <y>570</y>
+      <y>590</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -317,13 +317,13 @@ p, li { white-space: pre-wrap; }
      <string>Restart</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="flag_structure_label">
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>310</y>
-      <width>361</width>
-      <height>331</height>
+      <y>320</y>
+      <width>341</width>
+      <height>341</height>
      </rect>
     </property>
     <property name="text">
@@ -333,12 +333,205 @@ p, li { white-space: pre-wrap; }
      <enum>Qt::AutoText</enum>
     </property>
     <property name="pixmap">
-     <pixmap resource="resources.qrc">:/Resources/flag_structure.png</pixmap>
+     <pixmap resource="resources.qrc">:/resources/flag_structure.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
     </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
    </widget>
+   <widget class="QLabel" name="square_0_label">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>330</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_1_label">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>330</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_2_label">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>333</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_3_label">
+    <property name="geometry">
+     <rect>
+      <x>564</x>
+      <y>441</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_4_label">
+    <property name="geometry">
+     <rect>
+      <x>674</x>
+      <y>440</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_5_label">
+    <property name="geometry">
+     <rect>
+      <x>781</x>
+      <y>442</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_6_label">
+    <property name="geometry">
+     <rect>
+      <x>564</x>
+      <y>551</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_7_label">
+    <property name="geometry">
+     <rect>
+      <x>676</x>
+      <y>551</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="square_8_label">
+    <property name="geometry">
+     <rect>
+      <x>784</x>
+      <y>551</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>-1</number>
+    </property>
+   </widget>
+   <zorder>square_7_label</zorder>
+   <zorder>square_2_label</zorder>
+   <zorder>square_3_label</zorder>
+   <zorder>square_0_label</zorder>
+   <zorder>square_5_label</zorder>
+   <zorder>square_6_label</zorder>
+   <zorder>square_8_label</zorder>
+   <zorder>square_1_label</zorder>
+   <zorder>square_4_label</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>horizontalLayoutWidget_2</zorder>
+   <zorder>startCycle</zorder>
+   <zorder>horizontalLayoutWidget_3</zorder>
+   <zorder>startChrono</zorder>
+   <zorder>pauseChrono</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>clearConsole</zorder>
+   <zorder>restartChrono</zorder>
+   <zorder>flag_structure_label</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

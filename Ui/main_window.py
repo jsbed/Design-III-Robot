@@ -1,12 +1,11 @@
-import sys
-
 from PySide import QtGui
 from PySide.QtCore import Qt
 
 from Robot.utilities.observer import Observer
-from Ui.Chronometer import Chronometer, NEW_TIME_UPDATE
-from Ui.Outputer import Outputer
 from Ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
+from Ui.chronometer import Chronometer, NEW_TIME_UPDATE
+from Ui.flag_displayer import FlagDisplayer
+from Ui.outputer import Outputer
 
 
 class Main(QtGui.QMainWindow, Observer):
@@ -14,10 +13,11 @@ class Main(QtGui.QMainWindow, Observer):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.setWindowState(Qt.WindowState.WindowFullScreen)
+        self.setWindowState(Qt.WindowState.WindowFullScreen)
 
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
+        self._flag_displayer = FlagDisplayer(self.ui)
         self._setup_ui()
 
     def _setup_ui(self):
@@ -47,9 +47,3 @@ class Main(QtGui.QMainWindow, Observer):
 
     def _update_chronometer_label(self):
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    m = Main()
-    m.show()
-    sys.exit(app.exec_())
