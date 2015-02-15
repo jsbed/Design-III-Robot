@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\JS\Desktop\workspace\DesignUI\QtProject\mainwindow.ui'
+# Form implementation generated from reading ui file 'QtProject\mainwindow.ui'
 #
-# Created: Fri Jan 23 23:07:55 2015
+# Created: Sun Feb 15 01:19:05 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
+
+import Ui.QtProject.GeneratedFiles.resources_rc
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -16,7 +19,7 @@ class Ui_MainWindow(object):
         self.centralWidget = QtGui.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.horizontalLayoutWidget = QtGui.QWidget(self.centralWidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(580, 80, 181, 41))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(590, 230, 181, 41))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -38,7 +41,7 @@ class Ui_MainWindow(object):
         self.countryLabel.setObjectName("countryLabel")
         self.horizontalLayout.addWidget(self.countryLabel)
         self.horizontalLayoutWidget_2 = QtGui.QWidget(self.centralWidget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(580, 150, 213, 41))
+        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(590, 140, 213, 41))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -100,17 +103,17 @@ class Ui_MainWindow(object):
         self.pauseChrono.setFont(font)
         self.pauseChrono.setObjectName("pauseChrono")
         self.groupBox = QtGui.QGroupBox(self.centralWidget)
-        self.groupBox.setGeometry(QtCore.QRect(560, 380, 491, 291))
+        self.groupBox.setGeometry(QtCore.QRect(960, 340, 351, 201))
         self.groupBox.setObjectName("groupBox")
         self.scrollArea = QtGui.QScrollArea(self.groupBox)
-        self.scrollArea.setGeometry(QtCore.QRect(10, 19, 471, 261))
+        self.scrollArea.setGeometry(QtCore.QRect(10, 20, 331, 171))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 469, 259))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 329, 169))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.consoleBrowser = QtGui.QTextBrowser(self.scrollAreaWidgetContents)
-        self.consoleBrowser.setGeometry(QtCore.QRect(0, 0, 471, 261))
+        self.consoleBrowser.setGeometry(QtCore.QRect(0, 0, 331, 171))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(158, 158, 158))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -125,7 +128,7 @@ class Ui_MainWindow(object):
         self.consoleBrowser.setObjectName("consoleBrowser")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.clearConsole = QtGui.QPushButton(self.centralWidget)
-        self.clearConsole.setGeometry(QtCore.QRect(730, 680, 121, 31))
+        self.clearConsole.setGeometry(QtCore.QRect(1060, 570, 121, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.clearConsole.setFont(font)
@@ -136,6 +139,13 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.restartChrono.setFont(font)
         self.restartChrono.setObjectName("restartChrono")
+        self.label_4 = QtGui.QLabel(self.centralWidget)
+        self.label_4.setGeometry(QtCore.QRect(550, 310, 361, 331))
+        self.label_4.setText("")
+        self.label_4.setTextFormat(QtCore.Qt.AutoText)
+        self.label_4.setPixmap(QtGui.QPixmap(":/Resources/flag_structure.png"))
+        self.label_4.setScaledContents(True)
+        self.label_4.setObjectName("label_4")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 21))

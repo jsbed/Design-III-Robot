@@ -17,8 +17,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>80</y>
+      <x>590</x>
+      <y>230</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -58,8 +58,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>150</y>
+      <x>590</x>
+      <y>140</y>
       <width>213</width>
       <height>41</height>
      </rect>
@@ -194,10 +194,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>380</y>
-      <width>491</width>
-      <height>291</height>
+      <x>960</x>
+      <y>340</y>
+      <width>351</width>
+      <height>201</height>
      </rect>
     </property>
     <property name="title">
@@ -207,9 +207,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>19</y>
-       <width>471</width>
-       <height>261</height>
+       <y>20</y>
+       <width>331</width>
+       <height>171</height>
       </rect>
      </property>
      <property name="widgetResizable">
@@ -220,8 +220,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>469</width>
-        <height>259</height>
+        <width>329</width>
+        <height>169</height>
        </rect>
       </property>
       <widget class="QTextBrowser" name="consoleBrowser">
@@ -229,8 +229,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>471</width>
-         <height>261</height>
+         <width>331</width>
+         <height>171</height>
         </rect>
        </property>
        <property name="palette">
@@ -284,8 +284,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="clearConsole">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>680</y>
+      <x>1060</x>
+      <y>570</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -317,6 +317,28 @@ p, li { white-space: pre-wrap; }
      <string>Restart</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>310</y>
+      <width>361</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="resources.qrc">:/Resources/flag_structure.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -339,6 +361,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
