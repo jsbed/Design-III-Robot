@@ -2,6 +2,11 @@ from queue import PriorityQueue
 
 
 class PathFinder():
+    def __init__(self):
+        self._frontier = PriorityQueue()
+        self._came_from = {}
+        self._cost_so_far = {}
+        self._path = []
 
     def heuristic(self, a, b):
         (x1, y1) = a
@@ -10,32 +15,30 @@ class PathFinder():
 
     def reconstruct_path(self, came_from, start, goal):
         current = goal
-        path = [current]
+        self._path = [current]
         while current != start:
             current = came_from[current]
-            path.append(current)
-        return path
+            self._path.append(current)
+        return self._path
 
     def a_star_search(self, grid, start, goal):
-        frontier = PriorityQueue()
-        frontier.put(start, 0)
-        came_from = {}
-        cost_so_far = {}
-        came_from[start] = None
-        cost_so_far[start] = 0
+        self._frontier.put(start, 0)
+        self._came_from[start] = None
+        self._cost_so_far[start] = 0
 
-        while not frontier.empty():
-            current = frontier.get()
+        while not self._frontier.empty():
+            current = self._frontier.get()
 
             if current == goal:
                 break
 
             for next_node in grid.neighbors(current):
-                new_cost = cost_so_far[current] + 1
-                if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
-                    cost_so_far[next_node] = new_cost
+                new_cost = self._cost_so_far[current] + 1
+                if next_node not in self._cost_so_far or new_cost \
+                        < self._cost_so_far[next_node]:
+                    self._cost_so_far[next_node] = new_cost
                     priority = new_cost + self.heuristic(goal, next_node)
-                    frontier.put(next_node, priority)
-                    came_from[next_node] = current
+                    self._frontier.put(next_node, priority)
+                    self._came_from[next_node] = current
 
-        return self.reconstruct_path(came_from, start, goal)
+        return self.reconstruct_path(self._came_from, start, goal)
