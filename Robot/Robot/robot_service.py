@@ -23,7 +23,7 @@ class RobotService():
         # TODO: Move the robot via the path
 
     def move_cube(self, cube):
-        self._path = self._path_finder.find_shortest_path(
+        self._path = self._path_finder.a_star_search(
             TABLE_GRID,
             self._robot.get_localization().position,
             cube.get_target_zone_position())
@@ -35,7 +35,7 @@ class RobotService():
         sleep(2)
 
     def move_to_atlas(self):
-        self._path = self._path_finder.find_shortest_path(
+        self._path = self._path_finder.a_star_search(
             TABLE_GRID,
             self._robot.get_localization().position,
             ATLAS_ZONE_POSITION)
