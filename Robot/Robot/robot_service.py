@@ -2,8 +2,10 @@ from Robot.path_finder import PathFinder
 from Robot.robot import Robot
 from collections.__main__ import Point
 from time import sleep
+from Robot.grid import SquareGrid
 
 ATLAS_ZONE_POSITION = Point(0, 0)
+TABLE_GRID = SquareGrid(20, 20)
 
 
 class RobotService():
@@ -14,13 +16,15 @@ class RobotService():
         self._path = []
 
     def get_cube(self, cube):
-        self._path = self._path_finder.find_shortest_path(
+        self._path = self._path_finder.a_star_search(
+            TABLE_GRID,
             self._robot.get_localization().position,
             cube.get_localization().position)
         # TODO: Move the robot via the path
 
     def move_cube(self, cube):
         self._path = self._path_finder.find_shortest_path(
+            TABLE_GRID,
             self._robot.get_localization().position,
             cube.get_target_zone_position())
         # TODO: Move the robot via the path
@@ -31,8 +35,10 @@ class RobotService():
         sleep(2)
 
     def move_to_atlas(self):
-        self._path = self._path_finder.find_shortest_path
-        (self._robot.get_localization().position, ATLAS_ZONE_POSITION)
+        self._path = self._path_finder.find_shortest_path(
+            TABLE_GRID,
+            self._robot.get_localization().position,
+            ATLAS_ZONE_POSITION)
         # TODO: Move the robot via the path
 
     def display_country_leds(self, country):
