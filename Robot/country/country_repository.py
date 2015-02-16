@@ -1,5 +1,5 @@
-from Robot.country.country import Country
-from Robot.utilities.singleton import Singleton
+from country.country import Country
+from utilities.singleton import Singleton
 
 
 class CountryRepository(metaclass=Singleton):

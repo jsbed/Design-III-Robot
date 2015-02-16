@@ -1,10 +1,10 @@
-from Robot.color import Color
+from color import Color
 
 
 class FlagCreator:
 
     def __init__(self, country):
-        self._has_next_cubes = False
+        self._has_next_cubes = True
         self._cube_order = []
         self._creation_zone_height = 0
         self._creation_zone_width = 0
