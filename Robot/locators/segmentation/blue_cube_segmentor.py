@@ -1,10 +1,10 @@
-from Robot.locators.segmentation.cube_segmentation import CubeSegmentator
+from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
 
 import cv2
 import numpy as np
 
 
-class BlueCubeSegmentator(CubeSegmentator):
+class BlueCubeSegmentor(CubeSegmentor):
 
     def __init__(self):
         self._lower_hsv_values = [70, 140, 49]
