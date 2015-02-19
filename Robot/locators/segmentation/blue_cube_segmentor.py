@@ -1,14 +1,15 @@
-from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
-
 import cv2
+
+from Robot.configuration.config import Config
+from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
 import numpy as np
 
 
 class BlueCubeSegmentor(CubeSegmentor):
 
     def __init__(self):
-        self._lower_hsv_values = [70, 140, 49]
-        self._upper_hsv_values = [120, 255, 255]
+        self._lower_hsv_values = Config().get_low_blue_hsv_values()
+        self._upper_hsv_values = Config().get_high_blue_hsv_values()
 
     def extract_cube(self, img):
         # Convert BGR image to HSV

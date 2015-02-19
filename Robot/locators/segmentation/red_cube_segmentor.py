@@ -1,26 +1,34 @@
-from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
-
-
 import cv2
+
+from Robot.configuration.config import Config
+from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
 import numpy as np
 
 
 class RedCubeSegmentor(CubeSegmentor):
 
     def __init__(self):
-        self._lower_hsv_values = [10, 90, 125]
-        self._upper_hsv_values = [35, 255, 255]
+        self._lower_hsv_values = Config().get_low_red_hsv_values()
+        self._upper_hsv_values = Config().get_high_red_hsv_values()
 
     def extract_cube(self, img):
         # Convert BGR image to HSV
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # define range of yellow color in HSV
+        # define range of blue color in HSV
         lower = np.array(self._lower_hsv_values)
-        upper = np.array(self._upper_hsv_values)
+        lower_limit = np.array([180,
+                                self._upper_hsv_values[1],
+                                self._upper_hsv_values[2]])
+        upper = np.array([0,
+                          self._lower_hsv_values[1],
+                          self._lower_hsv_values[2]])
+        upper_limit = np.array(self._upper_hsv_values)
 
-        # Threshold the HSV image to get only blue colors
-        mask = cv2.inRange(img_hsv, lower, upper)
+        # Threshold the HSV image to get only red colors
+        mask_lower = cv2.inRange(img_hsv, lower, lower_limit)
+        mask_upper = cv2.inRange(img_hsv, upper, upper_limit)
+        mask = mask_lower + mask_upper
 
         # Bitwise-AND mask and original image
         extracted_cube = cv2.bitwise_and(img, img, mask=mask)

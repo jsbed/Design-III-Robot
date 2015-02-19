@@ -17,5 +17,8 @@ class Cube:
     def get_target_zone_position(self):
         return self._target_zone_position
 
+    def get_color(self):
+        return self._color
+
     def get_localization(self):
         return self._localization
