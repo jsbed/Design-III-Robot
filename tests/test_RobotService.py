@@ -1,26 +1,26 @@
 import unittest
 
-from Robot.grid import SquareGrid
-from Robot.robot import Robot
-from Robot.path_finder import PathFinder
-from cube import Cube
-from localization import Localization
-from color import Color
+from Robot.robot.grid import SquareGrid
+from Robot.robot.robot import Robot
+from Robot.robot.path_finder import PathFinder
+from Robot.cube import Cube
+from Robot.localization import Localization
+from Robot.color import Color
 from collections.__main__ import Point
 
 
 class GameTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls._cube = Cube(Color.RED, 0, False, Localization((15, 18), 0))
-        cls._grid = SquareGrid(20, 20)
+        cls._cube = Cube(Color.RED, 0, False, Localization(Point(15, 18), 0))
+        cls._grid = SquareGrid()
+        cls._robot = Robot()
+        cls._path_finder = PathFinder()
 
     def setUp(self):
-        self._robot = Robot()
-        self._path_finder = PathFinder()
         self._robot.set_localization_position(Point(1, 2))
 
-    def test_get_cube_path(self):
+    def test_path_finder(self):
         path_test = [(15, 18), (14, 18), (13, 18), (12, 18), (11, 18),
                      (10, 18), (9, 18), (8, 18), (7, 18), (6, 18), (5, 18),
                      (4, 18), (3, 18), (2, 18), (1, 18), (1, 17), (1, 16),

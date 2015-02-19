@@ -1,12 +1,12 @@
-from flag_creator import FlagCreator
-from cube import Cube
-from country.country import Country
-from localization import Localization
+from Robot.flag_creator import FlagCreator
+from Robot.cube import Cube
+from Robot.country.country import Country
+from Robot.localization import Localization
 from collections.__main__ import Point
-from Robot.robot_service import RobotService
-from question_analysis.question_analyser import QuestionAnalyser
-from game_state import GameState
-import atlas
+from Robot.robot.robot_service import RobotService
+from Robot.question_analysis.question_analyser import QuestionAnalyser
+from Robot.game_state import GameState
+from Robot import atlas
 
 
 class Game:
