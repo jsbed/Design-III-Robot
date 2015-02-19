@@ -1,4 +1,4 @@
-from localization import Localization
+from Robot.localization import Localization
 from collections.__main__ import Point
 
 

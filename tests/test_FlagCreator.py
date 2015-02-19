@@ -1,8 +1,8 @@
 import unittest
 
-from color import Color
-from country.country import Country
-from flag_creator import FlagCreator
+from Robot.color import Color
+from Robot.country.country import Country
+from Robot.flag_creator import FlagCreator
 
 
 class FlagCreatorTest(unittest.TestCase):

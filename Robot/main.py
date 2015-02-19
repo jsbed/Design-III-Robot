@@ -1,7 +1,7 @@
 import os
 
-from configuration.config import Config
-from filler import country_repository_filler
+from Robot.configuration.config import Config
+from Robot.filler import country_repository_filler
 
 
 # Initiate configuration
