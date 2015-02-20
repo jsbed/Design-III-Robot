@@ -2,8 +2,9 @@ import re
 
 class InfoMatcher(object):
 
-    def __init__(self, info_key):
+    def __init__(self, info_key, regex):
         self._info_key = info_key
+        self._regex = regex
 
     def get_key(self):
         return self._info_key
@@ -11,21 +12,28 @@ class InfoMatcher(object):
     def match(self, info_data):
         return self._regex.search(info_data)
 
+class CapitalInfoMatcher(InfoMatcher):
 
-class CapitalMatcher(InfoMatcher):
+    def __init__(self, regex):
+        info_key = 'capital'
+        super(CapitalInfoMatcher, self).__init__(info_key, regex)
 
-    def __init__(self, info_key, capital):
-        super(CapitalMatcher, self).__init__(info_key)
-        self._regex = re.compile(capital)
 
-class CapitalPrefixMatcher(InfoMatcher):
 
-    def __init__(self, info_key, capital_prefix):
-        super(CapitalPrefixMatcher, self).__init__(info_key)
-        self._regex = re.compile('^{0}'.format(capital_prefix))
+class CapitalFullNameMatcher(CapitalInfoMatcher):
 
-class CapitalSuffixMatcher(InfoMatcher):
+    def __init__(self, capital):
+        regex = re.compile(capital)
+        super(CapitalFullNameMatcher, self).__init__(regex)
+
+class CapitalPrefixMatcher(CapitalInfoMatcher):
+
+    def __init__(self, capital_prefix):
+        regex = re.compile('^{0}'.format(capital_prefix))
+        super(CapitalPrefixMatcher, self).__init__(regex)
+
+class CapitalSuffixMatcher(CapitalInfoMatcher):
 
     def __init__(self, info_key, capital_suffix):
-        super(CapitalSuffixMatcher, self).__init__(info_key)
-        self._regex = re.compile('{0}$'.format(capital_suffix))
+        regex = re.compile('{0}$'.format(capital_suffix))
+        super(CapitalSuffixMatcher, self).__init__(regex)
