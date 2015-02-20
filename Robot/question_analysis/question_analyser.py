@@ -1,9 +1,6 @@
-import pickle
-
 from Robot.question_analysis.question_matchers import Matchers
 from Robot.configuration.config import Config
-
-FIELDS_ALIAS = {'capital': ['capital', 'name']}
+from Robot.question_analysis.factbook_parsing.country_info import Factbook
 
 
 class QuestionAnalyser(object):
@@ -11,26 +8,30 @@ class QuestionAnalyser(object):
     def __init__(self):
         self._config = Config()
         self._matchers = Matchers()
-        self._countries_info = self._load_countries_info()
+        self._factbook = Factbook()
 
     def answer_question(self, question):
-        country_matches = []
-        infos = []
+        infos = []  # answer_matcher
 
         for matcher in self._matchers:
             info = matcher.find_info(question)
             if info:
                 infos.append(info)
 
+        country_matches = []
         for info in infos:
-            for country in self._countries_info.iteritems():
-                if info
+            matches = self._factbook.get_matches(info)
+            if matches:
+                country_matches.append(matches)
 
+        if not country_matches:
+            raise Exception("No country found")
 
-    def _load_countries_info(self):
-        try:
-            with open(self._config.get_country_data_path()) as country_data_file:
-                countries_info = pickle.load(country_data_file)
-        except:
-            raise Exception('Could not load country data file.')
-        return countries_info
+        country_answer = country_matches[0]
+        for country_match in country_matches[1:]:
+            country_answer.intersection(country_match)
+
+        if len(country_answer) > 1:
+            raise Exception("More than one country found as answer")
+        country_answer = country_answer.pop()
+        return country_answer

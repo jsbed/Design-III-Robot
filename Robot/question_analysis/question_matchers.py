@@ -20,8 +20,8 @@ class CapitalIs(object):
         info = {}
         capital_match = self._regex.search(question)
         if capital_match:
-            info = {self._info_name: re.compile(capital_match.group(1))}
-        return info
+            info = (self._info_name, re.compile(capital_match.group(1)))
+        return info  # will become answer matcher
 
 
 class CapitalStartsWith(object):
@@ -34,7 +34,7 @@ class CapitalStartsWith(object):
         info = {}
         capital_match = self._regex.search(question)
         if capital_match:
-            info = {self._info_name: re.compile('^{0}'.format(capital_match.group(1)))}
+            info = (self._info_name, re.compile('^{0}'.format(capital_match.group(1))))
         return info
 
 
@@ -48,5 +48,5 @@ class CapitalEndsWith(object):
         info = {}
         capital_match = self._regex.search(question)
         if capital_match:
-            info = {self._info_name: re.compile('{0}$'.format(capital_match.group(1)))}
+            info = (self._info_name, re.compile('{0}$'.format(capital_match.group(1))))
         return info
