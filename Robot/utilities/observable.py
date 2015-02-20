@@ -11,7 +11,7 @@ class Observable:
                 self._observers[event].append(observer)
             else:
                 raise ValueError("Observer is already registered to event: ",
-                                event)
+                                 event)
 
     def detach(self, event, observer):
         if event not in self._observers:

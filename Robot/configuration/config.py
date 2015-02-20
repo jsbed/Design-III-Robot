@@ -1,12 +1,13 @@
 from configparser import ConfigParser
+import json
 
 from Robot.utilities.singleton import Singleton
 
 
 CONFIG_FILE_NAME = "config.ini"
 
-PARAMETER_ATLAS_URL = "AtlasUrl"
-PARAMETER_KINECT_CONNECTION_PORT = "KinectConnectionPort"
+SECTION_DEFAULT = "DEFAULT"
+SECTION_SEGMENTATION = "SEGMENTATION"
 
 
 class Config(metaclass=Singleton):
@@ -17,17 +18,41 @@ class Config(metaclass=Singleton):
 
     def load_config(self):
         self._parser.read(CONFIG_FILE_NAME)
-        self._parameters = self._parser.defaults()
 
     def get_atlas_url(self):
-        return self._get_parameter(PARAMETER_ATLAS_URL)
+        return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
     def get_kinect_connection_port(self):
-        return self._get_parameter(PARAMETER_KINECT_CONNECTION_PORT)
+        return self._parser.get(SECTION_DEFAULT, "KinectConnectionPort")
 
-    def _get_parameter(self, parameter):
-        if parameter.lower() in self._parameters:
-            return self._parameters[parameter.lower()]
-        else:
-            raise Exception("'{}' parameter is not in the config file".
-                            format(parameter))
+    def get_low_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "LowBlueHSV"))
+
+    def get_high_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "HighBlueHSV"))
+
+    def get_low_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "LowGreenHSV"))
+
+    def get_high_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "HighGreenHSV"))
+
+    def get_low_yellow_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "LowYellowHSV"))
+
+    def get_high_yellow_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "HighYellowHSV"))
+
+    def get_low_red_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "LowRedHSV"))
+
+    def get_high_red_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+                                           "HighRedHSV"))

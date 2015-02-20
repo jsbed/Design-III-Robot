@@ -6,3 +6,4 @@ syntax: glob
 *.idea/*
 */.externalToolBuilders/*
 */.project
+*/__pycache__/*
