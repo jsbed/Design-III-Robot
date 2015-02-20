@@ -9,6 +9,7 @@ def find_contours(img):
 
     # perimeter = cv2.arcLength(contours, True)
     #print(contours)
-    hull = cv2.convexHull(numpy.concatenate(contours))
-    print(hull)
+    #hull = cv2.convexHull(numpy.concatenate(contours))
+    #print(hull)
+    print()
     return contours

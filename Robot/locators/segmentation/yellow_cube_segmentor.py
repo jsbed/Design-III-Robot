@@ -22,6 +22,10 @@ class YellowCubeSegmentor(CubeSegmentor):
         # Threshold the HSV image to get only yellow colors
         mask = cv2.inRange(img_hsv, lower, upper)
 
+        # Apply erosion + opening
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
+        mask = cv2.dilate(cv2.erode(mask, kernel), kernel)
+
         # Bitwise-AND mask and original image
         extracted_cube = cv2.bitwise_and(img, img, mask=mask)
 
