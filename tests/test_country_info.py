@@ -1,7 +1,8 @@
-from Robot.question_analysis.factbook_parsing.country_info import Factbook
-from Robot.question_analysis.answer_matchers import CapitalFullNameMatcher
-import re
 from nose.tools import assert_equal
+
+from Robot.question_analysis.factbook_parsing.country_info import Factbook
+from Robot.question_analysis.matchers.answer_matchers import CapitalFullNameMatcher
+
 
 class TestCountryInfo():
 

@@ -1,5 +1,6 @@
 import re
-from Robot.question_analysis.answer_matchers import CapitalFullNameMatcher, CapitalSuffixMatcher, CapitalPrefixMatcher
+
+from Robot.question_analysis.matchers.answer_matchers import CapitalFullNameMatcher, CapitalSuffixMatcher, CapitalPrefixMatcher
 
 
 class Matchers(object):

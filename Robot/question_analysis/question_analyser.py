@@ -1,4 +1,4 @@
-from Robot.question_analysis.question_matchers import Matchers
+from Robot.question_analysis.matchers.question_matchers import Matchers
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 
