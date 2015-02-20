@@ -1,4 +1,5 @@
 import re
+from Robot.question_analysis.answer_matchers import CapitalMatcher, CapitalSuffixMatcher, CapitalPrefixMatcher
 
 
 class Matchers(object):
@@ -17,11 +18,11 @@ class CapitalIs(object):
         self._regex = re.compile('.*country.*has (\w*).*capital')
 
     def find_info(self, question):
-        info = {}
         capital_match = self._regex.search(question)
+        answer_matcher = None
         if capital_match:
-            info = (self._info_name, re.compile(capital_match.group(1)))
-        return info  # will become answer matcher
+            answer_matcher = CapitalMatcher(self._info_name, capital_match.group(1))
+        return answer_matcher  # will become answer matcher
 
 
 class CapitalStartsWith(object):
@@ -31,11 +32,11 @@ class CapitalStartsWith(object):
         self._regex = re.compile('.*capital.*starts with (\w*)')
 
     def find_info(self, question):
-        info = {}
+        answer_matcher = None
         capital_match = self._regex.search(question)
         if capital_match:
-            info = (self._info_name, re.compile('^{0}'.format(capital_match.group(1))))
-        return info
+            answer_matcher = CapitalPrefixMatcher(self._info_name, capital_match.group(1))
+        return answer_matcher
 
 
 class CapitalEndsWith(object):
@@ -45,8 +46,8 @@ class CapitalEndsWith(object):
         self._regex = re.compile('.*capital.*ends with (\w+)')
 
     def find_info(self, question):
-        info = {}
+        answer_matcher = None
         capital_match = self._regex.search(question)
         if capital_match:
-            info = (self._info_name, re.compile('{0}$'.format(capital_match.group(1))))
-        return info
+            answer_matcher = CapitalSuffixMatcher(self._info_name, capital_match.group(1))
+        return answer_matcher

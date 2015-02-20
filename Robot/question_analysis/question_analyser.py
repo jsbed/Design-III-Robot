@@ -11,16 +11,16 @@ class QuestionAnalyser(object):
         self._factbook = Factbook()
 
     def answer_question(self, question):
-        infos = []  # answer_matcher
+        answer_matchers = []  # answer_matcher
 
         for matcher in self._matchers:
-            info = matcher.find_info(question)
-            if info:
-                infos.append(info)
+            answer_matcher = matcher.find_info(question)
+            if answer_matcher:
+                answer_matchers.append(answer_matcher)
 
         country_matches = []
-        for info in infos:
-            matches = self._factbook.get_matches(info)
+        for answer_matcher in answer_matchers:
+            matches = self._factbook.get_matches(answer_matcher)
             if matches:
                 country_matches.append(matches)
 

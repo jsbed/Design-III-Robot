@@ -1,4 +1,5 @@
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
+from Robot.question_analysis.answer_matchers import CapitalMatcher
 import re
 from nose.tools import assert_equal
 
@@ -18,4 +19,4 @@ class TestCountryInfo():
     def test_get_matches(self):
         expected = set()
         expected.add('Canada')
-        assert_equal(self._factbook.get_matches(('capital', re.compile('Ottawa'))), expected)
+        assert_equal(self._factbook.get_matches(CapitalMatcher('capital', 'Ottawa')), expected)

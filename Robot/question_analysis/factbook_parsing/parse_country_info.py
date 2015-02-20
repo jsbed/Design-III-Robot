@@ -114,8 +114,8 @@ def parse_country_info():
     country_data_dir = Path('./factbook/geos')
 
     for country_file in country_data_dir.glob('*.html'):
-        with country_file.open() as country_data:
-            country_soup = BeautifulSoup(country_data, 'lxml')
+        with country_file.open(encoding='latin-1') as country_data:
+            country_soup = BeautifulSoup(country_data)
             country_name = country_soup.find(class_='region_name1').text
             panels = country_soup.find_all(id=re.compile('CollapsiblePanel1'))
             countries[country_name] = _parse_panels(panels)

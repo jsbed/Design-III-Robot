@@ -26,16 +26,16 @@ class Factbook(object):
                 break
         return info
 
-    def get_matches(self, info):
+    def get_matches(self, answer_matcher):
         """
         :param info: tuple containing info name and regex matching the wanted info
         :return:
         """
         country_matches = set()
         for country in self._countries_info.keys():
-            info_data = self.get_info_from_country(country, info[0])  # info[0] -> answer_matcher.key_name
+            info_data = self.get_info_from_country(country, answer_matcher.get_key())  # info[0] -> answer_matcher.key_name
             if info_data:
-                match = info[1].search(info_data)  # answer_matcher.match
+                match = answer_matcher.match(info_data)  # answer_matcher.match
                 if match:
                     country_matches.add(country)
         return country_matches
