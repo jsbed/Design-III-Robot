@@ -7,7 +7,12 @@ class TestQuestionAnalyser(object):
     def __init__(self):
         pass
 
-    def test_capital(self):
-        question = 'My death rate is greater than 13 death/1000 and my capital starts with Mos.'
+    def test_unemployment_rate(self):
+        question = 'My unemployment rate is 40.6%.'
         question_analyser = QuestionAnalyser()
-        assert_equal(question_analyser.answer_question(question), 'Russia')
+        assert_equal(question_analyser.answer_question(question), 'Haiti')
+
+    def test_capital(self):
+        question = 'My capital name starts with Moga.'
+        question_analyser = QuestionAnalyser()
+        assert_equal(question_analyser.answer_question(question), 'Somalia')

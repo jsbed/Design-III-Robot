@@ -2,7 +2,7 @@ import pickle
 import os
 
 
-INFO_KEY_ALIAS = {'capital': ['Capital', 'name']}
+INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description']}
 
 
 class Factbook(object):
@@ -20,7 +20,7 @@ class Factbook(object):
         info_keys = INFO_KEY_ALIAS[info_key]
         info = self._countries_info.get(country)
         for info_key in info_keys:
-            if info:
+            if isinstance(info, dict):
                 info = info.get(info_key)
             else:
                 break
