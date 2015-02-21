@@ -18,3 +18,11 @@ class UnemploymentRateMatcher(InfoMatcher):
         info_key = 'unemployment rate'
         regex = re.compile('{0}%'.format(rate))
         super(UnemploymentRateMatcher, self).__init__(info_key, regex)
+
+
+class PopulationMatcher(InfoMatcher):
+
+    def __init__(self, population):
+        info_key = 'population'
+        regex = re.compile('{0}'.format(population))
+        super(PopulationMatcher, self).__init__(info_key, regex)

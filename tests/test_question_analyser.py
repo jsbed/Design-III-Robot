@@ -16,3 +16,8 @@ class TestQuestionAnalyser(object):
         question = 'My capital name starts with Moga.'
         question_analyser = QuestionAnalyser()
         assert_equal(question_analyser.answer_question(question), 'Somalia')
+
+    def test_population(self):
+        question = 'My population is 32 742.'
+        question_analyser = QuestionAnalyser()
+        assert_equal(question_analyser.answer_question(question), 'San Marino')

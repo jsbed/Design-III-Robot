@@ -2,7 +2,8 @@ import pickle
 import os
 
 
-INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description']}
+INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
+                  'population': ['Population', 'description']}
 
 
 class Factbook(object):
