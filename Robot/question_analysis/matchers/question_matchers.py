@@ -3,14 +3,14 @@ import re
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalIs, CapitalEndsWith
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalStartsWith
 
-from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher
 
 
 class Matchers(object):
 
     def __init__(self):
         self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
-                          PopulationIs()]
+                          PopulationIs(), UrbanAreas()]
 
     def __iter__(self):
         return iter(self._matchers)
@@ -31,8 +31,20 @@ class UnemploymentRateIs(object):
 class UrbanAreas(object):
 
     def __init__(self):
-        pass
+        self._regex = re.compile('major urban areas .* (?:are|is) ((?:[\w\s,]+) and (?:[\w]+))')
 
+    def find_info(self, question):
+        info_matcher = None
+        urban_area_match = self._regex.search(question)
+        if urban_area_match:
+            urban_areas = urban_area_match.group(1)
+            urban_areas = self._extract_cities(urban_areas)
+            info_matcher = UrbanAreasMatcher(urban_areas)
+        return info_matcher
+
+    def _extract_cities(self, urban_areas):
+        urban_areas = re.split(', |\sand\s', urban_areas)
+        return urban_areas
 
 class PopulationIs(object):
 

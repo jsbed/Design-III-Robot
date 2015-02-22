@@ -3,7 +3,7 @@ import os
 
 
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
-                  'population': ['Population', 'description']}
+                  'population': ['Population', 'description'], 'major urban areas': ['Major urban areas - population', 'description']}
 
 
 class Factbook(object):
@@ -34,9 +34,11 @@ class Factbook(object):
         """
         country_matches = set()
         for country in self._countries_info.keys():
-            info_data = self.get_info_from_country(country, answer_matcher.get_key())  # info[0] -> answer_matcher.key_name
+            info_data = self.get_info_from_country(country, answer_matcher.get_key())
+            if answer_matcher.get_key() == 'major urban areas':
+                pass
             if info_data:
-                match = answer_matcher.match(info_data)  # answer_matcher.match
+                match = answer_matcher.match(info_data)
                 if match:
                     country_matches.add(country)
         return country_matches
