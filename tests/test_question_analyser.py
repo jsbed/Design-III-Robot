@@ -11,9 +11,21 @@ class TestQuestionAnalyser(object):
         question = 'My unemployment rate is 40.6%.'
         assert_equal(self._question_analyser.answer_question(question), 'Haiti')
 
-    def test_capital(self):
+    def test_capital_start_with(self):
         question = 'My capital name starts with Moga.'
         assert_equal(self._question_analyser.answer_question(question), 'Somalia')
+
+    def test_capital_starts_with_and_death_rate(self):
+        question = 'My death rate is greater than 13 death/1000 and my capital starts with Mos.'
+        assert_equal(self._question_analyser.answer_question(question), 'Russia')
+
+    def test_country_has_as_capital(self):
+        question = 'What country has Yaounde as its capital?'
+        assert_equal(self._question_analyser.answer_question(question), 'Cameroon')
+
+    def test_capital_ends_with(self):
+        question = 'My capital name starts with Ath and ends with ens.'
+        assert_equal(self._question_analyser.answer_question(question), 'Greece')
 
     def test_population(self):
         question = 'My population is 32 742.'
