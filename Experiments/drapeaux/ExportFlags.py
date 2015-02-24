@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     if (os.path.isdir(GIF_DIRECTORY)):
         with open('flags.csv', 'w', newline='') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=',',
+            spamwriter = csv.writer(csvfile, delimiter=';',
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
             for filename in os.listdir(GIF_DIRECTORY):
                 fig = Image.open(os.path.join(GIF_DIRECTORY, filename))
