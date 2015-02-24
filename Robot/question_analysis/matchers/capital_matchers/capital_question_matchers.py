@@ -24,22 +24,21 @@ class CapitalStartsWith(object):
         self._regex = re.compile('.*capital.*starts with (\w*)')
 
     def find_info(self, question):
-        answer_matcher = None
+        info_matcher = None
         capital_match = self._regex.search(question)
         if capital_match:
-            answer_matcher = CapitalPrefixMatcher(capital_match.group(1))
-        return answer_matcher
+            info_matcher = CapitalPrefixMatcher(capital_match.group(1))
+        return info_matcher
 
 
 class CapitalEndsWith(object):
 
     def __init__(self):
-        self._info_name = 'capital'
         self._regex = re.compile('.*capital.*ends with (\w+)')
 
     def find_info(self, question):
-        answer_matcher = None
+        info_matcher = None
         capital_match = self._regex.search(question)
         if capital_match:
-            answer_matcher = CapitalSuffixMatcher(self._info_name, capital_match.group(1))
-        return answer_matcher
+            info_matcher = CapitalSuffixMatcher(capital_match.group(1))
+        return info_matcher

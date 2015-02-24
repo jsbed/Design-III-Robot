@@ -31,7 +31,5 @@ class QuestionAnalyser(object):
         for country_match in country_matches[1:]:
             country_answer.intersection(country_match)
 
-        if len(country_answer) > 1:
-            raise Exception("More than one country found as answer")
         country_answer = country_answer.pop()
         return country_answer

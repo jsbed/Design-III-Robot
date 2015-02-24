@@ -27,6 +27,6 @@ class CapitalPrefixMatcher(CapitalInfoMatcher):
 
 class CapitalSuffixMatcher(CapitalInfoMatcher):
 
-    def __init__(self, info_key, capital_suffix):
+    def __init__(self, capital_suffix):
         regex = re.compile('{0}$'.format(capital_suffix))
         super(CapitalSuffixMatcher, self).__init__(regex)

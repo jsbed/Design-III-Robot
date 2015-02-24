@@ -1,5 +1,5 @@
 from Robot.question_analysis.question_analyser import QuestionAnalyser
-from nose.tools import assert_equal
+from nose.tools import assert_equal, assert_true
 
 
 class TestQuestionAnalyser(object):
@@ -22,3 +22,7 @@ class TestQuestionAnalyser(object):
     def test_urban_areas(self):
         question = 'The major urban areas of this country are Santiago, Valparaiso and Concepcion.'
         assert_equal(self._question_analyser.answer_question(question), 'Chile')
+
+    def test_national_symol(self):
+        question = 'My national symbol is the elephant.'
+        assert_true(self._question_analyser.answer_question(question) in ["Cote d'Ivoire", 'Laos', 'Central African Republic'])
