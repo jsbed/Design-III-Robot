@@ -26,6 +26,7 @@ My national symbol is the elephant.
 
 My internet country code is .br.
 What country has .dz as its internet country code?
+
 questions = ['My unemployment rate is 40.6%.', 'What country has a population greater than 1 300 692 576?', 'My death rate is greater than 13 death/1000 and my capital starts with Mos.',
              'The death rate of this country is greater than 10.37 deaths/1000 population and less than 10.40 deaths/1000 population. ',
              'My latitude is 16 00 S and my longitude is 167 00 E.', 'What country has .dz as its internet country code?',

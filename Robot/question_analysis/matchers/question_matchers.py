@@ -2,7 +2,9 @@ import re
 
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalIs, CapitalEndsWith
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalStartsWith
-from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import NationalSymbolIs, IsTheNationalSymbol
+from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import NationalSymbolIs
+from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import IsTheNationalSymbol
+from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import OneOfNationalSymbolIs
 
 from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher
 
@@ -11,7 +13,8 @@ class Matchers(object):
 
     def __init__(self):
         self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
-                          PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol()]
+                          PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol(),
+                          OneOfNationalSymbolIs()]
 
     def __iter__(self):
         return iter(self._matchers)
@@ -33,7 +36,7 @@ class UnemploymentRateIs(object):
 class UrbanAreas(object):
 
     def __init__(self):
-        self._regex = re.compile('major urban areas .* (?:are|is) ((?:[\w\s,]+) and (?:[\w]+))')
+        self._regex = re.compile('major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))')
 
     def find_info(self, question):
         info_matcher = None
@@ -48,6 +51,24 @@ class UrbanAreas(object):
         urban_areas = re.split(', |\sand\s', urban_areas)
         return urban_areas
 
+
+class ReligionsAre(object):
+
+    def __init__(self):
+        self._regex = re.compile('religions.*(?:including) ((?:[\w\s,]+) and (?:[\w]+))', re.IGNORECASE)
+
+    def find_info(self, question):
+        info_matcher = None
+        religions_match = self._regex.search(question)
+        if religions_match:
+            religions = religions_match.group(1)
+            religions = self._extract_religions(religions)
+            info_matcher
+
+    def _extract_cities(self, religions):
+        religions = re.split(', |\sand\s', religions)
+        return religions
+
 class PopulationIs(object):
 
     def __init__(self):
@@ -61,3 +82,4 @@ class PopulationIs(object):
             population = population.replace(' ', ',')
             info_matcher = PopulationMatcher(population)
         return info_matcher
+
