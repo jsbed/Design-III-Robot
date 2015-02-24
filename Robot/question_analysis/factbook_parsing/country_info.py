@@ -34,17 +34,16 @@ class Factbook(object):
                 break
         return info
 
-    def get_matches(self, answer_matcher):
-        """
-        :param info: tuple containing info name and regex matching the wanted info
-        :return:
-        """
+    def get_matches(self, info_matcher):
         country_matches = set()
         for country in self._countries_info.keys():
-            info_data = self.get_info_from_country(country, answer_matcher.get_key())
-            if answer_matcher.get_key() == 'major urban areas':
+            info_data = self.get_info_from_country(country, info_matcher.get_key())
+            if info_matcher.get_key() == 'major urban areas':
                 pass
             if info_data:
-                if answer_matcher.match(info_data):
+                if info_matcher.match(info_data):
                     country_matches.add(country)
         return country_matches
+
+    def get_country_list(self):
+        return [self._countries_info.keys()]

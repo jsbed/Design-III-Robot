@@ -1,45 +1,28 @@
 import re
 
 from Robot.question_analysis.matchers.independence_date_matchers.independence_info_matcher import IndependenceDateMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 
-class IsTheDateOfIndependence(object):
-
-    def __init__(self):
-        self._regex = re.compile('([\w\s]+) is the date of independence')
-
-    def find_info(self, question):
-        info_matcher = None
-        independence_date_match = self._regex.search(question)
-        if independence_date_match:
-            date = independence_date_match.group(1)
-            info_matcher = IndependenceDateMatcher(date)
-        return info_matcher
-
-
-class DeclaredIndependenceOn(object):
+class IsTheDateOfIndependence(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('declared its independence on ((?:\w*\s\d*){1,3})')
-
-    def find_info(self, question):
-        info_matcher = None
-        independence_date_match = self._regex.search(question)
-        if independence_date_match:
-            date = independence_date_match.group(1)
-            info_matcher = IndependenceDateMatcher(date)
-        return info_matcher
+        pattern = r'([\w\s]+) is the date of independence'
+        info_matcher = IndependenceDateMatcher
+        super(IsTheDateOfIndependence, self).__init__(pattern, info_matcher)
 
 
-class IndependenceDeclaredIn(object):
+class DeclaredIndependenceOn(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('independence was declared in ((?:\w*\s\d*){1,3})')
+        pattern = r'declared its independence on ((?:\w*\s\d*){1,3})'
+        info_matcher = IndependenceDateMatcher
+        super(DeclaredIndependenceOn, self).__init__(pattern, info_matcher)
 
-    def find_info(self, question):
-        info_matcher = None
-        independence_date_match = self._regex.search(question)
-        if independence_date_match:
-            date = independence_date_match.group(1)
-            info_matcher = IndependenceDateMatcher(date)
-        return info_matcher
+
+class IndependenceDeclaredIn(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'independence was declared in ((?:\w*\s\d*){1,3})'
+        info_matcher = IndependenceDateMatcher
+        super(IndependenceDeclaredIn, self).__init__(pattern, info_matcher)

@@ -1,44 +1,28 @@
-import re
-
 from Robot.question_analysis.matchers.capital_matchers.capital_info_matchers import CapitalFullNameMatcher
 from Robot.question_analysis.matchers.capital_matchers.capital_info_matchers import CapitalPrefixMatcher
 from Robot.question_analysis.matchers.capital_matchers.capital_info_matchers import CapitalSuffixMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionMatcher, QuestionWithListMatcher
 
 
-class CapitalIs(object):
-
-    def __init__(self):
-        self._regex = re.compile('.*country.*has (\w*).*capital')
-
-    def find_info(self, question):
-        capital_match = self._regex.search(question)
-        answer_matcher = None
-        if capital_match:
-            answer_matcher = CapitalFullNameMatcher(capital_match.group(1))
-        return answer_matcher
-
-
-class CapitalStartsWith(object):
+class CapitalIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('.*capital.*starts with (\w*)')
-
-    def find_info(self, question):
-        info_matcher = None
-        capital_match = self._regex.search(question)
-        if capital_match:
-            info_matcher = CapitalPrefixMatcher(capital_match.group(1))
-        return info_matcher
+        pattern = r'.*country.*has (\w*).*capital'
+        info_matcher = CapitalFullNameMatcher
+        super(CapitalIs, self).__init__(pattern, info_matcher)
 
 
-class CapitalEndsWith(object):
+class CapitalStartsWith(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('.*capital.*ends with (\w+)')
+        pattern = r'.*capital.*starts with (\w*)'
+        info_matcher = CapitalPrefixMatcher
+        super(CapitalStartsWith, self).__init__(pattern, info_matcher)
 
-    def find_info(self, question):
-        info_matcher = None
-        capital_match = self._regex.search(question)
-        if capital_match:
-            info_matcher = CapitalSuffixMatcher(capital_match.group(1))
-        return info_matcher
+
+class CapitalEndsWith(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'.*capital.*ends with (\w+)'
+        info_matcher = CapitalSuffixMatcher
+        super(CapitalEndsWith, self).__init__(pattern, info_matcher)

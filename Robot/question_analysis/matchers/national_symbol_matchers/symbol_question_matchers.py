@@ -1,45 +1,28 @@
-import re
-
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import NationalSymbolIsMatcher
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import OneOfNationalSymbolIsMatcher
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import IsTheNationalSymbolMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 
-class OneOfNationalSymbolIs(object):
-
-    def __init__(self):
-        self._regex = re.compile("one national symbol.* is the ([\w'\s]+)(?:.|\?| and)", re.IGNORECASE)
-
-    def find_info(self, question):
-        info_matcher = None
-        symbol_match = self._regex.search(question)
-        if symbol_match:
-            print(symbol_match.group(1))
-            info_matcher = OneOfNationalSymbolIsMatcher(symbol_match.group(1))
-        return info_matcher
-
-
-class NationalSymbolIs(object):
+class OneOfNationalSymbolIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile("national symbol.* is the ([\w'\s]+)(?:.|\?| and)")
-
-    def find_info(self, question):
-        info_matcher = None
-        symbol_match = self._regex.search(question)
-        if symbol_match:
-            info_matcher = NationalSymbolIsMatcher(symbol_match.group(1))
-        return info_matcher
+        pattern = r"one national symbol.* is the ([\w'\s]+)(?:.|\?| and)"
+        info_matcher = OneOfNationalSymbolIsMatcher
+        super(OneOfNationalSymbolIs, self).__init__(pattern, info_matcher)
 
 
-class IsTheNationalSymbol(object):
+class NationalSymbolIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile("The ([\w\s']+) is the national symbol", re.IGNORECASE)
+        pattern = r"national symbol.* is the ([\w'\s]+)(?:.|\?| and)"
+        info_matcher = NationalSymbolIsMatcher
+        super(NationalSymbolIs, self).__init__(pattern, info_matcher)
 
-    def find_info(self, question):
-        info_matcher = None
-        symbol_match = self._regex.search(question)
-        if symbol_match:
-            info_matcher = IsTheNationalSymbolMatcher(symbol_match.group(1))
-        return info_matcher
+
+class IsTheNationalSymbol(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r"The ([\w\s']+) is the national symbol"
+        info_match = IsTheNationalSymbolMatcher
+        super(IsTheNationalSymbol, self).__init__(pattern, info_match)

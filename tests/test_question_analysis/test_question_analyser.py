@@ -87,7 +87,7 @@ class TestQuestionAnalyser(object):
         question = 'What country has a latitude of 41.00 S?'
         assert_equal(self._question_analyser.answer_question(question), 'New Zealand')
 
-    def test_latitude_longtitude(self):
+    def test_latitude_longitude(self):
         question = 'My latitude is 16 00 S and my longitude is 167 00 E.'
         assert_equal(self._question_analyser.answer_question(question), 'Vanuatu')
 
@@ -96,5 +96,5 @@ class TestQuestionAnalyser(object):
         assert_equal(self._question_analyser.answer_question(question), 'Canada')
 
     def test_area_is(self):
-        question = 'What country has a total area of 390,757 sq km?'
+        question = 'What country has a total area of 390757 sq km?'
         assert_equal(self._question_analyser.answer_question(question), 'Zimbabwe')

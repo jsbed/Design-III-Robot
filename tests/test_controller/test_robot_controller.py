@@ -1,12 +1,12 @@
+from collections.__main__ import Point
 import unittest
 
-from Robot.robot.grid import SquareGrid
-from Robot.robot.robot import Robot
-from Robot.robot.path_finder import PathFinder
-from Robot.cube import Cube
-from Robot.localization import Localization
-from Robot.color import Color
-from collections.__main__ import Point
+from Robot.controller.robot import Robot
+from Robot.game_cycle.objects.color import Color
+from Robot.game_cycle.objects.cube import Cube
+from Robot.locators.localization import Localization
+from Robot.path_finding.grid import SquareGrid
+from Robot.path_finding.path_finder import PathFinder
 
 
 class GameTest(unittest.TestCase):
