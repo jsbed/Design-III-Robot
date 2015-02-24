@@ -18,4 +18,4 @@ with open("flags.csv", newline='') as csvfile:
             all_found = False
 
     if (all_found):
-        print("Each country has been found !")
+        print("- Each country has been found -")
