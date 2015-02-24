@@ -26,3 +26,8 @@ class TestQuestionAnalyser(object):
     def test_national_symol(self):
         question = 'My national symbol is the elephant.'
         assert_true(self._question_analyser.answer_question(question) in ["Cote d'Ivoire", 'Laos', 'Central African Republic'])
+
+    def test_is_the_national_symbol(self):
+        question = 'The lotus blossom is the national symbol of this country.'
+        assert_equal(self._question_analyser.answer_question(question), 'Macau')
+

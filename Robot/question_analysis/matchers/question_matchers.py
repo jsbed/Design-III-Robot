@@ -2,7 +2,7 @@ import re
 
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalIs, CapitalEndsWith
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalStartsWith
-from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import NationalSymbolIs
+from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import NationalSymbolIs, IsTheNationalSymbol
 
 from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher
 
@@ -11,7 +11,7 @@ class Matchers(object):
 
     def __init__(self):
         self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
-                          PopulationIs(), UrbanAreas(), NationalSymbolIs()]
+                          PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol()]
 
     def __iter__(self):
         return iter(self._matchers)

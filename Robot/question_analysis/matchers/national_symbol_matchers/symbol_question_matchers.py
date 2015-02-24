@@ -17,4 +17,11 @@ class NationalSymbolIs(object):
 class IsTheNationalSymbol(object):
 
     def __init__(self):
-        pass
+        self._regex = re.compile("The ([\w\s']+) is the national symbol", re.IGNORECASE)
+
+    def find_info(self, question):
+        info_matcher = None
+        symbol_match = self._regex.search(question)
+        if symbol_match:
+            info_matcher = NationalSymbolMatcher(symbol_match.group(1))
+        return info_matcher
