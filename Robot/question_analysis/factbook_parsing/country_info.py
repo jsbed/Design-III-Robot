@@ -5,7 +5,7 @@ import os
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
                   'population': ['Population', 'description'],
                   'major urban areas': ['Major urban areas - population', 'description'],
-                  'national symbol': ['National symbol(s)']}
+                  'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description']}
 
 
 class Factbook(object):

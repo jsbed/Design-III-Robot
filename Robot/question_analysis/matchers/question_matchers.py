@@ -6,7 +6,8 @@ from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_m
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import IsTheNationalSymbol
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import OneOfNationalSymbolIs
 
-from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher, \
+    ReligionsMatcher
 
 
 class Matchers(object):
@@ -14,7 +15,7 @@ class Matchers(object):
     def __init__(self):
         self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
                           PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol(),
-                          OneOfNationalSymbolIs()]
+                          OneOfNationalSymbolIs(), ReligionsAre()]
 
     def __iter__(self):
         return iter(self._matchers)
@@ -48,7 +49,7 @@ class UrbanAreas(object):
         return info_matcher
 
     def _extract_cities(self, urban_areas):
-        urban_areas = re.split(', |\sand\s', urban_areas)
+        urban_areas = re.split(', |\sand\s|and\s', urban_areas)
         return urban_areas
 
 
@@ -63,11 +64,14 @@ class ReligionsAre(object):
         if religions_match:
             religions = religions_match.group(1)
             religions = self._extract_religions(religions)
-            info_matcher
+            info_matcher = ReligionsMatcher(religions)
+        return info_matcher
 
-    def _extract_cities(self, religions):
-        religions = re.split(', |\sand\s', religions)
+    def _extract_religions(self, religions):
+        print(repr(religions))
+        religions = re.split(',\s|\sand\s|and\s', religions)
         return religions
+
 
 class PopulationIs(object):
 

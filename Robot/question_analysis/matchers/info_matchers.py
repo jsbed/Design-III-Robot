@@ -27,6 +27,23 @@ class PopulationMatcher(InfoMatcher):
         regex = re.compile('{0}'.format(population))
         super(PopulationMatcher, self).__init__(info_key, regex)
 
+class ReligionsMatcher(InfoMatcher):
+
+    def __init__(self, religions):
+        info_key = 'religions'
+        self._religions = religions
+        regex = self._build_regex()
+        super(ReligionsMatcher, self).__init__(info_key, regex)
+
+    def _build_regex(self):
+        base_pattern = r'(?=.*\b{0}\b)'
+        pattern = r'^'
+        for religion in self._religions:
+            pattern += base_pattern.format(religion)
+        pattern += r'.*$'
+        return re.compile(pattern, re.IGNORECASE)
+
+
 class UrbanAreasMatcher(InfoMatcher):
 
     def __init__(self, urban_areas):

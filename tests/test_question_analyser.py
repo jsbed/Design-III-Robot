@@ -35,3 +35,7 @@ class TestQuestionAnalyser(object):
         question = 'The lotus blossom is the national symbol of this country.'
         assert_equal(self._question_analyser.answer_question(question), 'Macau')
 
+    def test_religions(self):
+        question = 'What country has religions including hindu, muslim, Christian, and sikh?'
+        assert_true(self._question_analyser.answer_question(question) in ['India', 'Fiji', 'United Arab Emirates',
+                                                                          'Canada'])

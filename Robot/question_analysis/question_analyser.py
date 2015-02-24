@@ -30,6 +30,7 @@ class QuestionAnalyser(object):
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
             country_answer.intersection(country_match)
-
+        if(len(country_answer) > 1):
+            print(country_answer)
         country_answer = country_answer.pop()
         return country_answer
