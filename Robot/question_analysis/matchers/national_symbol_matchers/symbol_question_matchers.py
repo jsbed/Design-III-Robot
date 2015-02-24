@@ -4,7 +4,7 @@ from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_match
 class NationalSymbolIs(object):
 
     def __init__(self):
-        self._regex = re.compile("national symbol.* is the ([\w'\s]+)(?:.|\?)")
+        self._regex = re.compile("national symbol.* is the ([\w'\s]+)(?:.|\?| and)")
 
     def find_info(self, question):
         info_matcher = None
@@ -13,3 +13,8 @@ class NationalSymbolIs(object):
             info_matcher = NationalSymbolMatcher(symbol_match.group(1))
         return info_matcher
 
+
+class IsTheNationalSymbol(object):
+
+    def __init__(self):
+        pass
