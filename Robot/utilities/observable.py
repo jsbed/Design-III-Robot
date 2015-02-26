@@ -24,7 +24,7 @@ class Observable:
             else:
                 self._observers[event].remove(observer)
 
-    def notify(self, event):
+    def notify(self, event, value):
         if event in self._observers:
             for observer in self._observers[event]:
-                observer.update(event)
+                observer.update(event, value)

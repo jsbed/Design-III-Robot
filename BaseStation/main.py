@@ -3,8 +3,9 @@ import sys
 
 from PySide import QtGui
 
+from BaseStation.ui.widgets.main_window import Main
+from Robot.configuration.config import Config
 from Robot.filler import country_repository_filler
-from Ui.main_window import Main
 
 
 def fill_country_repository():
@@ -21,4 +22,5 @@ def init_ui():
 
 if __name__ == '__main__':
     fill_country_repository()
+    Config(os.path.join("..", "Robot", "config.ini")).load_config()
     init_ui()

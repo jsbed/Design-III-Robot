@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'QtProject\mainwindow.ui'
+# Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
 #
-# Created: Sun Feb 15 10:51:05 2015
+# Created: Thu Feb 26 00:35:51 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
 
-import Ui.QtProject.GeneratedFiles.resources_rc
+import BaseStation.ui.QtProject.GeneratedFiles.resources_rc
 
 
 class Ui_MainWindow(object):
@@ -18,50 +18,6 @@ class Ui_MainWindow(object):
         MainWindow.resize(1366, 768)
         self.centralWidget = QtGui.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
-        self.horizontalLayoutWidget = QtGui.QWidget(self.centralWidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(590, 230, 181, 41))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtGui.QLabel(self.horizontalLayoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        font.setWeight(75)
-        font.setBold(True)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.countryLabel = QtGui.QLabel(self.horizontalLayoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(19)
-        font.setWeight(50)
-        font.setBold(False)
-        self.countryLabel.setFont(font)
-        self.countryLabel.setObjectName("countryLabel")
-        self.horizontalLayout.addWidget(self.countryLabel)
-        self.horizontalLayoutWidget_2 = QtGui.QWidget(self.centralWidget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(590, 140, 213, 41))
-        self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
-        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.horizontalLayoutWidget_2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_2 = QtGui.QLabel(self.horizontalLayoutWidget_2)
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        font.setWeight(75)
-        font.setBold(True)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout_2.addWidget(self.label_2)
-        self.questionLabel = QtGui.QLabel(self.horizontalLayoutWidget_2)
-        font = QtGui.QFont()
-        font.setPointSize(19)
-        font.setWeight(50)
-        font.setBold(False)
-        self.questionLabel.setFont(font)
-        self.questionLabel.setObjectName("questionLabel")
-        self.horizontalLayout_2.addWidget(self.questionLabel)
         self.startCycle = QtGui.QPushButton(self.centralWidget)
         self.startCycle.setGeometry(QtCore.QRect(70, 610, 131, 41))
         font = QtGui.QFont()
@@ -201,6 +157,38 @@ class Ui_MainWindow(object):
         self.square_8_label.setScaledContents(True)
         self.square_8_label.setIndent(-1)
         self.square_8_label.setObjectName("square_8_label")
+        self.countryLabel = QtGui.QLabel(self.centralWidget)
+        self.countryLabel.setGeometry(QtCore.QRect(650, 220, 211, 41))
+        font = QtGui.QFont()
+        font.setPointSize(19)
+        font.setWeight(50)
+        font.setBold(False)
+        self.countryLabel.setFont(font)
+        self.countryLabel.setObjectName("countryLabel")
+        self.label = QtGui.QLabel(self.centralWidget)
+        self.label.setGeometry(QtCore.QRect(550, 220, 91, 39))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setWeight(75)
+        font.setBold(True)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label_2 = QtGui.QLabel(self.centralWidget)
+        self.label_2.setGeometry(QtCore.QRect(550, 140, 147, 39))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setWeight(75)
+        font.setBold(True)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.questionLabel = QtGui.QLabel(self.centralWidget)
+        self.questionLabel.setGeometry(QtCore.QRect(700, 140, 611, 39))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setWeight(50)
+        font.setBold(False)
+        self.questionLabel.setFont(font)
+        self.questionLabel.setObjectName("questionLabel")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
@@ -218,10 +206,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Atlas", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Pays :", None, QtGui.QApplication.UnicodeUTF8))
-        self.countryLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Question : ", None, QtGui.QApplication.UnicodeUTF8))
-        self.questionLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
         self.startCycle.setText(QtGui.QApplication.translate("MainWindow", "Démarrer", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Chronographe : ", None, QtGui.QApplication.UnicodeUTF8))
         self.chronometerLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
@@ -235,4 +219,8 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.clearConsole.setText(QtGui.QApplication.translate("MainWindow", "Clear", None, QtGui.QApplication.UnicodeUTF8))
         self.restartChrono.setText(QtGui.QApplication.translate("MainWindow", "Restart", None, QtGui.QApplication.UnicodeUTF8))
+        self.countryLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("MainWindow", "Pays :", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Question : ", None, QtGui.QApplication.UnicodeUTF8))
+        self.questionLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
 

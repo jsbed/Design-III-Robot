@@ -14,88 +14,6 @@
    <string>Atlas</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>230</y>
-      <width>181</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Pays :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="countryLabel">
-       <property name="font">
-        <font>
-         <pointsize>19</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <stylestrategy>PreferDefault</stylestrategy>
-        </font>
-       </property>
-       <property name="text">
-        <string>Nope</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>140</y>
-      <width>213</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Question : </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="questionLabel">
-       <property name="font">
-        <font>
-         <pointsize>19</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <stylestrategy>PreferDefault</stylestrategy>
-        </font>
-       </property>
-       <property name="text">
-        <string>Nope</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="startCycle">
     <property name="geometry">
      <rect>
@@ -513,6 +431,88 @@ p, li { white-space: pre-wrap; }
      <number>-1</number>
     </property>
    </widget>
+   <widget class="QLabel" name="countryLabel">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>220</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>19</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <stylestrategy>PreferDefault</stylestrategy>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nope</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>220</y>
+      <width>91</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Pays :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>140</y>
+      <width>147</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Question : </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="questionLabel">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>140</y>
+      <width>611</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <stylestrategy>PreferDefault</stylestrategy>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nope</string>
+    </property>
+   </widget>
    <zorder>square_7_label</zorder>
    <zorder>square_2_label</zorder>
    <zorder>square_3_label</zorder>
@@ -522,8 +522,6 @@ p, li { white-space: pre-wrap; }
    <zorder>square_8_label</zorder>
    <zorder>square_1_label</zorder>
    <zorder>square_4_label</zorder>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>horizontalLayoutWidget_2</zorder>
    <zorder>startCycle</zorder>
    <zorder>horizontalLayoutWidget_3</zorder>
    <zorder>startChrono</zorder>
@@ -532,6 +530,10 @@ p, li { white-space: pre-wrap; }
    <zorder>clearConsole</zorder>
    <zorder>restartChrono</zorder>
    <zorder>flag_structure_label</zorder>
+   <zorder>countryLabel</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>questionLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

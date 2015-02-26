@@ -1,11 +1,14 @@
+import json
+
 from PySide import QtGui
 from PySide.QtCore import Qt
 
+from BaseStation.communication.tcp_server import TcpServer
+from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
+from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
+from BaseStation.ui.utilities.Outputer import Outputer
+from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
 from Robot.utilities.observer import Observer
-from Ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
-from Ui.chronometer import Chronometer, NEW_TIME_UPDATE
-from Ui.flag_displayer import FlagDisplayer
-from Ui.outputer import Outputer
 
 
 class Main(QtGui.QMainWindow, Observer):
@@ -18,7 +21,9 @@ class Main(QtGui.QMainWindow, Observer):
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
         self._flag_displayer = FlagDisplayer(self.ui)
+        self._tcp_server = TcpServer()
         self._setup_ui()
+        self._setup_tcp_server()
 
     def _setup_ui(self):
         self.ui.clearConsole.clicked.connect(self._outputer.clearOutput)
@@ -29,9 +34,27 @@ class Main(QtGui.QMainWindow, Observer):
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
         self._chronometer.attach(NEW_TIME_UPDATE, self)
 
+    def _setup_tcp_server(self):
+        self._tcp_server.signal.customSignal.connect(self._handle_tcp_signal)
+        self._tcp_server.start()
+
     def update(self, event, value):
         if (event == NEW_TIME_UPDATE):
             self._update_chronometer_label()
+
+    def _handle_tcp_signal(self, event):
+        signal_data = json.loads(event)
+
+        if ("message" in signal_data):
+            self._outputer.output(signal_data["message"])
+        else:
+            try:
+                self._flag_displayer.display_country(signal_data["country"])
+            except:
+                self._outputer.output("Country '{}' does not exist in the repository !".format(signal_data["country"]))
+            else:
+                self.ui.questionLabel.setText(signal_data["question"])
+                self._outputer.output("Country found !")
 
     def _start_cycle(self):
         self._outputer.output("Start Cycle")
