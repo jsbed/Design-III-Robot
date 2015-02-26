@@ -29,13 +29,13 @@ while True:
 
     cc = cv2.waitKey(10)
 
-    if cc == 1048625:
+    if cc == 1:
         segmentor = BlueCubeSegmentor()
-    elif cc == 1048626:
+    elif cc == 2:
         segmentor = GreenCubeSegmentor()
-    elif cc == 1048627:
+    elif cc == 3:
         segmentor = YellowCubeSegmentor()
-    elif cc == 1048628:
+    elif cc == 4:
         segmentor = RedCubeSegmentor()
 
     cv2.imshow("original", img_bgr)
