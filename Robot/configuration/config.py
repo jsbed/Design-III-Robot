@@ -12,18 +12,25 @@ SECTION_SEGMENTATION = "SEGMENTATION"
 
 class Config(metaclass=Singleton):
 
-    def __init__(self):
+    def __init__(self, path=CONFIG_FILE_NAME):
         self._parser = ConfigParser()
         self._parameters = {}
+        self._path = path
 
     def load_config(self):
-        self._parser.read(CONFIG_FILE_NAME)
+        self._parser.read(self._path)
 
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
     def get_kinect_connection_port(self):
-        return self._parser.get(SECTION_DEFAULT, "KinectConnectionPort")
+        return int(self._parser.get(SECTION_DEFAULT, "KinectConnectionPort"))
+
+    def get_base_station_communication_port(self):
+        return int(self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationPort"))
+
+    def get_base_station_communication_ip(self):
+        return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
 
     def get_low_blue_hsv_values(self):
         return json.loads(self._parser.get(SECTION_SEGMENTATION,
