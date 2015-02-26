@@ -5,7 +5,11 @@ import os
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
                   'population': ['Population', 'description'],
                   'major urban areas': ['Major urban areas - population', 'description'],
-                  'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description']}
+                  'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description'],
+                  'country code': ['Internet country code'], 'independence date': ['Independence', 'description'],
+                  'population growth rate': ['Population growth rate', 'description'],
+                  'geographic coordinates': ['Geographic coordinates', 'description'],
+                  'electricity production': ['Electricity - production', 'description']}
 
 
 class Factbook(object):
@@ -40,7 +44,6 @@ class Factbook(object):
             if answer_matcher.get_key() == 'major urban areas':
                 pass
             if info_data:
-                match = answer_matcher.match(info_data)
-                if match:
+                if answer_matcher.match(info_data):
                     country_matches.add(country)
         return country_matches

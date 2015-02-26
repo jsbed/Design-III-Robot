@@ -2,12 +2,23 @@ import re
 
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalIs, CapitalEndsWith
 from Robot.question_analysis.matchers.capital_matchers.capital_question_matchers import CapitalStartsWith
+from Robot.question_analysis.matchers.electricity_production_matchers.electricity_production_question_matchers import \
+    ElectricityProductionBetween
+from Robot.question_analysis.matchers.geograpic_coordinates_matchers.geoographic_coordinates_question_matchers import \
+    LatitudeIs, LongitudeIs
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import NationalSymbolIs
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import IsTheNationalSymbol
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_question_matchers import OneOfNationalSymbolIs
-
-from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, PopulationMatcher, UrbanAreasMatcher, \
-    ReligionsMatcher
+from Robot.question_analysis.matchers.country_code_matchers.country_code_question_matchers import InternetCountryCodeIs
+from Robot.question_analysis.matchers.country_code_matchers.country_code_question_matchers import HasInternetCountryCode
+from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import IsTheDateOfIndependence
+from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import DeclaredIndependenceOn
+from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import IndependenceDeclaredIn
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher
+from Robot.question_analysis.matchers.info_matchers import ReligionsMatcher, UrbanAreasMatcher
+from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateOf
+from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateBetween
+from Robot.question_analysis.matchers.population_matchers.population_question_matchers import PopulationIs, PopulationGreaterThan
 
 
 class Matchers(object):
@@ -15,7 +26,10 @@ class Matchers(object):
     def __init__(self):
         self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
                           PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol(),
-                          OneOfNationalSymbolIs(), ReligionsAre()]
+                          OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
+                          IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
+                          PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
+                          ElectricityProductionBetween()]
 
     def __iter__(self):
         return iter(self._matchers)
@@ -72,18 +86,10 @@ class ReligionsAre(object):
         religions = re.split(',\s|\sand\s|and\s', religions)
         return religions
 
-
-class PopulationIs(object):
+class TotalAreaIs(object):
 
     def __init__(self):
-        self._regex = re.compile('population is ([\d\s]+)')
+        self._regex = re.compile('total area of (\d+ sq km)')
 
     def find_info(self, question):
         info_matcher = None
-        population_match = self._regex.search(question)
-        if population_match:
-            population = population_match.group(1)
-            population = population.replace(' ', ',')
-            info_matcher = PopulationMatcher(population)
-        return info_matcher
-

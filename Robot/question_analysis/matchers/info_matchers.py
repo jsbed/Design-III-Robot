@@ -20,13 +20,6 @@ class UnemploymentRateMatcher(InfoMatcher):
         super(UnemploymentRateMatcher, self).__init__(info_key, regex)
 
 
-class PopulationMatcher(InfoMatcher):
-
-    def __init__(self, population):
-        info_key = 'population'
-        regex = re.compile('{0}'.format(population))
-        super(PopulationMatcher, self).__init__(info_key, regex)
-
 class ReligionsMatcher(InfoMatcher):
 
     def __init__(self, religions):

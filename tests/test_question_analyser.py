@@ -51,3 +51,46 @@ class TestQuestionAnalyser(object):
         question = 'What country has religions including hindu, muslim, Christian, and sikh?'
         assert_true(self._question_analyser.answer_question(question) in ['India', 'Fiji', 'United Arab Emirates',
                                                                           'Canada'])
+    def test_internet_country_code_is(self):
+        question = 'My internet country code is .br.'
+        assert_equal(self._question_analyser.answer_question(question), 'Brazil')
+
+    def test_has_internet_country_code(self):
+        question = 'What country has .dz as its internet country code?'
+        assert_equal(self._question_analyser.answer_question(question), 'Algeria')
+
+    def test_is_the_independence(self):
+        question = '22 September 1960 is the date of independence of this country.'
+        assert_equal(self._question_analyser.answer_question(question), 'Mali')
+
+    def test_declared_independence_on(self):
+        question = 'What country has declared its independence on 22 May 1990?'
+        assert_equal(self._question_analyser.answer_question(question), 'Yemen')
+
+    def test_independence_declared_in(self):
+        question = 'My independence was declared in August 1971.'
+        assert_equal(self._question_analyser.answer_question(question), 'Bahrain')
+
+    def test_population_greater_than(self):
+        question = 'What country has a population greater than 1 300 692 576?'
+        assert_equal(self._question_analyser.answer_question(question), 'China')
+
+    def test_growth_rate_of(self):
+        question = 'What country has a population growth rate of 1.46%?'
+        assert_equal(self._question_analyser.answer_question(question), 'Israel')
+
+    def test_growth_rate_between(self):
+        question = 'My population growth rate is between 1.45% and 1.47%.'
+        assert_equal(self._question_analyser.answer_question(question), 'Israel')
+
+    def test_latitude_of(self):
+        question = 'What country has a latitude of 41.00 S?'
+        assert_equal(self._question_analyser.answer_question(question), 'New Zealand')
+
+    def test_latitude_longtitude(self):
+        question = 'My latitude is 16 00 S and my longitude is 167 00 E.'
+        assert_equal(self._question_analyser.answer_question(question), 'Vanuatu')
+
+    def test_electricity_production(self):
+        question = 'My electricity production is between 600 and 650 billion kWh.'
+        assert_equal(self._question_analyser.answer_question(question), 'Canada')
