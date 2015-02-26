@@ -16,7 +16,7 @@ class Main(QtGui.QMainWindow, Observer):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.setWindowState(Qt.WindowState.WindowFullScreen)
+        self.setWindowState(Qt.WindowState.WindowFullScreen)
 
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
