@@ -52,3 +52,5 @@ class UrbanAreasMatcher(InfoMatcher):
             pattern += base_pattern.format(urban_area)
         pattern += r'.*$'
         return re.compile(pattern, re.IGNORECASE)
+
+class TotalAreaMatcher()

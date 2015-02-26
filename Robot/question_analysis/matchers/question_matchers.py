@@ -93,3 +93,7 @@ class TotalAreaIs(object):
 
     def find_info(self, question):
         info_matcher = None
+        area_match = self._regex.search(question)
+        if area_match:
+            area = area_match.group(1)
+            info_matcher = TotalAreaMatcher(area)
