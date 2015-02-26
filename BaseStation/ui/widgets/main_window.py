@@ -16,7 +16,7 @@ class Main(QtGui.QMainWindow, Observer):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowState(Qt.WindowState.WindowFullScreen)
+        #self.setWindowState(Qt.WindowState.WindowFullScreen)
 
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
@@ -48,13 +48,8 @@ class Main(QtGui.QMainWindow, Observer):
         if ("message" in signal_data):
             self._outputer.output(signal_data["message"])
         else:
-            try:
-                self._flag_displayer.display_country(signal_data["country"])
-            except:
-                self._outputer.output("Country '{}' does not exist in the repository !".format(signal_data["country"]))
-            else:
-                self.ui.questionLabel.setText(signal_data["question"])
-                self._outputer.output("Country found !")
+            self.ui.questionLabel.setText(signal_data["question"])
+            self.ui.countryLabel.setText(signal_data["country"])
 
     def _start_cycle(self):
         self._outputer.output("Start Cycle")
