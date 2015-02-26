@@ -8,7 +8,7 @@ from Robot.question_analysis.question_analyser import QuestionAnalyser
 
 def get_random_question():
     with open('Experiments/NLP/questions_list') as f:
-        line_number = random.randint(1, 26)
+        line_number = random.randint(1, 22)
         counter = 1
         for line in f:
             if counter == line_number:
@@ -29,8 +29,9 @@ sock.connect(server_address)
 
 analyser = QuestionAnalyser()
 question = get_random_question().rstrip()
-country = analyser.answer_question(question)
 print("Question: " + question)
+country = analyser.answer_question(question)
+
 print("Country: " + country)
 print("Sending to Base Station...")
 
