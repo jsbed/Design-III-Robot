@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
 #
-# Created: Thu Feb 26 00:35:51 2015
+# Created: Thu Feb 26 02:10:50 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -158,7 +158,7 @@ class Ui_MainWindow(object):
         self.square_8_label.setIndent(-1)
         self.square_8_label.setObjectName("square_8_label")
         self.countryLabel = QtGui.QLabel(self.centralWidget)
-        self.countryLabel.setGeometry(QtCore.QRect(650, 220, 211, 41))
+        self.countryLabel.setGeometry(QtCore.QRect(650, 220, 431, 41))
         font = QtGui.QFont()
         font.setPointSize(19)
         font.setWeight(50)
