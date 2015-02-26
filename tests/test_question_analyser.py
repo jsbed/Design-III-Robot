@@ -94,3 +94,7 @@ class TestQuestionAnalyser(object):
     def test_electricity_production(self):
         question = 'My electricity production is between 600 and 650 billion kWh.'
         assert_equal(self._question_analyser.answer_question(question), 'Canada')
+
+    def test_area_is(self):
+        question = 'What country has a total area of 390,757 sq km?'
+        assert_equal(self._question_analyser.answer_question(question), 'Zimbabwe')

@@ -53,4 +53,9 @@ class UrbanAreasMatcher(InfoMatcher):
         pattern += r'.*$'
         return re.compile(pattern, re.IGNORECASE)
 
-class TotalAreaMatcher()
+class TotalAreaMatcher(InfoMatcher):
+
+    def __init__(self, total_area):
+        info_key = 'total area'
+        regex = re.compile(total_area)
+        super(TotalAreaMatcher, self).__init__(info_key, regex)

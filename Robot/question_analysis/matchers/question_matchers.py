@@ -14,7 +14,7 @@ from Robot.question_analysis.matchers.country_code_matchers.country_code_questio
 from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import IsTheDateOfIndependence
 from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import DeclaredIndependenceOn
 from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import IndependenceDeclaredIn
-from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, TotalAreaMatcher
 from Robot.question_analysis.matchers.info_matchers import ReligionsMatcher, UrbanAreasMatcher
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateOf
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateBetween
@@ -29,7 +29,7 @@ class Matchers(object):
                           OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
                           IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
-                          ElectricityProductionBetween()]
+                          ElectricityProductionBetween(), TotalAreaIs()]
 
     def __iter__(self):
         return iter(self._matchers)
@@ -89,7 +89,7 @@ class ReligionsAre(object):
 class TotalAreaIs(object):
 
     def __init__(self):
-        self._regex = re.compile('total area of (\d+ sq km)')
+        self._regex = re.compile('total area of ([\d,]+ sq km)')
 
     def find_info(self, question):
         info_matcher = None
@@ -97,3 +97,4 @@ class TotalAreaIs(object):
         if area_match:
             area = area_match.group(1)
             info_matcher = TotalAreaMatcher(area)
+        return info_matcher
