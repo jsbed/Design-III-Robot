@@ -18,4 +18,4 @@ def create_cube_segmentor(color):
     elif color == Color.BLUE:
         return blue_cube_segmentor.BlueCubeSegmentor()
     else:
-        raise Exception("Segmentor not found for color : " + color)
+        raise Exception("Segmentor not found for color : " + str(color))
