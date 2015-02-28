@@ -1,6 +1,6 @@
-from Robot.color import Color
-from Robot.locators.segmentation import blue_cube_segmentor,\
-    black_cube_segmentor, red_cube_segmentor, green_cube_segmentor,\
+from Robot.game_cycle.object.color import Color
+from Robot.locators.segmentation import blue_cube_segmentor, \
+    black_cube_segmentor, red_cube_segmentor, green_cube_segmentor, \
     white_cube_segmentor, yellow_cube_segmentor
 
 

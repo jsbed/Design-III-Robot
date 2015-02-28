@@ -28,14 +28,15 @@ while True:
         continue
 
     cc = cv2.waitKey(10)
+    print(cc)
 
-    if cc == 1:
+    if cc == 49:
         segmentor = BlueCubeSegmentor()
-    elif cc == 2:
+    elif cc == 50:
         segmentor = GreenCubeSegmentor()
-    elif cc == 3:
+    elif cc == 51:
         segmentor = YellowCubeSegmentor()
-    elif cc == 4:
+    elif cc == 52:
         segmentor = RedCubeSegmentor()
 
     cv2.imshow("original", img_bgr)

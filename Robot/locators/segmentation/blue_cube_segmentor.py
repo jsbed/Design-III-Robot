@@ -1,8 +1,8 @@
 import cv2
+import numpy
 
 from Robot.configuration.config import Config
 from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
-import numpy as np
 
 
 class BlueCubeSegmentor(CubeSegmentor):
@@ -16,8 +16,8 @@ class BlueCubeSegmentor(CubeSegmentor):
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # define range of blue color in HSV
-        lower = np.array(self._lower_hsv_values)
-        upper = np.array(self._upper_hsv_values)
+        lower = numpy.array(self._lower_hsv_values)
+        upper = numpy.array(self._upper_hsv_values)
 
         # Threshold the HSV image to get only blue colors
         mask = cv2.inRange(img_hsv, lower, upper)

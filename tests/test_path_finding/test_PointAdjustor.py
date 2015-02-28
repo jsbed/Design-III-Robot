@@ -1,12 +1,12 @@
+from collections.__main__ import Point
 import unittest
 
-from Robot.robot.grid import SquareGrid
-from Robot.robot.robot import Robot
-from Robot.cube import Cube
-from Robot.localization import Localization
-from Robot.color import Color
-from collections.__main__ import Point
-from Robot.robot.point_adjustor import PointAdjustor
+from Robot.controller.robot import Robot
+from Robot.game_cycle.object.color import Color
+from Robot.game_cycle.object.cube import Cube
+from Robot.locators.localization import Localization
+from Robot.path_finding.grid import SquareGrid
+from Robot.path_finding.point_adjustor import PointAdjustor
 
 
 class GameTest(unittest.TestCase):

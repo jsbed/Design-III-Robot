@@ -1,7 +1,7 @@
 import unittest
 
-from Robot.game_state import GameState
-from Robot.game import Game
+from Robot.game_cycle.game import Game
+from Robot.game_cycle.game_state import GameState
 
 
 class GameTest(unittest.TestCase):
