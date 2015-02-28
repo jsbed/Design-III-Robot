@@ -3,6 +3,8 @@ import os
 
 from PIL import Image
 
+from Robot.question_analysis.factbook_parsing.country_info import Factbook
+
 
 GIF_DIRECTORY = "gif"
 
@@ -16,6 +18,7 @@ COLORS = {(250, 240, 230): "NONE",
 
 SQUARE_CENTERS = [(15, 15), (45, 15), (80, 15), (15, 50), (50, 50),
                   (80, 50), (15, 80), (50, 80), (80, 80)]
+
 
 if __name__ == "__main__":
 

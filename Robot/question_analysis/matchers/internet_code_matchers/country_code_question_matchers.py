@@ -1,6 +1,7 @@
 import re
 
-from Robot.question_analysis.matchers.country_code_matchers.country_code_info_matchers import CountryCodeMatcher
+from Robot.question_analysis.matchers.internet_code_matchers.country_code_info_matchers import CountryCodeMatcher
+
 
 class InternetCountryCodeIs(object):
 
@@ -14,6 +15,7 @@ class InternetCountryCodeIs(object):
             country_code = country_code_match.group(1)
             info_matcher = CountryCodeMatcher(country_code)
         return info_matcher
+
 
 class HasInternetCountryCode(object):
 

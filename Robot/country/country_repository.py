@@ -15,3 +15,4 @@ class CountryRepository(metaclass=Singleton):
             raise Exception("Country not found in repository")
         else:
             return Country(country, self._country_flags[country])
+

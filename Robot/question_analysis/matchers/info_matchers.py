@@ -1,5 +1,6 @@
 import re
 
+
 class InfoMatcher(object):
 
     def __init__(self, info_key, regex):
@@ -11,6 +12,7 @@ class InfoMatcher(object):
 
     def match(self, info_data):
         return self._regex.search(info_data)
+
 
 class UnemploymentRateMatcher(InfoMatcher):
 
