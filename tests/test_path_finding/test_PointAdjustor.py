@@ -2,8 +2,8 @@ from collections.__main__ import Point
 import unittest
 
 from Robot.controller.robot import Robot
-from Robot.game_cycle.object.color import Color
-from Robot.game_cycle.object.cube import Cube
+from Robot.game_cycle.objects.color import Color
+from Robot.game_cycle.objects.cube import Cube
 from Robot.locators.localization import Localization
 from Robot.path_finding.grid import SquareGrid
 from Robot.path_finding.point_adjustor import PointAdjustor

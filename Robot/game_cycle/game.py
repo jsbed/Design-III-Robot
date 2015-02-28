@@ -4,7 +4,7 @@ from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.flag_creator import FlagCreator
 from Robot.game_cycle.game_state import GameState
-from Robot.game_cycle.object.cube import Cube
+from Robot.game_cycle.objects.cube import Cube
 from Robot.locators.localization import Localization
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 

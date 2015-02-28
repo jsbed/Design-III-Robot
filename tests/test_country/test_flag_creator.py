@@ -2,7 +2,7 @@ import unittest
 
 from Robot.country.country import Country
 from Robot.country.flag_creator import FlagCreator
-from Robot.game_cycle.object.color import Color
+from Robot.game_cycle.objects.color import Color
 
 
 class FlagCreatorTest(unittest.TestCase):
