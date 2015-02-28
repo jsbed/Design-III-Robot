@@ -31,23 +31,38 @@ class QuestionMatcher(object):
         return info_matcher
 
 
-class UnemploymentRateIs(object):
+class QuestionWithListMatcher(QuestionMatcher):
 
-    def __init__(self):
-        self._regex = re.compile('unemployment rate is ([\d.]+)%')
+    def __init__(self, pattern, info_matcher):
+        super(QuestionWithListMatcher, self).__init__(pattern, info_matcher)
 
     def find_info(self, question):
         info_matcher = None
-        rate_match = self._regex.search(question)
-        if rate_match:
-            info_matcher = UnemploymentRateMatcher(rate_match.group(1))
+        match = self._regex.search(question)
+        if match:
+            infos = match.group(1)
+            infos = self._extract_cities(infos)
+            info_matcher = self._info_matcher(infos)
         return info_matcher
 
+    def _extract_infos(self, infos):
+        infos = re.split(', |\sand\s|and\s', infos)
+        return infos
 
-class UrbanAreas(object):
+class UnemploymentRateIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))')
+        pattern = r'unemployment rate is ([\d.]+)%'
+        info_matcher = UnemploymentRateMatcher
+        super(UnemploymentRateIs, self).__init__(pattern, info_matcher)
+
+
+class UrbanAreas(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
+        info_matcher = UrbanAreasMatcher
+        super(UrbanAreas, self).__init__(pattern, info_matcher)
 
     def find_info(self, question):
         info_matcher = None
@@ -55,7 +70,7 @@ class UrbanAreas(object):
         if urban_area_match:
             urban_areas = urban_area_match.group(1)
             urban_areas = self._extract_cities(urban_areas)
-            info_matcher = UrbanAreasMatcher(urban_areas)
+            info_matcher = self._info_matcher(urban_areas)
         return info_matcher
 
     def _extract_cities(self, urban_areas):
