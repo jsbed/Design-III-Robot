@@ -1,13 +1,17 @@
 import re
-from Robot.question_analysis.matchers.population_matchers.population_info_matchers import PopulationMatcher, PopulationGreaterThanMatcher
+from Robot.question_analysis.matchers.population_matchers.population_info_matchers import PopulationMatcher
+from Robot.question_analysis.matchers.population_matchers.population_info_matchers import PopulationGreaterThanMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 __author__ = 'dario'
 
 
-class PopulationIs(object):
+class PopulationIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('population is ([\d\s]+)')
+        pattern = r'population is ([\d\s]+)'
+        info_matcher = PopulationMatcher
+        super(PopulationIs, self).__init__(pattern, info_matcher)
 
     def find_info(self, question):
         info_matcher = None
@@ -15,13 +19,16 @@ class PopulationIs(object):
         if population_match:
             population = population_match.group(1)
             population = population.replace(' ', ',')
-            info_matcher = PopulationMatcher(population)
+            info_matcher = self._info_matcher(population)
         return info_matcher
 
-class PopulationGreaterThan(object):
+
+class PopulationGreaterThan(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('population greater than ([\d\s]*)')
+        pattern = r'population greater than ([\d\s]*)'
+        info_matcher = PopulationGreaterThanMatcher
+        super(PopulationGreaterThan, self).__init__(pattern, info_matcher)
 
     def find_info(self, question):
         info_matcher = None
@@ -29,5 +36,5 @@ class PopulationGreaterThan(object):
         if population_match:
             population = population_match.group(1)
             population = population.replace(' ', ',')
-            info_matcher = PopulationGreaterThanMatcher(population)
+            info_matcher = self._info_matcher(population)
         return info_matcher

@@ -2,32 +2,20 @@ import re
 
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_info_matchers import GrowthRateMatcher
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_info_matchers import GrowthRateBetweenMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionWithIntervalMatcher, QuestionMatcher
 
 
-class GrowthRateOf(object):
-
-    def __init__(self):
-        self._regex = re.compile('population growth rate of ([\d.]+)%')
-
-    def find_info(self, question):
-        info_matcher = None
-        growth_match = self._regex.search(question)
-        if growth_match:
-            growth_rate = growth_match.group(1)
-            info_matcher = GrowthRateMatcher(growth_rate)
-        return info_matcher
-
-
-class GrowthRateBetween(object):
+class GrowthRateOf(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('population growth rate is between ([\d.]+)% and ([\d.]+)%')
+        pattern = r'population growth rate of ([\d.]+)%'
+        info_matcher = GrowthRateMatcher
+        super(GrowthRateOf, self).__init__(pattern, info_matcher)
 
-    def find_info(self, question):
-        info_matcher = None
-        growth_match = self._regex.search(question)
-        if growth_match:
-            growth_rate_lower_bound = growth_match.group(1)
-            growth_rate_upper_bound = growth_match.group(2)
-            info_matcher = GrowthRateBetweenMatcher(growth_rate_lower_bound, growth_rate_upper_bound)
-        return info_matcher
+
+class GrowthRateBetween(QuestionWithIntervalMatcher):
+
+    def __init__(self):
+        pattern = r'population growth rate is between ([\d.]+)% and ([\d.]+)%'
+        info_matcher = GrowthRateBetweenMatcher
+        super(GrowthRateBetween, self).__init__(pattern, info_matcher)

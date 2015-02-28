@@ -1,31 +1,20 @@
 import re
 
 from Robot.question_analysis.matchers.internet_code_matchers.country_code_info_matchers import CountryCodeMatcher
+from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 
-class InternetCountryCodeIs(object):
-
-    def __init__(self):
-        self._regex = re.compile('internet country code is (.[\w]+)')
-
-    def find_info(self, question):
-        info_matcher = None
-        country_code_match = self._regex.search(question)
-        if country_code_match:
-            country_code = country_code_match.group(1)
-            info_matcher = CountryCodeMatcher(country_code)
-        return info_matcher
-
-
-class HasInternetCountryCode(object):
+class InternetCountryCodeIs(QuestionMatcher):
 
     def __init__(self):
-        self._regex = re.compile('has (.[\w]+).*internet country code')
+        pattern = r'internet country code is (.[\w]+)'
+        info_matcher = CountryCodeMatcher
+        super(InternetCountryCodeIs, self).__init__(pattern, info_matcher)
 
-    def find_info(self, question):
-        info_matcher = None
-        country_code_match = self._regex.search(question)
-        if country_code_match:
-            country_code = country_code_match.group(1)
-            info_matcher = CountryCodeMatcher(country_code)
-        return info_matcher
+
+class HasInternetCountryCode(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'has (.[\w]+).*internet country code'
+        info_matcher = CountryCodeMatcher
+        super(HasInternetCountryCode, self).__init__(pattern, info_matcher)

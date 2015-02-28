@@ -59,5 +59,16 @@ class TotalAreaMatcher(InfoMatcher):
 
     def __init__(self, total_area):
         info_key = 'total area'
-        regex = re.compile(total_area)
+        regex = re.compile('([\d,]+) sq km')
+        self._total_area = total_area.replace(',', '')
         super(TotalAreaMatcher, self).__init__(info_key, regex)
+
+    def match(self, info_data):
+        match = self._regex.search(info_data)
+        if match:
+            population = match.group(1)
+            population = population.replace(',', '')
+            print(population, self._total_area)
+            return population == self._total_area
+        else:
+            return None
