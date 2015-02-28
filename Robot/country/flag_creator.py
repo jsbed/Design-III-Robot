@@ -1,4 +1,4 @@
-from Robot.color import Color
+from Robot.game_cycle.object.color import Color
 
 
 class FlagCreator:

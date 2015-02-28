@@ -1,12 +1,13 @@
-from Robot.robot.path_finder import PathFinder
-from Robot.robot.robot import Robot
 from collections.__main__ import Point
 from time import sleep
-from Robot.robot.grid import SquareGrid
-from Robot.robot.point_adjustor import PointAdjustor
+
+from Robot.controller.robot import Robot
+from Robot.path_finding.grid import SquareGrid
+from Robot.path_finding.path_finder import PathFinder
+from Robot.path_finding.point_adjustor import PointAdjustor
 
 
-class RobotService():
+class RobotController():
 
     def __init__(self):
         self._robot = Robot()

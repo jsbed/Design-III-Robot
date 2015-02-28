@@ -1,5 +1,5 @@
-from Robot.color import Color
 from Robot.country.country_repository import CountryRepository
+from Robot.game_cycle.object.color import Color
 
 
 COLOR_LABELS = {Color.BLUE: ":resources/blue_flag.png",

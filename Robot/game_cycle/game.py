@@ -1,12 +1,12 @@
-from Robot.flag_creator import FlagCreator
-from Robot.cube import Cube
-from Robot.country.country import Country
-from Robot.localization import Localization
 from collections.__main__ import Point
-from Robot.robot.robot_service import RobotService
+
+from Robot.controller.robot_controller import RobotController
+from Robot.country.country import Country
+from Robot.country.flag_creator import FlagCreator
+from Robot.game_cycle.game_state import GameState
+from Robot.game_cycle.object.cube import Cube
+from Robot.locators.localization import Localization
 from Robot.question_analysis.question_analyser import QuestionAnalyser
-from Robot.game_state import GameState
-from Robot import atlas
 
 
 class Game:
@@ -16,7 +16,7 @@ class Game:
         self._target_zone_location = []
         self._cube_list = []
         self._country = Country("", [])
-        self._robot_service = RobotService()
+        self._robot_service = RobotController()
         self._question = ""
         self._question_analyser = QuestionAnalyser()
         self._cube_position = Localization(Point(0, 0), 0)
