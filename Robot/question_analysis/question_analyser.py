@@ -19,13 +19,13 @@ class QuestionAnalyser(object):
         info_matchers = []
 
         for matcher in self._matchers:
-            answer_matcher = matcher.find_info(question)
-            if answer_matcher:
-                info_matchers.append(answer_matcher)
+            info_matcher = matcher.find_info(question)
+            if info_matcher:
+                info_matchers.append(info_matcher)
 
         country_matches = []
-        for answer_matcher in info_matchers:
-            matches = self._factbook.get_matches(answer_matcher)
+        for info_matcher in info_matchers:
+            matches = self._factbook.get_matches(info_matcher)
             if matches:
                 country_matches.append(matches)
 
