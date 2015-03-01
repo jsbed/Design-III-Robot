@@ -20,18 +20,20 @@ class GameTest(unittest.TestCase):
     def setUp(self):
         self._robot.set_localization_position(Point(1, 2))
 
-    def test_path_finder(self):
-        path_test = [(15, 18), (14, 18), (13, 18), (12, 18), (11, 18),
-                     (10, 18), (9, 18), (8, 18), (7, 18), (6, 18), (5, 18),
-                     (4, 18), (3, 18), (2, 18), (1, 18), (1, 17), (1, 16),
-                     (1, 15), (1, 14), (1, 13), (1, 12), (1, 11), (1, 10),
-                     (1, 9), (1, 8), (1, 7), (1, 6), (1, 5), (1, 4), (1, 3),
-                     (1, 2)]
-        path = self._path_finder.a_star_search(
-            self._grid,
-            self._robot.get_localization().position,
-            self._cube.get_localization().position)
-        self.assertEqual(path_test, path)
+    def test_get_cube(self):
+        pass
 
-    def test_construct_flag_for_canada(self):
+    def test_move_cube(self):
+        pass
+
+    def test_get_question_from_atlas(self):
+        pass
+
+    def test_move_to_atlas(self):
+        pass
+
+    def test_display_country_leds(self):
+        pass
+
+    def test_ask_for_cube(self):
         pass

@@ -8,6 +8,12 @@ class PointAdjustor():
         self._cube_center = Point(0, 0)
         self._robot_position = Point(0, 0)
 
+    '''
+    Description: Verify if the cube is too close or next to a wall
+                 and adjust the target position accordingly. Otherwise,
+                 call adjut_target_point to find the target position
+                 closest to the robot.
+    '''
     def check_if_cube_too_close_to_wall(self):
         if (self._cube_center.x < self._grid.get_robot_radius()):
             self._target_point = Point(self._target_point.x +
