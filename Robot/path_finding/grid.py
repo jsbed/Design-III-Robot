@@ -1,25 +1,19 @@
-from collections.__main__ import Point
-
-ROBOT_RADIUS = 11
-CUBE_RADIUS = 4
-TABLE_WIDTH = 111
-TABLE_HEIGHT = 251
-ATLAS_ZONE_POSITION = Point(95, 20)
+from Robot.configuration.config import Config
 
 
 class SquareGrid:
     def __init__(self):
-        self._width = TABLE_WIDTH
-        self._height = TABLE_HEIGHT
-        self._robot_radius = ROBOT_RADIUS
-        self._cube_radius = CUBE_RADIUS
-        self._atlas_zone_position = ATLAS_ZONE_POSITION
+        self._table_width = Config().get_table_width()
+        self._table_height = Config().get_table_height()
+        self._robot_radius = Config().get_robot_radius()
+        self._cube_radius = Config().get_cube_radius()
+        self._atlas_zone_position = Config().get_atlas_zone_position()
 
     def get_width(self):
-        return self._width
+        return self._table_width
 
     def get_height(self):
-        return self._height
+        return self._table_height
 
     def get_robot_radius(self):
         return self._robot_radius

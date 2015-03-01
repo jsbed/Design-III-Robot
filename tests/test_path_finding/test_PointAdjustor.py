@@ -7,6 +7,7 @@ from Robot.game_cycle.objects.cube import Cube
 from Robot.locators.localization import Localization
 from Robot.path_finding.grid import SquareGrid
 from Robot.path_finding.point_adjustor import PointAdjustor
+from unittest.mock import patch, MagicMock
 
 
 class GameTest(unittest.TestCase):
@@ -14,20 +15,16 @@ class GameTest(unittest.TestCase):
     def setUpClass(cls):
         cls._cube = Cube(Color.RED, 0, False, Localization(Point(0, 0), 0))
         cls._robot = Robot()
-        cls._grid = SquareGrid()
 
     def setUp(self):
         self._robot.set_localization_position(Point(50, 50))
         self._point_test = Point(0, 0)
 
-    def adjustor(self):
-        self._adjustor = PointAdjustor(self._grid)
-        point = self._adjustor.find_target_position(self.
-                                                    _cube.get_localization().
-                                                    position,
-                                                    self._robot.
-                                                    get_localization().
-                                                    position)
+    @patch('Robot.path_finding')
+    def adjustor(self, GridMock):
+        self._grid = GridMock
+        point = PointAdjustor().find_target_position(self._cube.get_localization().position,
+                                                     self._robot.get_localization().position)
         self.assertEqual(self._point_test, point)
 
     def test_when_cube_is_near_west_wall(self):

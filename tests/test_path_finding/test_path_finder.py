@@ -5,7 +5,6 @@ from Robot.controller.robot import Robot
 from Robot.game_cycle.objects.color import Color
 from Robot.game_cycle.objects.cube import Cube
 from Robot.locators.localization import Localization
-from Robot.path_finding.grid import SquareGrid
 from Robot.path_finding.path_finder import PathFinder
 
 
@@ -13,7 +12,6 @@ class GameTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._cube = Cube(Color.RED, 0, False, Localization(Point(0, 0), 0))
-        cls._grid = SquareGrid()
         cls._robot = Robot()
         cls._path_finder = PathFinder()
 

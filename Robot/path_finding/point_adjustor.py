@@ -1,9 +1,10 @@
 from collections.__main__ import Point
+from Robot.path_finding.grid import SquareGrid
 
 
 class PointAdjustor():
-    def __init__(self, grid):
-        self._grid = grid
+    def __init__(self):
+        self._grid = SquareGrid()
         self._target_point = Point(0, 0)
         self._cube_center = Point(0, 0)
         self._robot_position = Point(0, 0)
