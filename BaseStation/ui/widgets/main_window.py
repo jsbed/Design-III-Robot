@@ -50,6 +50,7 @@ class Main(QtGui.QMainWindow, Observer):
         else:
             self.ui.questionLabel.setText(signal_data["question"])
             self.ui.countryLabel.setText(signal_data["country"])
+            self._flag_displayer.display_country(signal_data["country"])
 
     def _start_cycle(self):
         self._outputer.output("Start Cycle")
