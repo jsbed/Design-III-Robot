@@ -1,17 +1,12 @@
 from queue import PriorityQueue
+from collections.__main__ import Point
 
 
 class PathFinder():
     def __init__(self):
         self._frontier = PriorityQueue()
         self._came_from = {}
-        self._cost_so_far = {}
         self._path = []
-
-    def heuristic(self, a, b):
-        (x1, y1) = a
-        (x2, y2) = b
-        return abs(x1 - x2) + abs(y1 - y2)
 
     def reconstruct_path(self, came_from, start, goal):
         current = goal
@@ -21,24 +16,45 @@ class PathFinder():
             self._path.append(current)
         return self._path
 
-    def a_star_search(self, grid, start, goal):
+    def get_next_node(self, current, goal):
+        (x1, y1) = current
+        (x2, y2) = goal
+        next_node = current
+        if (x2 - x1 > 0):
+            if (y2 - y1 > 0):
+                next_node = Point(x1+1, y1+1)
+            elif (y2 - y1 < 0):
+                next_node = Point(x1+1, y1-1)
+            else:
+                next_node = Point(x1+1, y1)
+        elif (x2 - x1 < 0):
+            if (y2 - y1 > 0):
+                next_node = Point(x1-1, y1+1)
+            elif (y2 - y1 < 0):
+                next_node = Point(x1-1, y1-1)
+            else:
+                next_node = Point(x1-1, y1)
+        else:
+            if (y2 - y1 > 0):
+                next_node = Point(x1, y1+1)
+            elif (y2 - y1 < 0):
+                next_node = Point(x1, y1-1)
+            else:
+                next_node = Point(x1, y1)
+        return next_node
+
+    def find_path(self, start, goal):
         self._frontier.put(start, 0)
         self._came_from[start] = None
-        self._cost_so_far[start] = 0
 
         while not self._frontier.empty():
             current = self._frontier.get()
 
-            if current == goal:
+            if (current == goal):
                 break
 
-            for next_node in grid.neighbors(current):
-                new_cost = self._cost_so_far[current] + 1
-                if next_node not in self._cost_so_far or new_cost \
-                        < self._cost_so_far[next_node]:
-                    self._cost_so_far[next_node] = new_cost
-                    priority = new_cost + self.heuristic(goal, next_node)
-                    self._frontier.put(next_node, priority)
-                    self._came_from[next_node] = current
+            next_node = self.get_next_node(current, goal)
+            self._frontier.put(next_node, 0)
+            self._came_from[next_node] = current
 
         return self.reconstruct_path(self._came_from, start, goal)

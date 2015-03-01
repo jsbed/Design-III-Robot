@@ -38,8 +38,6 @@ class Game:
         pass
 
     def analyze_question(self):
-        # self._question = atlas.get_question()
-        # self._country = self._question_analyser.answer_question(self._question)
         pass
 
     def next_state(self):

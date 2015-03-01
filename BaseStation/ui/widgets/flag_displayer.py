@@ -7,7 +7,7 @@ COLOR_LABELS = {Color.BLUE: ":resources/blue_flag.png",
                 Color.YELLOW: ":resources/yellow_flag.png",
                 Color.WHITE: ":resources/white_flag.png",
                 Color.BLACK: ":resources/black_flag.png",
-                Color.NONE: ""}
+                Color.NONE: ":resources/transparency.png"}
 
 
 class FlagDisplayer():
@@ -23,6 +23,9 @@ class FlagDisplayer():
                              self._widget.square_6_label,
                              self._widget.square_7_label,
                              self._widget.square_8_label]
+
+        for label in self._flag_labels:
+            label.setPixmap(COLOR_LABELS[Color.NONE])
 
     def display_country(self, country_name):
         country = CountryRepository().get(country_name)

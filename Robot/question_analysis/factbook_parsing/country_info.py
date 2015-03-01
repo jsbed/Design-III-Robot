@@ -1,5 +1,5 @@
-import pickle
 import os
+import pickle
 
 
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
@@ -44,3 +44,6 @@ class Factbook(object):
                 if info_matcher.match(info_data):
                     country_matches.add(country)
         return country_matches
+
+    def get_countries_list(self):
+        return self._countries_info.keys()
