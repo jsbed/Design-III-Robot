@@ -23,15 +23,13 @@ class RobotController():
                                                 position,
                                                 self._robot.get_localization().
                                                 position)
-        self._path = self._path_finder.a_star_search(
-            self._table_grid,
+        self._path = self._path_finder.find_path(
             self._robot.get_localization().position,
             self._target_point)
         # TODO: Move the robot via the path
 
     def move_cube(self, cube):
-        self._path = self._path_finder.a_star_search(
-            self._table_grid,
+        self._path = self._path_finder.find_path(
             self._robot.get_localization().position,
             cube.get_target_zone_position())
         # TODO: Move the robot via the path
@@ -42,8 +40,7 @@ class RobotController():
         sleep(2)
 
     def move_to_atlas(self):
-        self._path = self._path_finder.a_star_search(
-            self._table_grid,
+        self._path = self._path_finder.find_path(
             self._robot.get_localization().position,
             self._table_grid.get_atlas_zone_position())
         # TODO: Move the robot via the path
