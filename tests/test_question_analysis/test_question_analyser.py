@@ -37,7 +37,8 @@ class TestQuestionAnalyser(object):
 
     def test_national_symbol(self):
         question = 'My national symbol is the elephant.'
-        assert_true(self._question_analyser.answer_question(question) in ["Cote d'Ivoire", 'Laos', 'Central African Republic'])
+        assert_true(self._question_analyser.answer_question(question) in ["Cote d'Ivoire", 'Laos',
+                                                                          'Central African Republic'])
 
     def test_one_national_symbol_is(self):
         question = 'One national symbol of this country is the edelweiss.'
@@ -51,6 +52,7 @@ class TestQuestionAnalyser(object):
         question = 'What country has religions including hindu, muslim, Christian, and sikh?'
         assert_true(self._question_analyser.answer_question(question) in ['India', 'Fiji', 'United Arab Emirates',
                                                                           'Canada'])
+
     def test_internet_country_code_is(self):
         question = 'My internet country code is .br.'
         assert_equal(self._question_analyser.answer_question(question), 'Brazil')
