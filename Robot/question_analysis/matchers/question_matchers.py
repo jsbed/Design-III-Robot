@@ -59,12 +59,12 @@ class UnemploymentRateIs(QuestionMatcher):
         super(UnemploymentRateIs, self).__init__(pattern, info_matcher)
 
 
-class UrbanAreas(QuestionWithListMatcher):
+class UrbanAreasAre(QuestionWithListMatcher):
 
     def __init__(self):
         pattern = r'major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = UrbanAreasMatcher
-        super(UrbanAreas, self).__init__(pattern, info_matcher)
+        super(UrbanAreasAre, self).__init__(pattern, info_matcher)
 
 
 class ReligionsAre(QuestionWithListMatcher):

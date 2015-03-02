@@ -15,10 +15,10 @@ from Robot.question_analysis.matchers.independence_date_matchers.independence_qu
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateOf
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateBetween
 from Robot.question_analysis.matchers.population_matchers.population_question_matchers import PopulationIs, PopulationGreaterThan
-from Robot.question_analysis.matchers.question_matchers import UrbanAreas, UnemploymentRateIs, ReligionsAre, TotalAreaIs
+from Robot.question_analysis.matchers.question_matchers import UrbanAreasAre, UnemploymentRateIs, ReligionsAre, TotalAreaIs
 
 __all__ = ['CapitalIs', 'CapitalStartsWith', 'CapitalEndsWith', 'PopulationIs', 'NationalSymbolIs',
            'IsTheNationalSymbol', 'OneOfNationalSymbolIs', 'HasInternetCountryCode', 'InternetCountryCodeIs',
            'IsTheDateOfIndependence', 'DeclaredIndependenceOn', 'IndependenceDeclaredIn', 'PopulationGreaterThan',
            'GrowthRateOf', 'GrowthRateBetween', 'LatitudeIs', 'LongitudeIs', 'ElectricityProductionBetween',
-           'UrbanAreas', 'UnemploymentRateIs', 'ReligionsAre', 'TotalAreaIs']
+           'UrbanAreasAre', 'UnemploymentRateIs', 'ReligionsAre', 'TotalAreaIs']
