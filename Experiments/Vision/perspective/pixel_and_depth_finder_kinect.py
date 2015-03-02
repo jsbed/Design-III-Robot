@@ -12,7 +12,7 @@ time.sleep(1)
 
 angleZ = -24
 angleX = -24
-angleY = -24.5
+angleY = -23.5
 
 rotateZ = numpy.array([[cos(radians(angleZ)), -sin(radians(angleZ)), 0],
                        [sin(radians(angleZ)), cos(radians(angleZ)), 0],
@@ -30,6 +30,15 @@ revert_x = numpy.array([[-1, 0, 0],
                         [0, 1, 0],
                         [0, 0, 1]])
 
+real_data = numpy.float32(
+    [[0.23, 0.23], [0.08, 1.50], [1.03, 1.50], [0.88, 0.23]])
+virtual_data = numpy.float32([[0.15853591, 0.19107837],
+                              [0.0617437, 1.39121338],
+                              [0.96852547, 1.48981272],
+                              [0.78102043, 0.2159239]])
+
+M = cv2.getPerspectiveTransform(real_data, virtual_data)
+
 
 def MouseEventCallback(event, x, y, flag, data):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -42,6 +51,11 @@ def MouseEventCallback(event, x, y, flag, data):
         print("real", img_p[y, x])
         print("transform", point)
         print("translate", translate)
+
+        newPoint = cv2.perspectiveTransform(
+            numpy.float32([[[translate[0], translate[2]]]]), M)
+
+        print("final", newPoint)
 
 
 # Create a black image, a window
