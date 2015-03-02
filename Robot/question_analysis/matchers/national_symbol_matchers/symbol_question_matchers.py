@@ -1,6 +1,5 @@
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import NationalSymbolIsMatcher
 from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import OneOfNationalSymbolIsMatcher
-from Robot.question_analysis.matchers.national_symbol_matchers.symbol_info_matchers import IsTheNationalSymbolMatcher
 from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 
@@ -24,5 +23,5 @@ class IsTheNationalSymbol(QuestionMatcher):
 
     def __init__(self):
         pattern = r"The ([\w\s']+) is the national symbol"
-        info_match = IsTheNationalSymbolMatcher
+        info_match = OneOfNationalSymbolIsMatcher
         super(IsTheNationalSymbol, self).__init__(pattern, info_match)
