@@ -8,7 +8,7 @@ class QuestionAnalyser(object):
     def __init__(self):
         self._config = Config()
         self._question_matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
-                          PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol(),
+                          PopulationIs(), UrbanAreasAre(), NationalSymbolIs(), IsTheNationalSymbol(),
                           OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
                           IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
