@@ -1,7 +1,7 @@
 import unittest
+from unittest.mock import patch
 
 from Robot.game_cycle.game_state import GameState
-from unittest.mock import patch
 
 
 class GameTest(unittest.TestCase):
@@ -13,6 +13,3 @@ class GameTest(unittest.TestCase):
         test_next_state = GameState.GET_COUNTRY
         self.assertEqual(test_next_state,
                          self._game.next_state().return_value)
-
-    def test_construct_flag_for_canada(self):
-        pass
