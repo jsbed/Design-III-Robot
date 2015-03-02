@@ -2,12 +2,14 @@ from configparser import ConfigParser
 import json
 
 from Robot.utilities.singleton import Singleton
+from collections.__main__ import Point
 
 
 CONFIG_FILE_NAME = "config.ini"
 
 SECTION_DEFAULT = "DEFAULT"
 SECTION_SEGMENTATION = "SEGMENTATION"
+SECTION_PATHFINDING = "PATHFINDING"
 
 
 class Config(metaclass=Singleton):
@@ -27,7 +29,8 @@ class Config(metaclass=Singleton):
         return int(self._parser.get(SECTION_DEFAULT, "KinectConnectionPort"))
 
     def get_base_station_communication_port(self):
-        return int(self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationPort"))
+        return int(self._parser.get(SECTION_DEFAULT,
+                                    "BaseStationCommunicationPort"))
 
     def get_base_station_communication_ip(self):
         return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
@@ -63,3 +66,19 @@ class Config(metaclass=Singleton):
     def get_high_red_hsv_values(self):
         return json.loads(self._parser.get(SECTION_SEGMENTATION,
                                            "HighRedHSV"))
+
+    def get_table_width(self):
+        return int(self._parser.get(SECTION_PATHFINDING, "TableWidth"))
+
+    def get_table_height(self):
+        return int(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
+
+    def get_robot_radius(self):
+        return int(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
+
+    def get_cube_radius(self):
+        return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
+
+    def get_atlas_zone_position(self):
+        return Point(self._parser.get(SECTION_PATHFINDING,
+                                      "AtlasZonePosition"))
