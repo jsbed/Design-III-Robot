@@ -8,7 +8,8 @@ from Robot.locators.localization import Localization
 from Robot.path_finding.path_finder import PathFinder
 
 
-class GameTest(unittest.TestCase):
+class TestPathFinder(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls._cube = Cube(Color.RED, 0, False, Localization(Point(0, 0), 0))

@@ -9,7 +9,7 @@ from Robot.locators.localization import Localization
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
-class GameTest(unittest.TestCase):
+class TestPointAdjuster(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

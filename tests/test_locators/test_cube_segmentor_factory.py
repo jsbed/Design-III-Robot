@@ -1,11 +1,11 @@
-import unittest
 from unittest.mock import patch
+import unittest
 
 from Robot.game_cycle.objects.color import Color
 from Robot.locators.segmentation.cube_segmentor_factory import create_cube_segmentor
 
 
-class CubeFactoryTest(unittest.TestCase):
+class TestCubeFactory(unittest.TestCase):
 
     @patch("Robot.locators.segmentation.cube_segmentor_factory.black_cube_segmentor.BlackCubeSegmentor")
     def test_create_black_cube_segmentor(self, SegmentatorMock):
@@ -17,24 +17,20 @@ class CubeFactoryTest(unittest.TestCase):
         create_cube_segmentor(Color.RED)
         assert SegmentatorMock.called
 
-
     @patch("Robot.locators.segmentation.cube_segmentor_factory.yellow_cube_segmentor.YellowCubeSegmentor")
     def test_create_yellow_cube_segmentor(self, SegmentatorMock):
         create_cube_segmentor(Color.YELLOW)
         assert SegmentatorMock.called
-
 
     @patch("Robot.locators.segmentation.cube_segmentor_factory.green_cube_segmentor.GreenCubeSegmentor")
     def test_create_green_cube_segmentor(self, SegmentatorMock):
         create_cube_segmentor(Color.GREEN)
         assert SegmentatorMock.called
 
-
     @patch("Robot.locators.segmentation.cube_segmentor_factory.blue_cube_segmentor.BlueCubeSegmentor")
     def test_create_blue_cube_segmentor(self, SegmentatorMock):
         create_cube_segmentor(Color.BLUE)
         assert SegmentatorMock.called
-
 
     @patch("Robot.locators.segmentation.cube_segmentor_factory.white_cube_segmentor.WhiteCubeSegmentor")
     def test_create_white_cube_segmentor(self, SegmentatorMock):
