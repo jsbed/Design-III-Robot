@@ -9,3 +9,6 @@
 
 pip3 install -r /path/to/requirements.txt
 ```
+
+# Tests #
+We run tests using nose in the tests directory.
