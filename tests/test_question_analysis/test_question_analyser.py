@@ -100,3 +100,7 @@ class TestQuestionAnalyser(object):
     def test_area_is(self):
         question = 'What country has a total area of 390757 sq km?'
         assert_equal(self._question_analyser.answer_question(question), 'Zimbabwe')
+
+    def test_national_anthem_is(self):
+        question = 'The title of my national anthem is Advance Australia Fair.'
+        assert_equal(self._question_analyser.answer_question(question), 'Australia')

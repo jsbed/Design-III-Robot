@@ -17,4 +17,3 @@ class OneOfNationalSymbolIsMatcher(InfoMatcher):
         info_key = 'national symbol'
         regex = re.compile('{0}'.format(symbol), re.IGNORECASE)
         super(OneOfNationalSymbolIsMatcher, self).__init__(info_key, regex)
-

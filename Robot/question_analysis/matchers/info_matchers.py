@@ -72,3 +72,9 @@ class TotalAreaMatcher(InfoMatcher):
             return population == self._total_area
         else:
             return None
+
+class NationalAnthemMatcher(InfoMatcher):
+    def __init__(self, national_anthem):
+        info_key = 'national anthem'
+        regex = re.compile(national_anthem, re.IGNORECASE)
+        super(NationalAnthemMatcher, self).__init__(info_key, regex)

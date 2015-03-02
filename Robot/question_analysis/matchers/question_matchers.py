@@ -1,6 +1,7 @@
 import re
 
-from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher
+from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
+    NationalAnthemMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -81,3 +82,11 @@ class TotalAreaIs(QuestionMatcher):
         pattern = r'total area of ([\d,]+) sq km'
         info_matcher = TotalAreaMatcher
         super(TotalAreaIs, self).__init__(pattern, info_matcher)
+
+
+class NationalAnthemIs(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r"national anthem is ([\w\s]+)"
+        info_matcher = NationalAnthemMatcher
+        super(NationalAnthemIs, self).__init__(pattern, info_matcher)

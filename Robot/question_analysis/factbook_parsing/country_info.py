@@ -10,7 +10,7 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'population growth rate': ['Population growth rate', 'description'],
                   'geographic coordinates': ['Geographic coordinates', 'description'],
                   'electricity production': ['Electricity - production', 'description'],
-                  'total area': ['Area', 'total']}
+                  'total area': ['Area', 'total'], 'national anthem' : ['name']}
 
 
 class Factbook(object):
