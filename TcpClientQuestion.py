@@ -8,7 +8,7 @@ from Robot.question_analysis.question_analyser import QuestionAnalyser
 
 def get_random_question():
     with open('Experiments/NLP/questions_list') as f:
-        line_number = random.randint(1, 22)
+        line_number = random.randint(1, 21)
         counter = 1
         for line in f:
             if counter == line_number:
