@@ -13,3 +13,6 @@ def test_growth_rate_between():
     question = 'My population growth rate is between 15% and 25%'
     growth_rate_between = GrowthRateBetween()
     assert_true(growth_rate_between.find_info(question))
+
+def test_national_symbol():
+    question = 'The lotus blossom is the national symbol of this country.'

@@ -109,6 +109,12 @@ def _parse_panels(panels):
     return country_info
 
 
+def _country_is_independant(countries, country):
+    independence = countries[country].get('Independence', '')
+    if isinstance(independence, dict):
+        independence = independence.get('description', '')
+    return 'none' not in independence.lower()
+
 def parse_country_info():
     countries = {}
     country_data_dir = Path('./factbook/geos')
@@ -119,5 +125,7 @@ def parse_country_info():
             country_name = country_soup.find(class_='region_name1').text
             panels = country_soup.find_all(id=re.compile('CollapsiblePanel1'))
             countries[country_name] = _parse_panels(panels)
+            if not _country_is_independant(countries, country_name):
+                countries.pop(country_name, None)
     _save_countries_info(countries)
 parse_country_info()
