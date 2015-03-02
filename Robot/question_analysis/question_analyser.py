@@ -7,7 +7,7 @@ class QuestionAnalyser(object):
 
     def __init__(self):
         self._config = Config()
-        self._matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
+        self._question_matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
                           PopulationIs(), UrbanAreas(), NationalSymbolIs(), IsTheNationalSymbol(),
                           OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
                           IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
@@ -18,7 +18,7 @@ class QuestionAnalyser(object):
     def answer_question(self, question):
         info_matchers = []
 
-        for matcher in self._matchers:
+        for matcher in self._question_matchers:
             info_matcher = matcher.find_info(question)
             if info_matcher:
                 info_matchers.append(info_matcher)
