@@ -1,8 +1,8 @@
 from configparser import ConfigParser
+import collections
 import json
 
 from Robot.utilities.singleton import Singleton
-from collections.__main__ import Point
 
 
 CONFIG_FILE_NAME = "config.ini"
@@ -80,5 +80,5 @@ class Config(metaclass=Singleton):
         return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
     def get_atlas_zone_position(self):
-        return Point(self._parser.get(SECTION_PATHFINDING,
-                                      "AtlasZonePosition"))
+        return collections.__main__.Point(self._parser.get(SECTION_PATHFINDING,
+                                                           "AtlasZonePosition"))
