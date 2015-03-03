@@ -37,22 +37,22 @@ class Main(QtGui.QMainWindow):
         self._tcp_client.send_data(bytes("up", "utf-8"))
 
     def _down_arrow(self):
-        print("down arrow")
+        self._tcp_client.send_data(bytes("down", "utf-8"))
 
     def _left_arrow(self):
-        print("left arrow")
+        self._tcp_client.send_data(bytes("left", "utf-8"))
 
     def _right_arrow(self):
-        print("right arrow")
+        self._tcp_client.send_data(bytes("right", "utf-8"))
 
     def _rotate_right_arrow(self):
-        print("rotate right arrow")
+        self._tcp_client.send_data(bytes("rotate-right", "utf-8"))
 
     def _rotate_left_arrow(self):
-        print("rotate left arrow")
+        self._tcp_client.send_data(bytes("rotate-left", "utf-8"))
 
     def _connect_button(self):
-        self._tcp_client.diconnect_socket()
+        self._tcp_client.disconect_socket()
 
         if (self._tcp_client.connect_socket()):
             self.ui.connection_status.setText("Connected")
