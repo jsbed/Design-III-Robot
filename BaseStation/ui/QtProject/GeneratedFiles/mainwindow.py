@@ -2,17 +2,16 @@
 
 # Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
 #
-# Created: Sun Mar  1 02:45:14 2015
+# Created: Tue Mar  3 00:05:19 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
 
-import BaseStation.ui.QtProject.GeneratedFiles.resources_rc
-
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
@@ -25,9 +24,11 @@ class Ui_MainWindow(object):
         self.startCycle.setFont(font)
         self.startCycle.setObjectName("startCycle")
         self.horizontalLayoutWidget_3 = QtGui.QWidget(self.centralWidget)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(580, 20, 285, 41))
+        self.horizontalLayoutWidget_3.setGeometry(
+            QtCore.QRect(580, 20, 285, 41))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.horizontalLayoutWidget_3)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout(
+            self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.label_3 = QtGui.QLabel(self.horizontalLayoutWidget_3)
@@ -99,7 +100,8 @@ class Ui_MainWindow(object):
         self.flag_structure_label.setGeometry(QtCore.QRect(550, 320, 341, 341))
         self.flag_structure_label.setText("")
         self.flag_structure_label.setTextFormat(QtCore.Qt.AutoText)
-        self.flag_structure_label.setPixmap(QtGui.QPixmap(":/resources/flag_structure.png"))
+        self.flag_structure_label.setPixmap(
+            QtGui.QPixmap(":/resources/flag_structure.png"))
         self.flag_structure_label.setScaledContents(True)
         self.flag_structure_label.setIndent(-1)
         self.flag_structure_label.setObjectName("flag_structure_label")
@@ -194,9 +196,6 @@ class Ui_MainWindow(object):
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
-        self.mainToolBar = QtGui.QToolBar(MainWindow)
-        self.mainToolBar.setObjectName("mainToolBar")
-        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.mainToolBar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName("statusBar")
         MainWindow.setStatusBar(self.statusBar)
@@ -205,22 +204,36 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Atlas", None, QtGui.QApplication.UnicodeUTF8))
-        self.startCycle.setText(QtGui.QApplication.translate("MainWindow", "Démarrer", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Chronographe : ", None, QtGui.QApplication.UnicodeUTF8))
-        self.chronometerLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
-        self.startChrono.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
-        self.pauseChrono.setText(QtGui.QApplication.translate("MainWindow", "Pause", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Console", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(QtGui.QApplication.translate(
+            "MainWindow", "Atlas", None, QtGui.QApplication.UnicodeUTF8))
+        self.startCycle.setText(QtGui.QApplication.translate(
+            "MainWindow", "Démarrer", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate(
+            "MainWindow", "Chronographe : ", None, QtGui.QApplication.UnicodeUTF8))
+        self.chronometerLabel.setText(QtGui.QApplication.translate(
+            "MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
+        self.startChrono.setText(QtGui.QApplication.translate(
+            "MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
+        self.pauseChrono.setText(QtGui.QApplication.translate(
+            "MainWindow", "Pause", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate(
+            "MainWindow", "Console", None, QtGui.QApplication.UnicodeUTF8))
         self.consoleBrowser.setHtml(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.clearConsole.setText(QtGui.QApplication.translate("MainWindow", "Clear", None, QtGui.QApplication.UnicodeUTF8))
-        self.restartChrono.setText(QtGui.QApplication.translate("MainWindow", "Restart", None, QtGui.QApplication.UnicodeUTF8))
-        self.countryLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Pays :", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Question : ", None, QtGui.QApplication.UnicodeUTF8))
-        self.questionLabel.setText(QtGui.QApplication.translate("MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
+                                                                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                                                 "p, li { white-space: pre-wrap; }\n"
+                                                                 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+                                                                 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.clearConsole.setText(QtGui.QApplication.translate(
+            "MainWindow", "Clear", None, QtGui.QApplication.UnicodeUTF8))
+        self.restartChrono.setText(QtGui.QApplication.translate(
+            "MainWindow", "Restart", None, QtGui.QApplication.UnicodeUTF8))
+        self.countryLabel.setText(QtGui.QApplication.translate(
+            "MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate(
+            "MainWindow", "Pays :", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate(
+            "MainWindow", "Question : ", None, QtGui.QApplication.UnicodeUTF8))
+        self.questionLabel.setText(QtGui.QApplication.translate(
+            "MainWindow", "Nope", None, QtGui.QApplication.UnicodeUTF8))
 
+import BaseStation.ui.QtProject.GeneratedFiles.resources_rc
