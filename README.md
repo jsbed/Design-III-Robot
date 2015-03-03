@@ -7,6 +7,7 @@
 ```
 #!python
 
+sudo apt-get install python3-pyside libzmq3-dev
 pip3 install -r /path/to/requirements.txt
 ```
 
