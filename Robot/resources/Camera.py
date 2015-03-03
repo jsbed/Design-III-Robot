@@ -1,2 +1,5 @@
+import cv2
+
+
 def get_data():
-    pass
+    return cv2.imread("../resources/cam_white_black.jpg")
