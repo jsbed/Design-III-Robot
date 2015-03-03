@@ -1,8 +1,8 @@
 import socket
 
 
-PORT = 10000
-IP = '192.168.2.13'
+PORT = 3000
+IP = '127.0.0.1'
 BUFFER_SIZE = 999
 
 # Create a TCP/IP socket
@@ -13,12 +13,15 @@ print('starting up on %s port %s' % server_address)
 sock.bind(server_address)
 sock.listen(1)
 
+connection, _ = sock.accept()
+
 while True:
     # Find connections
-    connection, client_address = sock.accept()
     try:
         data = connection.recv(BUFFER_SIZE)
         print(data)
 
-    except:
+    except Exception as e:
+        print(str(e))
         connection.close()
+        connection, _ = sock.accept()
