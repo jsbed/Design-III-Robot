@@ -8,13 +8,13 @@ from Robot.game_cycle.objects.cube import Cube
 from Robot.path_finding.point import Point
 
 
-FIRST_CUBE = Cube(Color.WHITE, Point(75, 36))
-SECOND_CUBE = Cube(Color.BLUE, Point(51, 36))
-THIRD_CUBE = Cube(Color.BLUE, Point(75, 48))
-FOURTH_CUBE = Cube(Color.BLACK, Point(63, 48))
-FIFTH_CUBE = Cube(Color.YELLOW, Point(51, 48))
-SIXTH_CUBE = Cube(Color.RED, Point(75, 60))
-LAST_CUBE = Cube(Color.GREEN, Point(63, 60))
+EXPECTED_FIRST_CUBE = Cube(Color.WHITE, Point(75, 36))
+EXPECTED_SECOND_CUBE = Cube(Color.BLUE, Point(51, 36))
+EXPECTED_THIRD_CUBE = Cube(Color.BLUE, Point(75, 48))
+EXPECTED_FOURTH_CUBE = Cube(Color.BLACK, Point(63, 48))
+EXPECTED_FIFTH_CUBE = Cube(Color.YELLOW, Point(51, 48))
+EXPECTED_SIXTH_CUBE = Cube(Color.RED, Point(75, 60))
+EXPECTED_LAST_CUBE = Cube(Color.GREEN, Point(63, 60))
 
 
 class FlagCreatorTest(unittest.TestCase):
@@ -56,13 +56,20 @@ class FlagCreatorTest(unittest.TestCase):
         self.assertFalse(self.flag_creator.has_next_cubes())
 
     def test_sequence_of_next_cube(self):
-        self.assert_equal_cube(self.flag_creator.next_cube(), FIRST_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), SECOND_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), THIRD_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), FOURTH_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), FIFTH_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), SIXTH_CUBE)
-        self.assert_equal_cube(self.flag_creator.next_cube(), LAST_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_FIRST_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_SECOND_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_THIRD_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_FOURTH_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_FIFTH_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_SIXTH_CUBE)
+        self.assert_equal_cube(self.flag_creator.next_cube(),
+                               EXPECTED_LAST_CUBE)
         self.assertRaises(IndexError, self.flag_creator.next_cube())
 
     def assert_equal_cube(self, actual_cube, expected_cube):
