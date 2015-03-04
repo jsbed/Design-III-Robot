@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 import json
 
+from Robot.path_finding.point import Point
 from Robot.utilities.singleton import Singleton
 
 
@@ -9,6 +10,7 @@ CONFIG_FILE_NAME = "config.ini"
 SECTION_DEFAULT = "DEFAULT"
 SECTION_SEGMENTATION = "SEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
+SECTION_FLAGCREATION = "FLAGCREATION"
 
 
 class Config(metaclass=Singleton):
@@ -79,9 +81,17 @@ class Config(metaclass=Singleton):
         return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
     def get_atlas_zone_position(self):
-        return collections.__main__.Point(self._parser.get(SECTION_PATHFINDING,
-                                                           "AtlasZonePosition"))
+        return Point(self._parser.get(SECTION_PATHFINDING,
+                                      "AtlasZonePosition"))
 
     def get_target_zone_position(self):
-        return collections.__main__.Point(self._parser.get(SECTION_PATHFINDING,
-                                                           "TargetZonePosition"))
+        return Point(self._parser.get(SECTION_FLAGCREATION,
+                                      "TargetZonePosition"))
+
+    def get_flag_creation_zone_position(self):
+        return Point(self._parser.get(SECTION_FLAGCREATION,
+                                      "FlagCreationZonePosition"))
+
+    def get_cube_center_distance(self):
+        return int(self._parser.get(SECTION_FLAGCREATION,
+                                    "CubeCenterDistance"))

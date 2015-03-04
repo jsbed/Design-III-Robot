@@ -1,8 +1,8 @@
-from collections.__main__ import Point
 from time import sleep
 
 from Robot.controller.robot import Robot
 from Robot.path_finding.path_finder import PathFinder
+from Robot.path_finding.point import Point
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 

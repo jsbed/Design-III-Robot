@@ -1,6 +1,5 @@
-from collections.__main__ import Point
-
 from Robot.configuration import config
+from Robot.path_finding.point import Point
 
 
 class PointAdjustor():
