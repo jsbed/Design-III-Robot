@@ -11,7 +11,7 @@ class InfoMatcher(object):
         return self._info_key
 
     def match(self, info_data):
-        return self._regex.search(info_data)
+        return self._regex.search(info_data) is not None
 
 
 class UnemploymentRateMatcher(InfoMatcher):

@@ -16,7 +16,7 @@ class TestQuestionAnalyser(object):
         assert_equal(self._question_analyser.answer_question(question), 'Somalia')
 
     def test_capital_starts_with_and_death_rate(self):
-        question = 'My death rate is greater than 13 death/1000 and my capital starts with Mos.'
+        question = 'My death rate is greater than 13 death/1000 and my capital starts with Mos'
         assert_equal(self._question_analyser.answer_question(question), 'Russia')
 
     def test_country_has_as_capital(self):
@@ -105,3 +105,8 @@ class TestQuestionAnalyser(object):
     def test_national_anthem_is(self):
         question = 'The title of my national anthem is Advance Australia Fair.'
         assert_equal(self._question_analyser.answer_question(question), 'Australia')
+
+    def test_death_rate_less_greater(self):
+        question = """The death rate of this country is greater than 10.37 deaths/1000 population
+        and less than 10.40 deaths/1000 population."""
+        assert_equal(self._question_analyser.answer_question(question), 'Austria')
