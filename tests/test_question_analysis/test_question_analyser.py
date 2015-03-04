@@ -35,6 +35,7 @@ class TestQuestionAnalyser(object):
         question = 'The major urban areas of this country are Santiago, Valparaiso and Concepcion.'
         assert_equal(self._question_analyser.answer_question(question), 'Chile')
 
+    @nottest
     def test_national_symbol(self):
         question = 'My national symbol is the elephant.'
         assert_true(self._question_analyser.answer_question(question) in ["Cote d'Ivoire", 'Laos',
@@ -101,6 +102,7 @@ class TestQuestionAnalyser(object):
         question = 'What country has a total area of 390757 sq km?'
         assert_equal(self._question_analyser.answer_question(question), 'Zimbabwe')
 
+    @nottest
     def test_national_anthem_is(self):
         question = 'The title of my national anthem is Advance Australia Fair.'
         assert_equal(self._question_analyser.answer_question(question), 'Australia')
