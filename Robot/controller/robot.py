@@ -1,5 +1,5 @@
-from collections.__main__ import Point
 from Robot.locators.localization import Localization
+from Robot.path_finding.point import Point
 
 
 class Robot():

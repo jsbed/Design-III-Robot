@@ -1,11 +1,10 @@
-from collections.__main__ import Point
 from unittest.mock import patch, MagicMock, Mock
 import unittest
 
 from Robot.controller.robot import Robot
 from Robot.game_cycle.objects.color import Color
 from Robot.game_cycle.objects.cube import Cube
-from Robot.locators.localization import Localization
+from Robot.path_finding.point import Point
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
@@ -13,7 +12,7 @@ class TestPointAdjuster(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._cube = Cube(Color.RED, 0, False, Localization(Point(0, 0), 0))
+        cls._cube = Cube(Color.RED, 0)
         cls._robot = Robot()
 
     def setUp(self):

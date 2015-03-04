@@ -12,7 +12,7 @@ time.sleep(1)
 
 angleZ = -24
 angleX = -24
-angleY = -23.5
+angleY = 28
 
 rotateZ = numpy.array([[cos(radians(angleZ)), -sin(radians(angleZ)), 0],
                        [sin(radians(angleZ)), cos(radians(angleZ)), 0],
@@ -30,32 +30,37 @@ revert_x = numpy.array([[-1, 0, 0],
                         [0, 1, 0],
                         [0, 0, 1]])
 
-real_data = numpy.float32(
-    [[0.23, 0.23], [0.08, 1.50], [1.03, 1.50], [0.88, 0.23]])
-virtual_data = numpy.float32([[0.15853591, 0.19107837],
-                              [0.0617437, 1.39121338],
-                              [0.96852547, 1.48981272],
-                              [0.78102043, 0.2159239]])
 
-M = cv2.getPerspectiveTransform(real_data, virtual_data)
+virtual_coord = [(290, 390), (261, 549), (263, 300), (281, 129)]
+
+real_data = numpy.float32(
+    [[0.31, 0.23], [0.08, 1.50], [1.03, 1.50], [0.80, 0.23]])
+
+translation_mat = numpy.array([0.12, 0.13, -0.56])
+
+perspective_transform = numpy.load("perspective_array.npy")
 
 
 def MouseEventCallback(event, x, y, flag, data):
     if event == cv2.EVENT_LBUTTONDOWN:
         # print(x)
         # print(y)
-        rotation_transform = numpy.dot(rotateY, img_p[y, x])
-        point = numpy.dot(revert_x, rotation_transform)
-        translate = point + numpy.array([0, 0, - 0.56])
+        revert = numpy.dot(revert_x, img_p[y, x])
+        translation = revert + translation_mat
+        rotation_transform = numpy.dot(rotateY, translation)
 
+        #point = numpy.dot(revert_x, rotation_transform)
+        #translate = point + numpy.array([0, 0.12, - 0.56])
+
+        print(y, x)
         print("real", img_p[y, x])
-        print("transform", point)
-        print("translate", translate)
+        #print("transform", rotation_transform)
+        #print("translate", translate)
 
-        newPoint = cv2.perspectiveTransform(
-            numpy.float32([[[translate[0], translate[2]]]]), M)
+        # newPoint = cv2.perspectiveTransform(
+        #    numpy.float32([[[translate[0], translate[2]]]]), M)
 
-        print("final", newPoint)
+        #print("final", newPoint)
 
 
 # Create a black image, a window
@@ -81,7 +86,20 @@ while True:
 
     cc = cv2.waitKey(10)
 
-    if cc == 1048603:  # Touche Echap quitte
+    if cc == 27:  # Touche Echap quitte
         break
 
+    elif cc == 10:  # Touche Enter compute GetPerspective
+        virtual_data = numpy.float32([[img_p[virtual_coord[0]][0],
+                                       img_p[virtual_coord[0]][2]],
+                                      [img_p[virtual_coord[1]][0],
+                                       img_p[virtual_coord[1]][2]],
+                                      [img_p[virtual_coord[2]][0],
+                                       img_p[virtual_coord[2]][2]],
+                                      [img_p[virtual_coord[3]][0],
+                                       img_p[virtual_coord[3]][2]]])
+
+        numpy.save("perspective_array",
+                   cv2.getPerspectiveTransform(real_data,
+                                               virtual_data))
 cv2.destroyAllWindows()
