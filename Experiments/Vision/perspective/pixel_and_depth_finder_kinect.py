@@ -38,9 +38,6 @@ def MouseEventCallback(event, x, y, flag, data):
         print(y, x)
         transformed = transform((y, x))
 
-        #point = numpy.dot(revert_x, rotation_transform)
-        #translate = point + numpy.array([0, 0.12, - 0.56])
-
         print("real", img_p[y, x])
         print("transformed", transformed)
 
