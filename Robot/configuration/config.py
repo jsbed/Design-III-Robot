@@ -81,16 +81,16 @@ class Config(metaclass=Singleton):
         return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
     def get_atlas_zone_position(self):
-        return Point(self._parser.get(SECTION_PATHFINDING,
-                                      "AtlasZonePosition"))
+        return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
+                                                       "AtlasZonePosition")))
 
     def get_target_zone_position(self):
-        return Point(self._parser.get(SECTION_FLAGCREATION,
-                                      "TargetZonePosition"))
+        return Point._make(json.loads(self._parser.get(SECTION_FLAGCREATION,
+                                                       "TargetZonePosition")))
 
     def get_flag_creation_zone_position(self):
-        return Point(self._parser.get(SECTION_FLAGCREATION,
-                                      "FlagCreationZonePosition"))
+        return Point._make(json.loads(self._parser.get(
+                           SECTION_FLAGCREATION, "FlagCreationZonePosition")))
 
     def get_cube_center_distance(self):
         return int(self._parser.get(SECTION_FLAGCREATION,

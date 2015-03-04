@@ -2,4 +2,5 @@ from collections import namedtuple
 
 
 class Point(namedtuple('Point', 'x y')):
-    pass
+    __slots__ = ()
+    _make = classmethod(tuple.__new__)
