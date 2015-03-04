@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-import collections
 import json
 
 from Robot.utilities.singleton import Singleton
@@ -82,3 +81,7 @@ class Config(metaclass=Singleton):
     def get_atlas_zone_position(self):
         return collections.__main__.Point(self._parser.get(SECTION_PATHFINDING,
                                                            "AtlasZonePosition"))
+
+    def get_target_zone_position(self):
+        return collections.__main__.Point(self._parser.get(SECTION_PATHFINDING,
+                                                           "TargetZonePosition"))

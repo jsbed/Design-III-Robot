@@ -1,4 +1,10 @@
+from Robot.configuration.config import Config
 from Robot.game_cycle.objects.color import Color
+
+X_INDEX = 0
+Y_INDEX = 1
+
+CUBE_INDEX_ORDER = [6, 7, 8, 3, 4, 5, 0, 1, 2]
 
 
 class FlagCreator:
@@ -8,14 +14,17 @@ class FlagCreator:
         self._cube_order = []
         self._creation_zone_height = 0
         self._creation_zone_width = 0
+        self._target_zone_position = Config().get_target_zone_position()
+        self._cube_radius = Config().get_cube_radius()
         self._country = country
 
-        for color in self._country.flag:
+        for cube_index in CUBE_INDEX_ORDER:
+            country.flag
             if color != Color.NONE:
                 self._cube_order.append(color)
 
     def get_has_next_cubes(self):
-        return self._has_next_cubes
+        return len(self._cube_order) > 0
 
     def get_cube_order(self):
         return self._cube_order
