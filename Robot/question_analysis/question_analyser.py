@@ -1,6 +1,7 @@
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
+from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs
 
 
 class QuestionAnalyser(object):
@@ -12,7 +13,7 @@ class QuestionAnalyser(object):
                           OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
                           IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
-                          ElectricityProductionBetween(), TotalAreaIs()]
+                          ElectricityProductionBetween(), TotalAreaIs(), NationalAnthemIs()]
         self._factbook = Factbook()
 
     def answer_question(self, question):
