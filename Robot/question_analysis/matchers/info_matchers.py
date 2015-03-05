@@ -51,6 +51,11 @@ class UrbanAreasMatcher(InfoListMatcher):
         info_key = 'major urban areas'
         super(UrbanAreasMatcher, self).__init__(info_key, urban_areas)
 
+class LanguagesMatcher(InfoListMatcher):
+
+    def __init__(self, languages):
+        info_key = 'languages'
+        super(LanguagesMatcher, self).__init__(info_key, languages)
 
 class UnemploymentRateMatcher(InfoMatcher):
 
@@ -80,7 +85,7 @@ class InternetUsersMatcher(InfoWithNumberMatcher):
 
     def __init__(self, internet_users_amount):
         info_key = 'internet users'
-        regex = re.compile('([\d,.]+\smillion?)')
+        regex = re.compile('([\d,.]+(?:\smillion)?)')
         op = '='
         super(InternetUsersMatcher, self).__init__(info_key, regex, internet_users_amount, op)
 

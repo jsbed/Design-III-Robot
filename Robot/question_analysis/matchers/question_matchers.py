@@ -1,7 +1,7 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher
+    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -79,9 +79,17 @@ class UrbanAreasAre(QuestionWithListMatcher):
 class ReligionsAre(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'religions.*(?:including) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'religions.*?(?:including) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = ReligionsMatcher
         super(ReligionsAre, self).__init__(pattern, info_matcher)
+
+
+class LanguagesInclude(QuestionWithListMatcher):
+
+    def __init__(self):
+        pattern = r'languages.*?(?:include) ((?:[\w\s,]+) and (?:[\w]+))'
+        info_matcher = LanguagesMatcher
+        super(LanguagesInclude, self).__init__(pattern, info_matcher)
 
 
 class TotalAreaIs(QuestionMatcher):
@@ -103,6 +111,6 @@ class NationalAnthemIs(QuestionMatcher):
 class InternetUsers(QuestionMatcher):
 
     def __init__(self):
-        pattern = r'([\w\d,.]+\smillion?) internet users'
+        pattern = r'([\w\d,.]+(?:\smillion)?) internet users'
         info_matcher = InternetUsersMatcher
         super(InternetUsers, self).__init__(pattern, info_matcher)

@@ -3,7 +3,8 @@ from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
 from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_matchers import DeathRateGreaterThan, \
     DeathRateLessThan
-from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers
+from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers, \
+    LanguagesInclude
 
 
 class QuestionAnalyser(object):
@@ -16,7 +17,7 @@ class QuestionAnalyser(object):
                           IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
                           ElectricityProductionBetween(), TotalAreaIs(), NationalAnthemIs(), DeathRateGreaterThan(),
-                          DeathRateLessThan(), IndustriesInclude(), InternetUsers()]
+                          DeathRateLessThan(), IndustriesInclude(), InternetUsers(), LanguagesInclude()]
         self._factbook = Factbook()
 
     def answer_question(self, question):

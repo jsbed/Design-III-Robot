@@ -119,3 +119,7 @@ class TestQuestionAnalyser(object):
     def test_internet_users(self):
         question = 'What country has 13.694 million internet users?'
         assert_equal(self._question_analyser.answer_question(question), 'Argentina')
+
+    def test_languages(self):
+        question = 'My languages include german, french and romansch.'
+        assert_equal(self._question_analyser.answer_question(question), 'Switzerland')
