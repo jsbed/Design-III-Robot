@@ -8,7 +8,7 @@ from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
 class RedCubeSegmentor(CubeSegmentor):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
 
         self._lower_hsv_values = Config().get_low_red_hsv_values()
         self._upper_hsv_values = Config().get_high_red_hsv_values()
