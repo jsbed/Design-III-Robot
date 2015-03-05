@@ -1,7 +1,7 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher
+    NationalAnthemMatcher, IndustriesMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -58,6 +58,14 @@ class UnemploymentRateIs(QuestionMatcher):
         pattern = r'unemployment rate is ([\d.]+)%'
         info_matcher = UnemploymentRateMatcher
         super(UnemploymentRateIs, self).__init__(pattern, info_matcher)
+
+
+class IndustriesInclude(QuestionWithListMatcher):
+
+    def __init__(self):
+        pattern = r'industries (?:include|including) ((?:[\w\s,]+) and (?:[\w]+))'
+        info_matcher = IndustriesMatcher
+        super(IndustriesInclude, self).__init__(pattern, info_matcher)
 
 
 class UrbanAreasAre(QuestionWithListMatcher):
