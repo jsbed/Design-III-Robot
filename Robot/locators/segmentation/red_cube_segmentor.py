@@ -8,6 +8,8 @@ from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
 class RedCubeSegmentor(CubeSegmentor):
 
     def __init__(self):
+        super().__init__()
+
         self._lower_hsv_values = Config().get_low_red_hsv_values()
         self._upper_hsv_values = Config().get_high_red_hsv_values()
 
@@ -17,8 +19,10 @@ class RedCubeSegmentor(CubeSegmentor):
 
         # define range of blue color in HSV
         lower = numpy.array(self._lower_hsv_values)
-        lower_limit = numpy.array([180, self._upper_hsv_values[1], self._upper_hsv_values[2]])
-        upper = numpy.array([0, self._lower_hsv_values[1], self._lower_hsv_values[2]])
+        lower_limit = numpy.array([180, self._upper_hsv_values[1],
+                                   self._upper_hsv_values[2]])
+        upper = numpy.array([0, self._lower_hsv_values[1],
+                             self._lower_hsv_values[2]])
         upper_limit = numpy.array(self._upper_hsv_values)
 
         # Threshold the HSV image to get only red colors
