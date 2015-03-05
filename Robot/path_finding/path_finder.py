@@ -1,8 +1,9 @@
 from queue import PriorityQueue
-from collections.__main__ import Point
+from Robot.path_finding.point import Point
 
 
 class PathFinder():
+
     def __init__(self):
         self._frontier = PriorityQueue()
         self._came_from = {}
@@ -22,23 +23,23 @@ class PathFinder():
         next_node = current
         if (x2 - x1 > 0):
             if (y2 - y1 > 0):
-                next_node = Point(x1+1, y1+1)
+                next_node = Point(x1 + 1, y1 + 1)
             elif (y2 - y1 < 0):
-                next_node = Point(x1+1, y1-1)
+                next_node = Point(x1 + 1, y1 - 1)
             else:
-                next_node = Point(x1+1, y1)
+                next_node = Point(x1 + 1, y1)
         elif (x2 - x1 < 0):
             if (y2 - y1 > 0):
-                next_node = Point(x1-1, y1+1)
+                next_node = Point(x1 - 1, y1 + 1)
             elif (y2 - y1 < 0):
-                next_node = Point(x1-1, y1-1)
+                next_node = Point(x1 - 1, y1 - 1)
             else:
-                next_node = Point(x1-1, y1)
+                next_node = Point(x1 - 1, y1)
         else:
             if (y2 - y1 > 0):
-                next_node = Point(x1, y1+1)
+                next_node = Point(x1, y1 + 1)
             elif (y2 - y1 < 0):
-                next_node = Point(x1, y1-1)
+                next_node = Point(x1, y1 - 1)
             else:
                 next_node = Point(x1, y1)
         return next_node

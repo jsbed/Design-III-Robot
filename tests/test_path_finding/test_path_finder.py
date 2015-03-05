@@ -1,18 +1,17 @@
-from collections.__main__ import Point
 import unittest
 
 from Robot.controller.robot import Robot
 from Robot.game_cycle.objects.color import Color
 from Robot.game_cycle.objects.cube import Cube
-from Robot.locators.localization import Localization
 from Robot.path_finding.path_finder import PathFinder
+from Robot.path_finding.point import Point
 
 
 class TestPathFinder(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._cube = Cube(Color.RED, 0, False, Localization(Point(0, 0), 0))
+        cls._cube = Cube(Color.RED, 0)
         cls._robot = Robot()
         cls._path_finder = PathFinder()
 
