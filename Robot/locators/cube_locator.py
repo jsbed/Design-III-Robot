@@ -5,21 +5,21 @@ from Robot.configuration.config import Config
 from Robot.game_cycle.objects.color import Color
 from Robot.game_cycle.objects.cube import Cube
 from Robot.locators.contour import contours_finder
-from Robot.locators.segmentation import cube_segmentor_factory
+from Robot.locators.extractors import cube_extractor_factory
 from Robot.resources import Camera
 
 
 def localize(cube):
     original_image = Camera.get_data()
-    segmentor = cube_segmentor_factory.create_cube_segmentor(cube.get_color())
-    extracted_cube = segmentor.extract_cube(original_image)
+    extractor = cube_extractor_factory.create_cube_extractor(cube.get_color())
+    extracted_cube = extractor.extract_cube(original_image)
 
     contours = contours_finder.find_contours(extracted_cube)
     #point_a, point_b = _extract_orientation_line_from_contours(contours)
     point_a, point_b = None, None
 
     # TODO : EXTRACT CUBE LOCALIZATION
-    showImg(original_image, contours, point_a, point_b)
+    showImg(extracted_cube, contours, point_a, point_b)
 
 
 def _extract_orientation_line_from_contours(contours):
@@ -93,4 +93,4 @@ def showImg(img, contours, point_a, point_b):
     cv2.destroyAllWindows()
 
 Config("../config.ini").load_config()
-localize(Cube(Color.BLACK, None, None, None))
+localize(Cube(Color.WHITE, None))
