@@ -1,7 +1,7 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher, IndustriesMatcher
+    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -98,3 +98,11 @@ class NationalAnthemIs(QuestionMatcher):
         pattern = r"national anthem is ([\w\s]+)"
         info_matcher = NationalAnthemMatcher
         super(NationalAnthemIs, self).__init__(pattern, info_matcher)
+
+
+class InternetUsers(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'([\w\d,.]+\smillion?) internet users'
+        info_matcher = InternetUsersMatcher
+        super(InternetUsers, self).__init__(pattern, info_matcher)

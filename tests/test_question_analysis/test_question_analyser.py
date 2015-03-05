@@ -113,4 +113,9 @@ class TestQuestionAnalyser(object):
 
     def test_industries_include(self):
         question = 'My unemployment rate is greater than 25% and my industries include tourism and footwear.'
-        assert_equal(self._question_analyser.answer_question(question), 'Malta')
+        assert_true(self._question_analyser.answer_question(question) in ['Indonesia', 'Italy', 'Portugal', 'Spain',
+                                                                          'Malta', 'Tunisia', 'Saint Kitts and Nevis'])
+
+    def test_internet_users(self):
+        question = 'What country has 13.694 million internet users?'
+        assert_equal(self._question_analyser.answer_question(question), 'Argentina')

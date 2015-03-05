@@ -1,4 +1,5 @@
 import re
+import operator
 
 
 class InfoMatcher(object):
@@ -59,23 +60,38 @@ class UnemploymentRateMatcher(InfoMatcher):
         super(UnemploymentRateMatcher, self).__init__(info_key, regex)
 
 
-class TotalAreaMatcher(InfoMatcher):
+class InfoWithNumberMatcher(InfoMatcher):
 
-    def __init__(self, total_area):
-        info_key = 'total area'
-        regex = re.compile('([\d,]+) sq km')
-        self._total_area = total_area.replace(',', '')
-        super(TotalAreaMatcher, self).__init__(info_key, regex)
+    def __init__(self, info_key, regex, expected_info, op):
+        self._expected_info = expected_info.replace(',', '')
+        self._ops = {'=': operator.eq, '>':operator.gt, '<': operator.lt}
+        self._op = self._ops[op]
+        super(InfoWithNumberMatcher, self).__init__(info_key, regex)
 
     def match(self, info_data):
         match = self._regex.search(info_data)
         if match:
-            population = match.group(1)
-            population = population.replace(',', '')
-            print(population, self._total_area)
-            return population == self._total_area
-        else:
-            return None
+            actual_info = match.group(1).replace(',', '')
+            return self._op(actual_info, self._expected_info)
+        return None
+
+
+class InternetUsersMatcher(InfoWithNumberMatcher):
+
+    def __init__(self, internet_users_amount):
+        info_key = 'internet users'
+        regex = re.compile('([\d,.]+\smillion?)')
+        op = '='
+        super(InternetUsersMatcher, self).__init__(info_key, regex, internet_users_amount, op)
+
+
+class TotalAreaMatcher(InfoWithNumberMatcher):
+
+    def __init__(self, total_area):
+        info_key = 'total area'
+        regex = re.compile('([\d,]+) sq km')
+        op = '='
+        super(TotalAreaMatcher, self).__init__(info_key, regex, total_area, op)
 
 
 class NationalAnthemMatcher(InfoMatcher):
