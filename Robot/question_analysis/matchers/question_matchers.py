@@ -1,7 +1,8 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher, ImportPartnersMatcher
+    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher, ImportPartnersMatcher, \
+    PublicDebtMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -124,3 +125,11 @@ class InternetUsers(QuestionMatcher):
         pattern = r'([\w\d,.]+(?:\smillion)?) internet users'
         info_matcher = InternetUsersMatcher
         super(InternetUsers, self).__init__(pattern, info_matcher)
+
+
+class PublicDebt(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'public debt is ([\d.]+%)'
+        info_matcher = PublicDebtMatcher
+        super(PublicDebt, self).__init__(pattern, info_matcher)

@@ -135,3 +135,7 @@ class TestQuestionAnalyser(object):
     def test_in_declared_independence(self):
         question = 'In 1923, we proclaimed our independence.'
         assert_equal(self._question_analyser.answer_question(question), 'Turkey')
+
+    def test_public_debt(self):
+        question = 'My public debt is 7.9% of GDP.'
+        assert_true(self._question_analyser.answer_question(question) in ['Russia', 'Botswana'])

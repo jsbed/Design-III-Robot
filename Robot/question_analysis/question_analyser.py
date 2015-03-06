@@ -6,7 +6,7 @@ from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_ma
 from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import \
     InDeclaredIndependence
 from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers, \
-    LanguagesInclude, ImportPartners
+    LanguagesInclude, ImportPartners, PublicDebt
 
 
 class QuestionAnalyser(object):
@@ -20,7 +20,7 @@ class QuestionAnalyser(object):
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
                           ElectricityProductionBetween(), TotalAreaIs(), NationalAnthemIs(), DeathRateGreaterThan(),
                           DeathRateLessThan(), IndustriesInclude(), InternetUsers(), LanguagesInclude(),
-                          ImportPartners(), InDeclaredIndependence()]
+                          ImportPartners(), InDeclaredIndependence(), PublicDebt()]
         self._factbook = Factbook()
 
     def answer_question(self, question):

@@ -113,3 +113,11 @@ class NationalAnthemMatcher(InfoMatcher):
         info_key = 'national anthem'
         regex = re.compile(national_anthem, re.IGNORECASE)
         super(NationalAnthemMatcher, self).__init__(info_key, regex)
+
+
+class PublicDebtMatcher(InfoMatcher):
+
+    def __init__(self, public_debt):
+        info_key = 'public debt'
+        regex = re.compile(public_debt, re.IGNORECASE)
+        super(PublicDebtMatcher, self).__init__(info_key, regex)
