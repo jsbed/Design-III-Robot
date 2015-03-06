@@ -20,6 +20,7 @@ class Main(QtGui.QMainWindow, Observer):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowState(Qt.WindowState.WindowFullScreen)
+        self.setFixedSize(self.size())
 
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
