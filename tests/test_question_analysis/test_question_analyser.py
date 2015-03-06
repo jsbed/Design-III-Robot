@@ -127,3 +127,11 @@ class TestQuestionAnalyser(object):
     def test_languages(self):
         question = 'My languages include german, french and romansch.'
         assert_equal(self._question_analyser.answer_question(question), 'Switzerland')
+
+    def test_import_partners(self):
+        question = 'My import partners include Netherlands, France, China, Belgium, Switzerland and Austria.'
+        assert_equal(self._question_analyser.answer_question(question), 'Germany')
+
+    def test_in_declared_independence(self):
+        question = 'In 1923, we proclaimed our independence.'
+        assert_equal(self._question_analyser.answer_question(question), 'Turkey')

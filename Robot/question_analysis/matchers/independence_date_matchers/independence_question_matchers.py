@@ -26,3 +26,11 @@ class IndependenceDeclaredIn(QuestionMatcher):
         pattern = r'independence was declared in ((?:\w*\s\d*){1,3})'
         info_matcher = IndependenceDateMatcher
         super(IndependenceDeclaredIn, self).__init__(pattern, info_matcher)
+
+
+class InDeclaredIndependence(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'In ([\w\s]+),? we proclaimed our independence'
+        info_matcher = IndependenceDateMatcher
+        super(InDeclaredIndependence, self).__init__(pattern, info_matcher)

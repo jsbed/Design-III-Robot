@@ -57,6 +57,14 @@ class LanguagesMatcher(InfoListMatcher):
         info_key = 'languages'
         super(LanguagesMatcher, self).__init__(info_key, languages)
 
+
+class ImportPartnersMatcher(InfoListMatcher):
+
+    def __init__(self, import_partners):
+        info_key = 'import partners'
+        super(ImportPartnersMatcher, self).__init__(info_key, import_partners)
+
+
 class UnemploymentRateMatcher(InfoMatcher):
 
     def __init__(self, rate):

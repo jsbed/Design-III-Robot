@@ -46,9 +46,12 @@ What country has .dz as its internet country code?
 'My languages include german, french and romansch.'
 
 'What country has industries including the world’s largest producer of platinum, gold and chromium?'
+
 'My import partners include Netherlands, France, China, Belgium, Switzerland and Austria.'
+
+'In 1923, we proclaimed our independence.'
+
 'My public debt is 7.9% of GDP. '
-'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
 'The music of my national anthem was composed by Routhier, Weir and Lavallee.'
 'What country has major urban areas of 5.068 million and 1.098 million?'
 'What country considers illicit drug trafficking as a serious offense and carry death penalty?'
@@ -57,7 +60,7 @@ What country has .dz as its internet country code?
 'What country has a tropical climate and has a capital that starts with the letters Phn?'
 'My export partners are US, Germany, UK, France, Spain, Canada and Italy.'
 'My birth rate is approximately 16 births/1000 and my local short country name contains 2 words.'
-'In 1923, we proclaimed our independence.'
+'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
 
 questions = ['My unemployment rate is 40.6%.', 'What country has a population greater than 1 300 692 576?', 'My death rate is greater than 13 death/1000 and my capital starts with Mos.',
              'The death rate of this country is greater than 10.37 deaths/1000 population and less than 10.40 deaths/1000 population. ',

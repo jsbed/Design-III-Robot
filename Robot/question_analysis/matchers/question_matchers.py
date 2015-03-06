@@ -1,7 +1,7 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher
+    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher, ImportPartnersMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -32,7 +32,9 @@ class QuestionWithListMatcher(QuestionMatcher):
         match = self._regex.search(question)
         if match:
             info_list = match.group(1)
-            info_list = re.split(', |\sand\s|and\s', info_list)
+            print(info_list)
+            info_list = re.split(', and\s|, |\sand\s', info_list)
+            print(info_list)
             info_matcher = self._info_matcher(info_list)
         return info_matcher
 
@@ -90,6 +92,14 @@ class LanguagesInclude(QuestionWithListMatcher):
         pattern = r'languages.*? (?:include) .*?\s?((?:[\w]+,\s)*[\w]+ and [\w]+)'
         info_matcher = LanguagesMatcher
         super(LanguagesInclude, self).__init__(pattern, info_matcher)
+
+
+class ImportPartners(QuestionWithListMatcher):
+
+    def __init__(self):
+        pattern = r'import partners.*? (?:include) .*?\s?((?:[\w]+,\s)*[\w]+\sand\s[\w]+)'
+        info_matcher = ImportPartnersMatcher
+        super(ImportPartners, self).__init__(pattern, info_matcher)
 
 
 class TotalAreaIs(QuestionMatcher):
