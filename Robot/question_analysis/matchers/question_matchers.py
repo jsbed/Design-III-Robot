@@ -71,7 +71,7 @@ class IndustriesInclude(QuestionWithListMatcher):
 class UrbanAreasAre(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'major urban areas.*? (?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = UrbanAreasMatcher
         super(UrbanAreasAre, self).__init__(pattern, info_matcher)
 
@@ -79,7 +79,7 @@ class UrbanAreasAre(QuestionWithListMatcher):
 class ReligionsAre(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'religions.*?(?:including) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'religions.*? (?:including) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = ReligionsMatcher
         super(ReligionsAre, self).__init__(pattern, info_matcher)
 
@@ -87,7 +87,7 @@ class ReligionsAre(QuestionWithListMatcher):
 class LanguagesInclude(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'languages.*?(?:include) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'languages.*? (?:include) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = LanguagesMatcher
         super(LanguagesInclude, self).__init__(pattern, info_matcher)
 
