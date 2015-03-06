@@ -1,19 +1,20 @@
 import json
 
 from PySide import QtGui
+from PySide.QtCore import Qt
+from PySide.QtGui import QBrush
 
 from BaseStation.communication.tcp_server import TcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
 from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
 from BaseStation.ui.utilities.Outputer import Outputer
 from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
-from Robot.utilities.observer import Observer
-from PySide.QtGui import QBrush
 from BaseStation.ui.widgets.path_displayer import PathDisplayer
-from PySide.QtCore import Qt
+from Robot.utilities.observer import Observer
 
 
 class Main(QtGui.QMainWindow, Observer):
+
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()

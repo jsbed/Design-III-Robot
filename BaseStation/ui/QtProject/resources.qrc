@@ -8,5 +8,8 @@
         <file>resources/yellow_flag.png</file>
         <file>resources/transparency.png</file>
         <file>resources/flag_structure.png</file>
+        <file>resources/table.png</file>
+        <file>resources/robot.png</file>
+        <file>resources/cube.png</file>
     </qresource>
 </RCC>
