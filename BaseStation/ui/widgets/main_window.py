@@ -1,7 +1,6 @@
 import json
 
 from PySide import QtGui
-from PySide.QtCore import Qt
 
 from BaseStation.communication.tcp_server import TcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -9,6 +8,9 @@ from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
 from BaseStation.ui.utilities.Outputer import Outputer
 from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
 from Robot.utilities.observer import Observer
+from PySide.QtGui import QBrush
+from BaseStation.ui.widgets.path_displayer import PathDisplayer
+from PySide.QtCore import Qt
 
 
 class Main(QtGui.QMainWindow, Observer):
@@ -21,6 +23,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
         self._flag_displayer = FlagDisplayer(self.ui)
+        self._path_displayer = PathDisplayer(self.ui)
         self._tcp_server = TcpServer()
         self._setup_ui()
         self._setup_tcp_server()
@@ -47,8 +50,13 @@ class Main(QtGui.QMainWindow, Observer):
 
         if ("message" in signal_data):
             self._outputer.output(signal_data["message"])
-        else:
+        if ("path" in signal_data):
+            self._path_displayer.display_path(signal_data["path"])
+        if ("cubePosition" in signal_data):
+            self._path_displayer.display_cube(signal_data["cubePosition"])
+        if ("question" in signal_data):
             self.ui.questionLabel.setText(signal_data["question"])
+        if ("country" in signal_data):
             self.ui.countryLabel.setText(signal_data["country"])
             self._flag_displayer.display_country(signal_data["country"])
 
@@ -66,3 +74,22 @@ class Main(QtGui.QMainWindow, Observer):
 
     def _update_chronometer_label(self):
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
+
+    def paintEvent(self, event):
+        painter = QtGui.QPainter()
+        pen = self._path_displayer.set_pen()
+        brush = QBrush()
+
+        painter.begin(self)
+        painter.setPen(pen)
+        painter.setBrush(brush)
+
+        path = self._path_displayer.draw_path()
+        robot_position, robot_image = self._path_displayer.draw_robot()
+        cube_position, cube_image = self._path_displayer.draw_cube()
+
+        painter.drawImage(robot_position, robot_image)
+        painter.drawImage(cube_position, cube_image)
+        painter.drawPath(path)
+
+        painter.end()
