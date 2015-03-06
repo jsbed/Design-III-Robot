@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
 #
-# Created: Fri Mar  6 09:58:03 2015
+# Created: Fri Mar  6 10:10:36 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,7 +14,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1366, 792)
+        MainWindow.resize(1366, 768)
         self.centralWidget = QtGui.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.startCycle = QtGui.QPushButton(self.centralWidget)
