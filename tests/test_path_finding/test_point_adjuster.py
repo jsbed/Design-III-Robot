@@ -66,12 +66,12 @@ class TestPointAdjuster(unittest.TestCase):
         self._cube.set_localization_position(Point(33, 70))
         self._adjustor()
 
-    def test_when_cube_is_bottum_left_of_robot(self):
+    def test_when_cube_is_bottom_left_of_robot(self):
         self._point_test = Point(21, 30)
         self._cube.set_localization_position(Point(21, 15))
         self._adjustor()
 
-    def test_when_cube_is_bottum_right_of_robot(self):
+    def test_when_cube_is_bottom_right_of_robot(self):
         self._point_test = Point(55, 15)
         self._cube.set_localization_position(Point(70, 15))
         self._adjustor()
