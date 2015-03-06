@@ -14,7 +14,7 @@ class CubeSegmentor():
     def set_upper_hsv_values(self, value):
         self._upper_hsv_values = value
 
-    def extract_cube(self, img):
+    def segment_cube(self, img):
         # Convert BGR image to HSV
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 

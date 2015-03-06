@@ -75,7 +75,7 @@ class Config(metaclass=Singleton):
         return int(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
 
     def get_robot_radius(self):
-        return int(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
+        return float(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
 
     def get_cube_radius(self):
         return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))

@@ -40,7 +40,7 @@ while True:
         segmentor = RedCubeSegmentor()
 
     cv2.imshow("original", img_bgr)
-    cv2.imshow("Segmentation", segmentor.extract_cube(img_bgr))
+    cv2.imshow("Segmentation", segmentor.segment_cube(img_bgr))
 
 
 cv2.destroyAllWindows()
