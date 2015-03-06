@@ -1,2 +1,2 @@
 def get_data():
-    pass
+    return None
