@@ -110,3 +110,16 @@ class TestQuestionAnalyser(object):
         question = """The death rate of this country is greater than 10.37 deaths/1000 population
         and less than 10.40 deaths/1000 population."""
         assert_equal(self._question_analyser.answer_question(question), 'Austria')
+
+    def test_industries_include(self):
+        question = 'My unemployment rate is greater than 25% and my industries include tourism and footwear.'
+        assert_true(self._question_analyser.answer_question(question) in ['Indonesia', 'Italy', 'Portugal', 'Spain',
+                                                                          'Malta', 'Tunisia', 'Saint Kitts and Nevis'])
+
+    def test_internet_users(self):
+        question = 'What country has 13.694 million internet users?'
+        assert_equal(self._question_analyser.answer_question(question), 'Argentina')
+
+    def test_languages(self):
+        question = 'My languages include german, french and romansch.'
+        assert_equal(self._question_analyser.answer_question(question), 'Switzerland')

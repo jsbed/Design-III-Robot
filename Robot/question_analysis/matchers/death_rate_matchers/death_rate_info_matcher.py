@@ -16,7 +16,7 @@ class DeathRateGreaterThanMatcher(InfoMatcher):
         if match:
             death_rate = match.group(1)
             death_rate = float(death_rate)
-            return self._death_rate < death_rate
+            return death_rate > self._death_rate
 
         return False
 
@@ -34,6 +34,6 @@ class DeathRateLessThanMatcher(InfoMatcher):
         if match:
             death_rate = match.group(1)
             death_rate = float(death_rate)
-            return self._death_rate > death_rate
+            return death_rate < self._death_rate
 
         return False

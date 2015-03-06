@@ -1,7 +1,7 @@
 import re
 
 from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher
+    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
 
 
@@ -60,10 +60,18 @@ class UnemploymentRateIs(QuestionMatcher):
         super(UnemploymentRateIs, self).__init__(pattern, info_matcher)
 
 
+class IndustriesInclude(QuestionWithListMatcher):
+
+    def __init__(self):
+        pattern = r'industries (?:include|including) ((?:[\w\s,]+) and (?:[\w]+))'
+        info_matcher = IndustriesMatcher
+        super(IndustriesInclude, self).__init__(pattern, info_matcher)
+
+
 class UrbanAreasAre(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'major urban areas.*(?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'major urban areas.*? (?:are|is) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = UrbanAreasMatcher
         super(UrbanAreasAre, self).__init__(pattern, info_matcher)
 
@@ -71,9 +79,17 @@ class UrbanAreasAre(QuestionWithListMatcher):
 class ReligionsAre(QuestionWithListMatcher):
 
     def __init__(self):
-        pattern = r'religions.*(?:including) ((?:[\w\s,]+) and (?:[\w]+))'
+        pattern = r'religions.*? (?:including) ((?:[\w\s,]+) and (?:[\w]+))'
         info_matcher = ReligionsMatcher
         super(ReligionsAre, self).__init__(pattern, info_matcher)
+
+
+class LanguagesInclude(QuestionWithListMatcher):
+
+    def __init__(self):
+        pattern = r'languages.*? (?:include) ((?:[\w\s,]+) and (?:[\w]+))'
+        info_matcher = LanguagesMatcher
+        super(LanguagesInclude, self).__init__(pattern, info_matcher)
 
 
 class TotalAreaIs(QuestionMatcher):
@@ -90,3 +106,11 @@ class NationalAnthemIs(QuestionMatcher):
         pattern = r"national anthem is ([\w\s]+)"
         info_matcher = NationalAnthemMatcher
         super(NationalAnthemIs, self).__init__(pattern, info_matcher)
+
+
+class InternetUsers(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'([\w\d,.]+(?:\smillion)?) internet users'
+        info_matcher = InternetUsersMatcher
+        super(InternetUsers, self).__init__(pattern, info_matcher)
