@@ -43,7 +43,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._tcp_server.signal.customSignal.connect(self._handle_tcp_signal)
         self._tcp_server.start()
 
-    def update(self, event, value):
+    def observer_update(self, event, value):
         if (event == NEW_TIME_UPDATE):
             self._update_chronometer_label()
 
@@ -95,3 +95,4 @@ class Main(QtGui.QMainWindow, Observer):
         painter.drawPath(path)
 
         painter.end()
+        self.update()

@@ -27,4 +27,4 @@ class Observable:
     def notify(self, event, value):
         if event in self._observers:
             for observer in self._observers[event]:
-                observer.update(event, value)
+                observer.observer_update(event, value)
