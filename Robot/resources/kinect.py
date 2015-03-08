@@ -2,8 +2,10 @@ from threading import Thread
 import cv2
 import time
 
+from Robot.utilities.singleton import Singleton
 
-class Kinect():
+
+class Kinect(metaclass=Singleton):
 
     def __init__(self):
         self._capturing = False
