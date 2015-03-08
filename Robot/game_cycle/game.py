@@ -1,11 +1,12 @@
+from time import sleep
+
+from Robot.communication.tcp_client import TCPClient
+from Robot.configuration.config import Config
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.flag_creator import FlagCreator
 from Robot.game_cycle.game_state import GameState
 from Robot.question_analysis.question_analyser import QuestionAnalyser
-from time import sleep
-from Robot.communication.tcp_client import TCPClient
-from Robot.configuration.config import Config
 
 
 class Game:
