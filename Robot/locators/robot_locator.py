@@ -4,7 +4,7 @@ from Robot.resources import kinect
 
 
 def localize():
-    img = kinect.get_data()
-    close_corner, far_corner = corner_locator.locate(img)
+    img_bgr, img_cloud_map = kinect.get_data()
+    close_corner, far_corner = corner_locator.locate(img_bgr, img_cloud_map)
 
     return robot_location_computer.compute(close_corner, far_corner)
