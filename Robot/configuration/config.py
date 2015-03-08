@@ -94,16 +94,16 @@ class Config(metaclass=Singleton):
                                            "HighPinknHSV"))
 
     def get_table_width(self):
-        return int(self._parser.get(SECTION_PATHFINDING, "TableWidth"))
+        return float(self._parser.get(SECTION_PATHFINDING, "TableWidth"))
 
     def get_table_height(self):
-        return int(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
+        return float(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
 
     def get_robot_radius(self):
         return float(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
 
     def get_cube_radius(self):
-        return int(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
+        return float(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
@@ -118,5 +118,5 @@ class Config(metaclass=Singleton):
                            SECTION_FLAGCREATION, "FlagCreationZonePosition")))
 
     def get_cube_center_distance(self):
-        return int(self._parser.get(SECTION_FLAGCREATION,
-                                    "CubeCenterDistance"))
+        return float(self._parser.get(SECTION_FLAGCREATION,
+                                      "CubeCenterDistance"))
