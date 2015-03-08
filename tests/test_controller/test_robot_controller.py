@@ -11,9 +11,10 @@ from Robot.path_finding.point import Point
 @patch('Robot.managers.led_manager.LedManager')
 class RobotControllerTest(unittest.TestCase):
 
-    def setUp(self):
-        self._cube = Cube(Color.RED, Point(50, 10))
-        self._cube.set_localization_position(Point(80, 200))
+    @classmethod
+    def setUpClass(cls):
+        cls._cube = Cube(Color.RED, Point(50, 10))
+        cls._cube.set_localization_position(Point(80, 200))
 
     @staticmethod
     def _setup_config_mock(mock):
