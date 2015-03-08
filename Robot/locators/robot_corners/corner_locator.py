@@ -1,4 +1,3 @@
-import cv2
 import numpy
 
 from Robot.configuration.config import Config
@@ -11,15 +10,15 @@ from Robot.path_finding.point import Point
 
 
 def locate(img_bgr, img_cloud):
-    blue_corner = Point(500, 500)
-    green_corner = Point(500, 500)
-    pink_corner = Point(500, 500)
+    corners = []
 
     try:  # Try extracting a blue corner
         blue_corner = _extract_robot_corner_position(
             img_bgr, img_cloud,
             Config().get_robot_low_blue_hsv_values(),
             Config().get_robot_high_blue_hsv_values())
+
+        corners.append(RobotCorner(blue_corner, Color.BLUE))
     except:
         pass
 
@@ -28,6 +27,8 @@ def locate(img_bgr, img_cloud):
             img_bgr, img_cloud,
             Config().get_robot_low_green_hsv_values(),
             Config().get_robot_high_green_hsv_values())
+
+        corners.append(RobotCorner(green_corner, Color.GREEN))
     except:
         pass
 
@@ -36,15 +37,17 @@ def locate(img_bgr, img_cloud):
             img_bgr, img_cloud,
             Config().get_robot_low_pink_hsv_values(),
             Config().get_robot_high_pink_hsv_values())
+
+        corners.append(RobotCorner(pink_corner, Color.PINK))
     except:
         pass
 
-    corners = sorted([RobotCorner(blue_corner, Color.BLUE),
-                      RobotCorner(green_corner, Color.GREEN),
-                      RobotCorner(pink_corner, Color.PINK)],
-                     key=lambda x: x[0][1])
+    corners.sort(key=lambda corner: corner[0][1])
 
-    return corners[0], corners[1]
+    if len(corners) < 2:
+        raise Exception("Not enough robot corners found.")
+    else:
+        return corners[0], corners[1]
 
 
 def _extract_robot_corner_position(img_bgr, img_cloud, low_hsv_value, high_hsv_values):
