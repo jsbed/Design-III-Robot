@@ -92,7 +92,7 @@ class Config(metaclass=Singleton):
 
     def get_robot_high_pink_hsv_values(self):
         return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
-                                           "HighPinknHSV"))
+                                           "HighPinkHSV"))
 
     def get_perspective_translation_matrix(self):
         return json.loads(self._parser.get(SECTION_PERSPECTIVE,
@@ -100,6 +100,9 @@ class Config(metaclass=Singleton):
 
     def get_perspective_rotation_y(self):
         return float(self._parser.get(SECTION_PERSPECTIVE, "RotationYAxis"))
+
+    def get_robot_corner_size(self):
+        return float(self._parser.get(SECTION_PERSPECTIVE, "RobotCornerSize"))
 
     def get_table_width(self):
         return float(self._parser.get(SECTION_PATHFINDING, "TableWidth"))

@@ -26,7 +26,7 @@ class RobotCornerSegmentor():
         mask = cv2.inRange(img_hsv, lower, upper)
 
         # Apply erosion + opening
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
         mask = cv2.dilate(cv2.erode(mask, kernel), kernel)
 
         # Bitwise-AND mask and original image

@@ -13,7 +13,7 @@ def get_rotation_matrix(angle):
 
 
 def transform(point):
-    perspective_matrix = numpy.load(os.path.join("resources",
+    perspective_matrix = numpy.load(os.path.join("../resources",
                                                  "perspective_array.npy"))
 
     invert_x_matrix = numpy.array([[-1, 0, 0],
@@ -29,7 +29,7 @@ def transform(point):
     #  Apply transformation
     after_invert = numpy.dot(invert_x_matrix, point)
     after_rotation = numpy.dot(rotation_matrix, after_invert)
-    after_translation = after_rotation + translation_matrix
+    after_translation = numpy.squeeze(after_rotation + translation_matrix)
 
     after_transform = cv2.perspectiveTransform(
         numpy.float32([[[after_translation[0], after_translation[2]]]]),
