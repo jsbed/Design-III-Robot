@@ -10,8 +10,8 @@ class RedCubeSegmentor(CubeSegmentor):
     def __init__(self):
         super().__init__()
 
-        self._lower_hsv_values = Config().get_low_red_hsv_values()
-        self._upper_hsv_values = Config().get_high_red_hsv_values()
+        self._lower_hsv_values = Config().get_cube_low_red_hsv_values()
+        self._upper_hsv_values = Config().get_cube_high_red_hsv_values()
 
     def segment_cube(self, img):
         # Convert BGR image to HSV

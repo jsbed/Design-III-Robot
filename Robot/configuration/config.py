@@ -8,7 +8,8 @@ from Robot.utilities.singleton import Singleton
 CONFIG_FILE_NAME = "config.ini"
 
 SECTION_DEFAULT = "DEFAULT"
-SECTION_SEGMENTATION = "SEGMENTATION"
+SECTION_CUBE_SEGMENTATION = "CUBESEGMENTATION"
+SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
 
@@ -36,37 +37,61 @@ class Config(metaclass=Singleton):
     def get_base_station_communication_ip(self):
         return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
 
-    def get_low_blue_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_low_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "LowBlueHSV"))
 
-    def get_high_blue_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_high_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "HighBlueHSV"))
 
-    def get_low_green_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_low_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "LowGreenHSV"))
 
-    def get_high_green_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_high_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "HighGreenHSV"))
 
-    def get_low_yellow_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_low_yellow_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "LowYellowHSV"))
 
-    def get_high_yellow_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_high_yellow_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "HighYellowHSV"))
 
-    def get_low_red_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_low_red_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "LowRedHSV"))
 
-    def get_high_red_hsv_values(self):
-        return json.loads(self._parser.get(SECTION_SEGMENTATION,
+    def get_cube_high_red_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "HighRedHSV"))
+
+    def get_robot_low_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "LowBlueHSV"))
+
+    def get_robot_high_blue_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "HighBlueHSV"))
+
+    def get_robot_low_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "LowGreenHSV"))
+
+    def get_robot_high_green_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "HighGreenHSV"))
+
+    def get_robot_low_pink_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "LowPinkHSV"))
+
+    def get_robot_high_pink_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "HighPinknHSV"))
 
     def get_table_width(self):
         return int(self._parser.get(SECTION_PATHFINDING, "TableWidth"))
