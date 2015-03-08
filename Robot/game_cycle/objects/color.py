@@ -9,3 +9,4 @@ class Color(Enum):
     YELLOW = 4
     BLACK = 5
     WHITE = 6
+    PINK = 7

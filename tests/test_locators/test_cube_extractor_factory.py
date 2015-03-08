@@ -39,3 +39,6 @@ class TestCubeExtractor(unittest.TestCase):
 
     def test_create_exception_for_cube_without_color(self):
         self.assertRaises(Exception, create_cube_extractor, Color.NONE)
+
+    def test_create_exception_for_pink_cube(self):
+        self.assertRaises(Exception, create_cube_extractor, Color.PINK)
