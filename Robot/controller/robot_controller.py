@@ -1,12 +1,11 @@
-from time import sleep
+import time
 
 from Robot.configuration import config
-from Robot.configuration.config import Config
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.game_cycle import atlas
-from Robot.managers.led_manager import LedManager
+from Robot.managers import led_manager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
@@ -15,7 +14,8 @@ class RobotController():
     def __init__(self):
         self._robot = Robot(None)
         self._point_adjustor = PointAdjustor()
-        self._led_manager = LedManager(Config().get_led_serial_port())
+        self._led_manager = led_manager.LedManager(
+            config.Config().get_led_serial_port())
 
     def get_cube(self, cube):
         return self._move_to(cube.get_localization().position)
@@ -25,7 +25,7 @@ class RobotController():
 
     def get_question_from_atlas(self):
         self._led_manager.display_red_led()
-        sleep(2)
+        time.sleep(2)
         self._led_manager.close_red_led()
         return atlas.get_question()
 
@@ -54,7 +54,7 @@ class RobotController():
 
     def display_country_leds(self, country):
         self._led_manager.display_country(country)
-        sleep(5)
+        time.sleep(5)
 
     def ask_for_cube(self, cube):
         self._led_manager.next_flag_led(cube)
