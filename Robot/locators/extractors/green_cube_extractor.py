@@ -1,6 +1,6 @@
 from Robot.configuration.config import Config
 from Robot.locators.extractors.cube_extractor import CubeExtractor
-from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
+from Robot.locators.segmentation.cube.cube_segmentation import CubeSegmentor
 
 
 class GreenCubeExtractor(CubeExtractor):

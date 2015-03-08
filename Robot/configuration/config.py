@@ -12,6 +12,7 @@ SECTION_CUBE_SEGMENTATION = "CUBESEGMENTATION"
 SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
+SECTION_PERSPECTIVE = "PERSPECTIVE"
 
 
 class Config(metaclass=Singleton):
@@ -92,6 +93,13 @@ class Config(metaclass=Singleton):
     def get_robot_high_pink_hsv_values(self):
         return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
                                            "HighPinknHSV"))
+
+    def get_perspective_translation_matrix(self):
+        return json.loads(self._parser.get(SECTION_PERSPECTIVE,
+                                           "TranslationMatrix"))
+
+    def get_perspective_rotation_y(self):
+        return float(self._parser.get(SECTION_PERSPECTIVE, "RotationYAxis"))
 
     def get_table_width(self):
         return float(self._parser.get(SECTION_PATHFINDING, "TableWidth"))

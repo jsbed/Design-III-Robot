@@ -2,7 +2,7 @@ import cv2
 import numpy
 
 from Robot.configuration.config import Config
-from Robot.locators.segmentation.cube_segmentation import CubeSegmentor
+from Robot.locators.segmentation.cube.cube_segmentation import CubeSegmentor
 
 
 class RedCubeSegmentor(CubeSegmentor):

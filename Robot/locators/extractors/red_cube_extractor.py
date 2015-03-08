@@ -1,5 +1,5 @@
 from Robot.locators.extractors.cube_extractor import CubeExtractor
-from Robot.locators.segmentation.red_cube_segmentor import RedCubeSegmentor
+from Robot.locators.segmentation.cube.red_cube_segmentor import RedCubeSegmentor
 
 
 class RedCubeExtractor(CubeExtractor):
