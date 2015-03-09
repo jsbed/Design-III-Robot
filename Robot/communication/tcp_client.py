@@ -1,24 +1,38 @@
-import socket
-import sys
+import zmq
 
 
 class TCPClient():
 
-    def __init__(self):
-        self._host = 'localhost'
-        self._port = 3000
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self, host, port):
+        self._host = host
+        self._port = port
+        self._context = zmq.Context()
+        self._socket = self._context.socket(zmq.DEALER)
+
+    def set_host(self, value):
+        self._host = value
+
+    def set_port(self, value):
+        self._port = value
 
     def connect_socket(self):
-        self._socket.connect((self._host, self._port))
-        print('Socket Connected to ' + str(self._host))
+        try:
+            self._socket.connect("tcp://{}:{}".format(self._host, self._port))
+        except:
+            return False
+        else:
+            return True
 
-    def diconnect_socket(self):
-        self._socket.close()
+    def disconnect_socket(self):
+        try:
+            self._socket.close()
+        except:
+            pass
+
+        self._socket = self._context.socket(zmq.DEALER)
 
     def send_data(self, data):
         try:
-            self._socket.sendall(data)
-        except socket.error:
+            self._socket.send(bytes(data, "utf-8"))
+        except:
             print('Send failed')
-            sys.exit()

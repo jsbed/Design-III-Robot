@@ -1,14 +1,16 @@
-from Robot.configuration.config import Config
-from Robot.communication.tcp_client import TCPClient
-from Robot.path_finding.point import Point
-from Robot.path_finding.path_finder import PathFinder
-import json
 from random import randint
+import json
+
+from Robot.communication.tcp_client import TCPClient
+from Robot.configuration.config import Config
+from Robot.path_finding.path_finder import PathFinder
+from Robot.path_finding.point import Point
 
 
 # Example for pathfinding
 Config("Robot/config.ini").load_config()
-client = TCPClient()
+client = TCPClient(Config().get_base_station_communication_ip(),
+                   Config().get_base_station_communication_port())
 client.connect_socket()
 
 robot_position = Point(randint(15, 95), randint(15, 50))
@@ -39,7 +41,6 @@ print("path :", path)
 print("cube position :", cube_list)
 
 dictio = {'path': pathlist, 'cubePosition': cube_list}
-data = bytes(json.dumps(dictio), "utf-8")
-client.send_data(data)
+client.send_data(json.dumps(dictio))
 
-client.diconnect_socket()
+client.disconnect_socket()

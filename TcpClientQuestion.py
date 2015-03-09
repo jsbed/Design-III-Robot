@@ -1,6 +1,7 @@
 import json
 import random
-import socket
+
+import zmq
 
 from Robot.configuration.config import Config
 from Robot.question_analysis.question_analyser import QuestionAnalyser
@@ -20,12 +21,13 @@ Config("Robot/config.ini").load_config()
 
 
 # Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = (Config().get_base_station_communication_ip(),
-                  Config().get_base_station_communication_port())
-
-print('connecting to %s port %s' % server_address)
-sock.connect(server_address)
+context = zmq.Context()
+socket = context.socket(zmq.DEALER)
+url = "tcp://{}:{}".format(
+    Config().get_base_station_communication_ip(),
+    Config().get_base_station_communication_port())
+socket.connect(url)
+print('connecting to ' + url)
 
 analyser = QuestionAnalyser()
 question = get_random_question().rstrip()
@@ -35,6 +37,5 @@ country = analyser.answer_question(question)
 print("Country: " + country)
 print("Sending to Base Station...")
 
-sock.sendall(bytes(json.dumps({'question' : question, 'country': country}), "utf-8"))
-
-sock.close()
+socket.send(
+    bytes(json.dumps({'question': question, 'country': country}), "utf-8"))

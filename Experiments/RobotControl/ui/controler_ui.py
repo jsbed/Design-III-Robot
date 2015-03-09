@@ -2,7 +2,7 @@ import sys
 
 from PySide import QtGui
 from Experiments.RobotControl.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
-from Experiments.RobotControl.ui.tcp_client import TCPClient
+from Robot.communication.tcp_client import TCPClient
 
 
 class Main(QtGui.QMainWindow):
@@ -34,25 +34,25 @@ class Main(QtGui.QMainWindow):
         self._tcp_client.set_port(int(self.ui.port_line_edit.text()))
 
     def _up_arrow(self):
-        self._tcp_client.send_data(bytes("up", "utf-8"))
+        self._tcp_client.send_data("up")
 
     def _down_arrow(self):
-        self._tcp_client.send_data(bytes("down", "utf-8"))
+        self._tcp_client.send_data("down")
 
     def _left_arrow(self):
-        self._tcp_client.send_data(bytes("left", "utf-8"))
+        self._tcp_client.send_data("left")
 
     def _right_arrow(self):
-        self._tcp_client.send_data(bytes("right", "utf-8"))
+        self._tcp_client.send_data("right")
 
     def _rotate_right_arrow(self):
-        self._tcp_client.send_data(bytes("rotate-right", "utf-8"))
+        self._tcp_client.send_data("rotate-right")
 
     def _rotate_left_arrow(self):
-        self._tcp_client.send_data(bytes("rotate-left", "utf-8"))
+        self._tcp_client.send_data("rotate-left")
 
     def _connect_button(self):
-        self._tcp_client.disconect_socket()
+        self._tcp_client.disconnect_socket()
 
         if (self._tcp_client.connect_socket()):
             self.ui.connection_status.setText("Connected")
