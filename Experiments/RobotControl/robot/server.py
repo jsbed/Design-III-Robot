@@ -26,6 +26,9 @@ def rotate_right():
 
 def rotate_left():
     print("rotate-left command")
+    
+def ask_question():
+    print("ask question")
 
 
 context = zmq.Context()
@@ -50,5 +53,7 @@ while True:
         rotate_right()
     elif message == "rotate-left":
         rotate_left()
+    elif message == "ask-question":
+        ask_question()
     else:
         print("Other message", message)

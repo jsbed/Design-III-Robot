@@ -24,6 +24,7 @@ class Main(QtGui.QMainWindow):
         self.ui.rotate_right_button.clicked.connect(self._rotate_right_arrow)
         self.ui.rotate_left_button.clicked.connect(self._rotate_left_arrow)
         self.ui.connect_button.clicked.connect(self._connect_button)
+        self.ui.question_request_button.clicked.connect(self._question_request)
         self.ui.ip_line_edit.textEdited.connect(self._ip_changed)
         self.ui.port_line_edit.textEdited.connect(self._port_changed)
 
@@ -50,6 +51,9 @@ class Main(QtGui.QMainWindow):
 
     def _rotate_left_arrow(self):
         self._tcp_client.send_data("rotate-left")
+
+    def _question_request(self):
+        self._tcp_client.send_data("ask-question")
 
     def _connect_button(self):
         self._tcp_client.disconnect_socket()

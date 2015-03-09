@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>567</height>
+    <width>383</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,7 +83,7 @@
       </font>
      </property>
      <property name="text">
-      <string>3000</string>
+      <string>5000</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -162,143 +162,194 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="down_button">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>440</y>
-      <width>60</width>
-      <height>60</height>
+      <x>30</x>
+      <y>240</y>
+      <width>321</width>
+      <height>321</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/arrow_down.png</normaloff>:/resources/arrow_down.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>32</width>
-      <height>32</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="up_button">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>323</y>
-      <width>60</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/arrow_up.png</normaloff>:/resources/arrow_up.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>32</width>
-      <height>32</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="right_button">
-    <property name="geometry">
-     <rect>
-      <x>218</x>
-      <y>383</y>
-      <width>60</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/arrow_right.png</normaloff>:/resources/arrow_right.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>32</width>
-      <height>32</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="left_button">
-    <property name="geometry">
-     <rect>
-      <x>101</x>
-      <y>383</y>
-      <width>60</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/arrow_left.png</normaloff>:/resources/arrow_left.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>32</width>
-      <height>32</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="rotate_left_button">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>250</y>
-      <width>60</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/rotate_left.png</normaloff>:/resources/rotate_left.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="rotate_right_button">
-    <property name="geometry">
-     <rect>
-      <x>62</x>
-      <y>250</y>
-      <width>60</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="resource.qrc">
-      <normaloff>:/resources/rorate_right.png</normaloff>:/resources/rorate_right.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Déplacement</string>
+     </attribute>
+     <widget class="QPushButton" name="rotate_right_button">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/rorate_right.png</normaloff>:/resources/rorate_right.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="up_button">
+      <property name="geometry">
+       <rect>
+        <x>128</x>
+        <y>93</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/arrow_up.png</normaloff>:/resources/arrow_up.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="right_button">
+      <property name="geometry">
+       <rect>
+        <x>186</x>
+        <y>153</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/arrow_right.png</normaloff>:/resources/arrow_right.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="down_button">
+      <property name="geometry">
+       <rect>
+        <x>128</x>
+        <y>210</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/arrow_down.png</normaloff>:/resources/arrow_down.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="left_button">
+      <property name="geometry">
+       <rect>
+        <x>69</x>
+        <y>153</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/arrow_left.png</normaloff>:/resources/arrow_left.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="rotate_left_button">
+      <property name="geometry">
+       <rect>
+        <x>228</x>
+        <y>20</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/resources/rotate_left.png</normaloff>:/resources/rotate_left.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Question</string>
+     </attribute>
+     <widget class="QPushButton" name="question_request_button">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>30</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Requête de question</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Préhenseur</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Caméra</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -306,7 +357,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>379</width>
+     <width>383</width>
      <height>21</height>
     </rect>
    </property>
