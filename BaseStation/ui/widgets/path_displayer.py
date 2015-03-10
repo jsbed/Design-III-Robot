@@ -18,33 +18,38 @@ class PathDisplayer():
 
     def display_path(self, path):
         self._table_area = QtCore.QRect(self._widget.table_label.geometry())
-        self._robot_position = QtCore.QPoint(path[0]
+        self._robot_position = QtCore.QPoint(self._table_area.left() + path[0]
                                              * self._table_area.width()
                                              / self._config.get_table_width(),
+                                             self._table_area.top() +
                                              self._table_area.height()
                                              - path[1]
                                              * self._table_area.height()
                                              / self._config.get_table_height())
         self._robot_image = QImage(":/resources/robot.png")
-        self._half_way = QtCore.QPoint(path[2]
+        self._half_way = QtCore.QPoint(self._table_area.left() + path[2]
                                        * self._table_area.width()
                                        / self._config.get_table_width(),
+                                       self._table_area.top() +
                                        self._table_area.height()
                                        - path[3]
                                        * self._table_area.height()
                                        / self._config.get_table_height())
-        self._destination = QtCore.QPoint(path[4]
+        self._destination = QtCore.QPoint(self._table_area.left() + path[4]
                                           * self._table_area.width()
                                           / self._config.get_table_width(),
+                                          self._table_area.top() +
                                           self._table_area.height()
                                           - path[5]
                                           * self._table_area.height()
                                           / self._config.get_table_height())
 
     def display_cube(self, cube_position):
-        self._cube_position = QtCore.QPoint(cube_position[0]
+        self._cube_position = QtCore.QPoint(self._table_area.left() +
+                                            cube_position[0]
                                             * self._table_area.width()
                                             / self._config.get_table_width(),
+                                            self._table_area.top() +
                                             self._table_area.height()
                                             - cube_position[1]
                                             * self._table_area.height()
