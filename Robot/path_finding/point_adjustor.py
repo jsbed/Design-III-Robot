@@ -1,5 +1,7 @@
 from Robot.configuration import config
 from Robot.path_finding.point import Point
+import math
+from math import degrees, atan2
 
 
 class PointAdjustor():
@@ -82,3 +84,30 @@ class PointAdjustor():
         self._robot_position = robot_position
         self.check_if_cube_too_close_to_wall()
         return self._target_point
+
+    def find_next_point(self, start, end):
+        angle = self.calculate_angle_between_points(start, end)
+        distance = self.calculate_distance_between_points(start, end)
+        current_distance = config.Config().get_check_points_distance()
+        if (distance <= current_distance +
+                config.Config().get_distance_uncertainty()):
+            return Point(end.x, end.y)
+        else:
+            x = current_distance * math.cos(angle)
+            y = current_distance * math.sin(angle)
+            return Point(x, y)
+
+    def find_robot_orientation(self, robot, point):
+        angle = self.calculate_angle_between_points(robot, point)
+        return (angle - robot)
+
+    @staticmethod
+    def calculate_angle_between_points(start, end):
+        xDiff = end.x - start.x
+        yDiff = end.y - start.y
+        return degrees(atan2(yDiff, xDiff))
+
+    @staticmethod
+    def calculate_distance_between_points(start, end):
+        return math.sqrt(math.pow(end.x - start.x, 2) +
+                         math.pow(end.y - start.y, 2))

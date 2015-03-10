@@ -116,6 +116,14 @@ class Config(metaclass=Singleton):
     def get_cube_radius(self):
         return float(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
+    def get_check_points_distance(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "CheckPointsDistance"))
+
+    def get_distance_uncertainty(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceUncertainty "))
+
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
                                                        "AtlasZonePosition")))
