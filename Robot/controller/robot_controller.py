@@ -2,8 +2,8 @@ from time import sleep
 
 from Robot.controller.robot import Robot
 from Robot.path_finding.point_adjustor import PointAdjustor
-from Robot.configuration.config import Config
 from Robot.controller.instructions.move import Move
+from Robot.configuration import config
 
 
 class RobotController():
@@ -11,7 +11,6 @@ class RobotController():
     def __init__(self):
         self._robot = Robot()
         self._adjustor = PointAdjustor()
-        self._config = Config()
 
     def get_cube(self, cube):
         self._robot.update_localization()
@@ -27,6 +26,7 @@ class RobotController():
 
         target_orientation = \
             self._adjustor.find_robot_orientation(robot_orientation,
+                                                  robot_position,
                                                   next_point)
         self._robot.append_instruction(Move().move(next_point,
                                                    target_orientation))
@@ -65,7 +65,7 @@ class RobotController():
         robot_position = self._robot.get_localization_position()
         robot_orientation = self._robot.get_localization_orientation()
         target_point = self._adjustor.find_next_point(robot_position,
-                                                      self._config.
+                                                      config.Config().
                                                       get_atlas_zone_position())
         if (self.verify_distance(robot_position, target_point)):
             return True
@@ -90,7 +90,7 @@ class RobotController():
         distance = \
             self._adjustor.calculate_distance_between_points(start,
                                                              end)
-        if (distance <= self._config.get_distance_uncertainty()):
+        if (distance <= config.Config().get_distance_uncertainty()):
             return True
         else:
             return False
