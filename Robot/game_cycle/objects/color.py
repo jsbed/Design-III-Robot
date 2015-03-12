@@ -7,6 +7,6 @@ class Color(Enum):
     GREEN = 2
     BLUE = 3
     YELLOW = 4
-    BLACK = 5
-    WHITE = 6
+    WHITE = 5
+    BLACK = 6
     PINK = 7

@@ -1,9 +1,12 @@
 from time import sleep
 
-from Robot.controller.robot import Robot
-from Robot.path_finding.point_adjustor import PointAdjustor
-from Robot.controller.instructions.move import Move
 from Robot.configuration import config
+from Robot.controller.instructions.move import Move
+from Robot.controller.robot import Robot
+from Robot.game_cycle import atlas
+from Robot.managers import led_manager
+from Robot.managers.led_manager import LedManager
+from Robot.path_finding.point_adjustor import PointAdjustor
 
 
 class RobotController():
@@ -11,6 +14,7 @@ class RobotController():
     def __init__(self):
         self._robot = Robot()
         self._adjustor = PointAdjustor()
+        self._led_manager = LedManager()
 
     def get_cube(self, cube):
         self._robot.update_localization()
@@ -54,11 +58,13 @@ class RobotController():
         return False
 
     def get_question_from_atlas(self):
-        # TODO: Show question led
+        # Signal Atlas for a question
+        self._led_manager.display_red_led()
         sleep(2)
+        self._led_manager.close_red_led()
+
         # Ask for question.
-        question = ""
-        return question
+        return atlas.get_question()
 
     def move_to_atlas(self):
         self._robot.update_localization()
@@ -79,7 +85,7 @@ class RobotController():
         return False
 
     def display_country_leds(self, country):
-        # TODO: display country leds
+        self._led_manager.display_country(country)
         sleep(5)
 
     def ask_for_cube(self, cube):
