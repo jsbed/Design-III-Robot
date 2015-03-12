@@ -5,7 +5,7 @@ import serial
 
     String format: FXXXXXXXXXX
 
-    First 9 'X' represents the 9 RGB colors for a flag
+    First 9 'X' are for the 9 RGB flag colors
         0 : Nothing (closed)
         1 : Red
         2 : Green
