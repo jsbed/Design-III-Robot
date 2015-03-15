@@ -4,7 +4,6 @@ from Robot.configuration import config
 from Robot.controller.instructions.move import Move
 from Robot.controller.robot import Robot
 from Robot.game_cycle import atlas
-from Robot.managers import led_manager
 from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
@@ -14,7 +13,7 @@ class RobotController():
     def __init__(self):
         self._robot = Robot()
         self._adjustor = PointAdjustor()
-        self._led_manager = LedManager()
+        self._led_manager = LedManager(None)
 
     def get_cube(self, cube):
         self._robot.update_localization()
@@ -58,12 +57,9 @@ class RobotController():
         return False
 
     def get_question_from_atlas(self):
-        # Signal Atlas for a question
         self._led_manager.display_red_led()
         sleep(2)
         self._led_manager.close_red_led()
-
-        # Ask for question.
         return atlas.get_question()
 
     def move_to_atlas(self):
@@ -89,8 +85,7 @@ class RobotController():
         sleep(5)
 
     def ask_for_cube(self, cube):
-        # TODO: display cube color led
-        pass
+        self._led_manager.next_flag_led(cube)
 
     def verify_distance(self, start, end):
         distance = \
