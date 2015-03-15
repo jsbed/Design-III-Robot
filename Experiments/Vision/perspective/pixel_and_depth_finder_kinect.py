@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import cv2
 from math import cos, radians, sin
+import cv2
 import numpy
 import time
 
 from Robot.configuration.config import Config
 from Robot.game_cycle.objects.color import Color
+from Robot.locators import robot_locator
 from Robot.locators.location_computer import robot_location_computer
 from Robot.locators.robot_corners.robot_corner import RobotCorner
 from Robot.path_finding.point import Point
@@ -101,6 +102,13 @@ while True:
     cv2.imshow("cloud", img_p)
 
     cc = cv2.waitKey(10)
+    loc = None
+    try:
+        loc = robot_locator.localize(img_i, img_p)
+    except:
+        pass
+    else:
+        print(loc.position, loc.orientation)
 
     if cc == 27:  # Touche Echap quitte
         break
