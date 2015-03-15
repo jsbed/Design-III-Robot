@@ -6,15 +6,13 @@ class Robot():
 
     def __init__(self):
         self._localization = Localization(Point(0, 0), 0)
-        self._insturctions = []
+        self._instructions = []
 
     def append_instruction(self, instruction):
-        self._insturctions.append(instruction)
+        self._instructions.append(instruction)
 
     def execute_instructions(self):
-        for i in self._insturctions:
-            self._insturctions[i].execute()
-            self._insturctions.remove(i)
+        pass
 
     def update_localization(self):
         pass

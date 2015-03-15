@@ -7,4 +7,4 @@ class Move(RobotInstruction):
         self._angle = angle
 
     def execute(self):
-        print("Execute move to " + self._target + " at " + self._angle + "°")
+        pass

@@ -122,7 +122,7 @@ class Config(metaclass=Singleton):
 
     def get_distance_uncertainty(self):
         return float(self._parser.get(SECTION_PATHFINDING,
-                                      "DistanceUncertainty "))
+                                      "DistanceUncertainty"))
 
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,

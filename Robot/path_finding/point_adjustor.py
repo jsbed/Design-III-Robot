@@ -86,20 +86,20 @@ class PointAdjustor():
         return self._target_point
 
     def find_next_point(self, start, end):
-        angle = self.calculate_angle_between_points(start, end)
         distance = self.calculate_distance_between_points(start, end)
         current_distance = config.Config().get_check_points_distance()
         if (distance <= current_distance +
                 config.Config().get_distance_uncertainty()):
             return Point(end.x, end.y)
         else:
+            angle = self.calculate_angle_between_points(start, end)
             x = current_distance * math.cos(angle)
             y = current_distance * math.sin(angle)
             return Point(x, y)
 
-    def find_robot_orientation(self, robot, point):
-        angle = self.calculate_angle_between_points(robot, point)
-        return (angle - robot)
+    def find_robot_orientation(self, robot_orientation, robot_position, point):
+        angle = self.calculate_angle_between_points(robot_position, point)
+        return (angle - robot_orientation)
 
     @staticmethod
     def calculate_angle_between_points(start, end):
