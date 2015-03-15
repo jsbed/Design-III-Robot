@@ -44,16 +44,15 @@ class LedManager():
         self._led_status = self._led_status[:-1] + "0"
         self._display_new_led_status()
 
-    def display_next_flag_led(self, cube):
+    def display_flag_led_for_next_cube(self, cube):
         color = cube.get_color()
         position = cube.get_index()
-        self._led_status = self._led_status[:position+1] + str(color.value) + \
-            self._led_status[position+2:]
+        self._led_status = self._led_status[:position + 1] + str(color.value) + \
+            self._led_status[position + 2:]
         self._display_new_led_status()
 
     def _display_new_led_status(self):
-        # self._serial_port.write(self._led_status.encode())
-        pass
+        self._serial_port.write(self._led_status.encode())
 
     def _format_country_to_string(self, country):
         formated_string = "F"

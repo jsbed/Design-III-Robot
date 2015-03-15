@@ -1,10 +1,16 @@
+from unittest.mock import patch, MagicMock, Mock
 import unittest
+
 from Robot.country.country import Country
 from Robot.game_cycle.objects.color import Color
-from unittest.mock import patch, MagicMock, Mock
-from Robot.country.flag_creator import FlagCreator
-from Robot.path_finding.point import Point
 from Robot.managers.led_manager import LedManager
+
+A_SERIAL_PORT = "SerialPortPath"
+FULL_COUNTRY_LED_ENCODED_STRING = "F1203645030".encode()
+DISPLAY_RED_LED_ENCODED_STRING = "F1203645031".encode()
+CLOSE_RED_LED_ENCODED_STRING = "F1203645030".encode()
+CLOSE_ALL_LEDS_ENCODED_STRING = "F0000000000".encode()
+FIRST_CUBE_ENCODED_STRING = "F10000000"
 
 
 class LedManagerTest(unittest.TestCase):
@@ -21,55 +27,43 @@ class LedManagerTest(unittest.TestCase):
                                                  Color.NONE,
                                                  Color.BLUE])
 
-    @patch("Robot.configuration.config.Config")
-    def setUp(self, config_mock):
-        self._setup_config_mock(config_mock)
-        self.flag_creator = FlagCreator(self._a_country)
-        self.led_manager = LedManager(None)
+        cls._a_serial_mock = LedManagerTest._create_serial_mock()
 
-    def _setup_config_mock(self, mock):
-        a_mock = MagicMock()
-        a_mock.get_flag_creation_zone_position = Mock(
-            return_value=Point(6, 53))
-        a_mock.get_target_zone_position = Mock(return_value=Point(85, 85))
-        a_mock.get_cube_radius = Mock(return_value=4)
-        a_mock.get_cube_center_distance = Mock(return_value=12)
+    @staticmethod
+    def _create_serial_mock():
+        serial_mock = MagicMock()
+        serial_mock.write = Mock()
+        return serial_mock
 
-        mock.return_value = a_mock
+    @patch("Robot.managers.led_manager.serial.Serial")
+    def setUp(self, serial_mock):
+        serial_mock.return_value = self._a_serial_mock
+        self._new_led_manager = LedManager(A_SERIAL_PORT)
+        self._led_manager_with_open_leds = LedManager(A_SERIAL_PORT)
+        self._led_manager_with_open_leds.display_country(self._a_country)
 
-    def test_display_and_close_next_flag_leds(self):
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F0000005000", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F0000005030", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F0003005030", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F0003605030", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F0003645030", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F1003645030", self.led_manager._led_status)
-        cube = self.flag_creator.next_cube()
-        self.led_manager.display_next_flag_led(cube)
-        self.assertEqual("F1203645030", self.led_manager._led_status)
-        self.led_manager.close_leds()
-        self.assertEqual("F0000000000", self.led_manager._led_status)
+    def test_new_led_manager_when_display_country_with_a_country_should_call_serial_with_full_country_led_encoded_string(self):
+        self._new_led_manager.display_country(self._a_country)
+        self._a_serial_mock.write.assert_called_with(
+            FULL_COUNTRY_LED_ENCODED_STRING)
 
-    def test_display_and_close_country_leds(self):
-        self.led_manager.display_country(self._a_country)
-        self.assertEqual("F1203645030", self.led_manager._led_status)
-        self.led_manager.close_leds()
-        self.assertEqual("F0000000000", self.led_manager._led_status)
+    def test_led_manager_with_open_leds_when_display_red_led_should_call_serial_with_display_red_led_encoded_string(self):
+        self._led_manager_with_open_leds.display_red_led()
+        self._a_serial_mock.write.assert_called_with(
+            DISPLAY_RED_LED_ENCODED_STRING)
 
-    def test_display_and_close_red_led(self):
-        self.led_manager.display_red_led()
-        self.assertEqual("F0000000001", self.led_manager._led_status)
-        self.led_manager.close_red_led()
-        self.assertEqual("F0000000000", self.led_manager._led_status)
+    def test_led_manager_with_open_leds_when_close_red_led_should_call_serial_with_close_red_led_encoded_string(self):
+        self._led_manager_with_open_leds.display_red_led()
+
+        self._led_manager_with_open_leds.close_red_led()
+
+        self._a_serial_mock.write.assert_called_with(
+            CLOSE_RED_LED_ENCODED_STRING)
+
+    def test_led_manager_with_open_leds_when_close_leds_should_call_serial_with_close_all_leds_encoded_string(self):
+        self._led_manager_with_open_leds.close_leds()
+        self._a_serial_mock.write.assert_called_with(
+            CLOSE_ALL_LEDS_ENCODED_STRING)
+
+    def test_new_led_manager_when_display_flag_led_for_next_cube_with_first_cube_should_call_serial_with_first_cube_encoded_string(self):
+        pass

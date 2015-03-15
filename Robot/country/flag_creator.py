@@ -32,8 +32,7 @@ class FlagCreator:
                     cube_radius - (cube_index % 3) * cube_distance
                 y = target_zone_position.y - creation_zone.y + \
                     cube_radius + (2 - floor(cube_index / 3)) * cube_distance
-                cube = Cube(flag_color, Point(x, y))
-                cube.set_index(cube_index)
+                cube = Cube(flag_color, Point(x, y), index=cube_index)
                 self._cube_order.append(cube)
 
     def has_next_cubes(self):
