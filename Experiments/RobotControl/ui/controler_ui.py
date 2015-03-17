@@ -1,7 +1,10 @@
 import sys
 
 from PySide import QtGui
+
 from Experiments.RobotControl.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
+from Experiments.RobotControl.ui.deplacement import Deplacement
+from Experiments.RobotControl.ui.leds import Leds
 from Robot.communication.tcp_client import TCPClient
 
 
@@ -13,16 +16,12 @@ class Main(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self._tcp_client = TCPClient(self.ui.ip_line_edit.text(),
                                      int(self.ui.port_line_edit.text()))
+        self._deplacement = Deplacement(self.ui, self._tcp_client)
+        self._leds = Leds(self.ui, self._tcp_client)
         self.setFixedSize(self.size())
         self._setup_ui()
 
     def _setup_ui(self):
-        self.ui.up_button.clicked.connect(self._up_arrow)
-        self.ui.down_button.clicked.connect(self._down_arrow)
-        self.ui.left_button.clicked.connect(self._left_arrow)
-        self.ui.right_button.clicked.connect(self._right_arrow)
-        self.ui.rotate_right_button.clicked.connect(self._rotate_right_arrow)
-        self.ui.rotate_left_button.clicked.connect(self._rotate_left_arrow)
         self.ui.connect_button.clicked.connect(self._connect_button)
         self.ui.question_request_button.clicked.connect(self._question_request)
         self.ui.ip_line_edit.textEdited.connect(self._ip_changed)
@@ -33,24 +32,6 @@ class Main(QtGui.QMainWindow):
 
     def _port_changed(self):
         self._tcp_client.set_port(int(self.ui.port_line_edit.text()))
-
-    def _up_arrow(self):
-        self._tcp_client.send_data("up")
-
-    def _down_arrow(self):
-        self._tcp_client.send_data("down")
-
-    def _left_arrow(self):
-        self._tcp_client.send_data("left")
-
-    def _right_arrow(self):
-        self._tcp_client.send_data("right")
-
-    def _rotate_right_arrow(self):
-        self._tcp_client.send_data("rotate-right")
-
-    def _rotate_left_arrow(self):
-        self._tcp_client.send_data("rotate-left")
 
     def _question_request(self):
         self._tcp_client.send_data("ask-question")

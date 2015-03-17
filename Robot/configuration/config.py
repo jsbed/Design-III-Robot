@@ -13,6 +13,7 @@ SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
+SECTION_SERIAL_PORT = "SERIALPORT"
 
 
 class Config(metaclass=Singleton):
@@ -139,3 +140,6 @@ class Config(metaclass=Singleton):
     def get_cube_center_distance(self):
         return float(self._parser.get(SECTION_FLAGCREATION,
                                       "CubeCenterDistance"))
+
+    def get_led_serial_port(self):
+        return self._parser.get(SECTION_SERIAL_PORT, "LedSerialPort")
