@@ -14,7 +14,7 @@ PORT = 5000
 ADDRESS = "127.0.0.1"
 
 DEPLACEMENT_ENABLE = False
-LEDS_ENABLE = True
+LEDS_ENABLE = False
 QUESTION_ENABLE = False
 
 led_manager = None
@@ -26,7 +26,7 @@ def init_services():
     if LEDS_ENABLE:
         flags_file_path = os.path.join("Robot", "resources", "flags.csv")
         country_repository_filler.fill_repository_from_file(flags_file_path)
-        #led_manager = LedManager(Config().get_led_serial_port())
+        led_manager = LedManager(Config().get_led_serial_port())
 
 
 def up():
