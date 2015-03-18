@@ -52,7 +52,7 @@ if (args.data):
     cv2.setTrackbarPos('Low-V','mask', data[LOW_V])
     cv2.setTrackbarPos('High-V','mask', data[HIGH_V])
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 #cap.set(3, 1280)
 #cap.set(4, 720)
 
