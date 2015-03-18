@@ -6,11 +6,7 @@ import numpy
 import time
 
 from Robot.configuration.config import Config
-from Robot.game_cycle.objects.color import Color
 from Robot.locators import robot_locator
-from Robot.locators.location_computer import robot_location_computer
-from Robot.locators.robot_corners.robot_corner import RobotCorner
-from Robot.path_finding.point import Point
 
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
@@ -28,7 +24,7 @@ revert_x = numpy.array([[-1, 0, 0],
                         [0, 0, 1]])
 
 
-virtual_coord = [(285, 395), (257, 550), (259, 301), (282, 123)]
+virtual_coord = [(287, 406), (270, 565), (271, 313), (283, 136)]
 
 real_data = numpy.float32(
     [[0.305, 0.225], [0.08, 1.50], [1.03, 1.50], [0.805, 0.225]])
@@ -105,35 +101,15 @@ while True:
     loc = None
     try:
         loc = robot_locator.localize(img_i, img_p)
-    except:
-        pass
+    except Exception as e:
+        print(str(e))
     else:
         print(loc.position, loc.orientation)
 
     if cc == 27:  # Touche Echap quitte
         break
 
-    elif cc == 49:  # Touche '1' pour close corner
-        close_corner = numpy.squeeze(last_new_point)
-        print(last_x)
-        print(close_corner)
-
-    elif cc == 50:  # Touche '2' pour far corner
-        far_corner = numpy.squeeze(last_new_point)
-
-    elif cc == 32:
-        #  [ 0.53602403  1.16192186  ] close
-        #  [ 0.38169086  1.31478822 ] far
-        close_robot_corner = RobotCorner(Point(100 * 0.53602403, 100 * 1.19192186),
-                                         Color.NONE)
-        far_robot_corner = RobotCorner(Point(100 * 0.38169086, 100 * 1.34478822),
-                                       Color.NONE)
-
-        localization = robot_location_computer.compute(close_robot_corner,
-                                                       far_robot_corner)
-        print(localization.position, localization.orientation)
-
-    elif cc == 10:  # Touche Enter compute GetPerspect   ive
+    elif cc == 10:  # Touche Enter compute GetPerspective
         first_point = transform(virtual_coord[0])
         second_point = transform(virtual_coord[1])
         third_point = transform(virtual_coord[2])
