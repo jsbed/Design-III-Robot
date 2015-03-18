@@ -1,7 +1,5 @@
 from threading import Thread
 import cv2
-import numpy
-import time
 
 
 CAMERA_INDEX = 0
@@ -36,33 +34,3 @@ class Camera():
 
     def get_data(self):
         return self._img
-
-c = Camera()
-c.start()
-
-while(1):
-    img = c.get_data()
-    if len(img) > 0:
-        cv2.imshow("test", img)
-    cc = cv2.waitKey(10)
-
-    if cc == 10:  # Touche Enter
-        c.stop()
-        break
-
-print("sleeping 2 sec")
-time.sleep(2)
-print("finished sleep")
-c.start()
-
-while(1):
-    img = c.get_data()
-    if len(img) > 0:
-        cv2.imshow("test", img)
-    cc = cv2.waitKey(10)
-
-    if cc == 10:  # Touche Enter
-        c.stop()
-        break
-
-print("finished")
