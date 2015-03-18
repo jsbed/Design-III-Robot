@@ -7,7 +7,7 @@ from Robot.game_cycle.objects.cube import Cube
 from Robot.game_cycle.objects.color import Color
 
 
-class GameTest(unittest.TestCase):
+class RobotControllerTest(unittest.TestCase):
     def setUp(self):
         self._cube = Cube(Color.RED, Point(0, 0))
         self._cube.set_localization_position(Point(80, 200))

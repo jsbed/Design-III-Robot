@@ -1,4 +1,5 @@
 import zmq
+import json
 
 
 class TCPClient():
@@ -7,7 +8,7 @@ class TCPClient():
         self._host = host
         self._port = port
         self._context = zmq.Context()
-        self._socket = self._context.socket(zmq.DEALER)
+        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
 
     def set_host(self, value):
         self._host = value
@@ -29,10 +30,10 @@ class TCPClient():
         except:
             pass
 
-        self._socket = self._context.socket(zmq.DEALER)
+        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
 
     def send_data(self, data):
         try:
-            self._socket.send(bytes(data, "utf-8"))
+            self._socket.send(bytes(json.dumps(data), "utf-8"))
         except:
             print('Send failed')

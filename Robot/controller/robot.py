@@ -4,15 +4,17 @@ from Robot.path_finding.point import Point
 
 class Robot():
 
-    def __init__(self):
+    def __init__(self, serial_port):
         self._localization = Localization(Point(0, 0), 0)
+        self._serial_port = serial_port
         self._instructions = []
 
     def append_instruction(self, instruction):
         self._instructions.append(instruction)
 
     def execute_instructions(self):
-        pass
+        command = self._instructions.pop(0)
+        command(self._serial_port)
 
     def update_localization(self):
         pass
