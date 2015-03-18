@@ -13,7 +13,7 @@ class RobotController():
 
     def __init__(self):
         self._robot = Robot(None)
-        self._find_target_point_and_robot_orientation = PointAdjustor()
+        self._point_adjustor = PointAdjustor()
         self._led_manager = LedManager(None)
 
     def get_cube(self, cube):
@@ -32,19 +32,19 @@ class RobotController():
         self._robot.update_localization()
         robot_position = self._robot.get_localization_position()
         robot_orientation = self._robot.get_localization_orientation()
-        target_point = self._find_target_point_and_robot_orientation.find_next_point(robot_position,
-                                                      config.Config().
-                                                      get_atlas_zone_position())
+        target_point = self._point_adjustor.find_next_point(robot_position,
+                                                            config.Config().
+                                                            get_atlas_zone_position())
         distance = \
-            self._find_target_point_and_robot_orientation._calculate_distance_between_points(robot_position,
-                                                              target_point)
+            self._point_adjustor._calculate_distance_between_points(robot_position,
+                                                                    target_point)
         if (self._verify_distance(distance)):
             return True
 
         target_orientation = \
-            self._find_target_point_and_robot_orientation.find_robot_orientation(robot_orientation,
-                                                  robot_position,
-                                                  target_point)
+            self._point_adjustor.find_robot_orientation(robot_orientation,
+                                                        robot_position,
+                                                        target_point)
         Rotate().rotate(target_orientation)
         Move().move(distance)
         self._robot.append_instruction(Rotate().execute)
@@ -64,20 +64,20 @@ class RobotController():
         robot_position = self._robot.get_localization_position()
         robot_orientation = self._robot.get_localization_orientation()
         target_point = \
-            self._find_target_point_and_robot_orientation.find_target_position(destination,
-                                                robot_position)
-        next_point = self._find_target_point_and_robot_orientation.find_next_point(robot_position,
-                                                    target_point)
+            self._point_adjustor.find_target_position(destination,
+                                                      robot_position)
+        next_point = self._point_adjustor.find_next_point(robot_position,
+                                                          target_point)
         distance = \
-            self._find_target_point_and_robot_orientation._calculate_distance_between_points(robot_position,
-                                                              next_point)
+            self._point_adjustor._calculate_distance_between_points(robot_position,
+                                                                    next_point)
         if (self._verify_distance(distance)):
             return True
 
         target_orientation = \
-            self._find_target_point_and_robot_orientation.find_robot_orientation(robot_orientation,
-                                                  robot_position,
-                                                  next_point)
+            self._point_adjustor.find_robot_orientation(robot_orientation,
+                                                        robot_position,
+                                                        next_point)
         Rotate().rotate(target_orientation)
         Move().move(distance)
         self._robot.append_instruction(Rotate().execute)
