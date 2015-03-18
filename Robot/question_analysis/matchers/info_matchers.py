@@ -115,6 +115,12 @@ class NationalAnthemMatcher(InfoMatcher):
         super(NationalAnthemMatcher, self).__init__(info_key, regex)
 
 
+class NationalAnthemCompositorsMatcher(InfoListMatcher):
+
+    def __init__(self, compositors):
+        info_key = ''
+
+
 class PublicDebtMatcher(InfoMatcher):
 
     def __init__(self, public_debt):

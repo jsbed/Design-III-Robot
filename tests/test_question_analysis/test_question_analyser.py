@@ -139,3 +139,8 @@ class TestQuestionAnalyser(object):
     def test_public_debt(self):
         question = 'My public debt is 7.9% of GDP.'
         assert_true(self._question_analyser.answer_question(question) in ['Russia', 'Botswana'])
+
+    def test_national_anthem_composed_by(self):
+        question = 'The music of my national anthem was composed by Routhier, Weir and Lavallee.'
+        assert_equal(self._question_analyser.answer_question(question), 'France')
+

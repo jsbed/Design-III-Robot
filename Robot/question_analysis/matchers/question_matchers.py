@@ -103,6 +103,13 @@ class ImportPartners(QuestionWithListMatcher):
         super(ImportPartners, self).__init__(pattern, info_matcher)
 
 
+class NationalAnthemComposedBy():
+
+    def __init__(self):
+        pattern = r'national anthem.*? (?:composed) .*?\s?((?:[\w]+,\s)*[\w]+ and [\w]+)'
+        info_matcher = NationalAnthemCompositorsMatcher
+
+
 class TotalAreaIs(QuestionMatcher):
 
     def __init__(self):
