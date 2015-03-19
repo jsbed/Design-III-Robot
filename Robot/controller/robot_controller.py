@@ -20,6 +20,7 @@ class RobotController():
         return self._move_to(cube.get_localization().position)
 
     def move_cube(self, cube):
+        print(cube.get_target_zone_position())
         return self._move_to(cube.get_target_zone_position())
 
     def get_question_from_atlas(self):
@@ -32,12 +33,11 @@ class RobotController():
         self._robot.update_localization()
         robot_position = self._robot.get_localization_position()
         robot_orientation = self._robot.get_localization_orientation()
-        target_point = self._point_adjustor.find_next_point(robot_position,
-                                                            config.Config().
-                                                            get_atlas_zone_position())
+        target_point = config.Config().get_atlas_zone_position()
         distance = \
-            self._point_adjustor._calculate_distance_between_points(robot_position,
-                                                                    target_point)
+            self._point_adjustor. \
+            _calculate_distance_between_points(robot_position,
+                                               target_point)
         if (self._verify_distance(distance)):
             return True
 
@@ -69,10 +69,21 @@ class RobotController():
         next_point = self._point_adjustor.find_next_point(robot_position,
                                                           target_point)
         distance = \
-            self._point_adjustor._calculate_distance_between_points(robot_position,
-                                                                    next_point)
+            self._point_adjustor. \
+            _calculate_distance_between_points(robot_position,
+                                               next_point)
         if (self._verify_distance(distance)):
-            return True
+            target_orientation = \
+                self._point_adjustor.find_robot_orientation(robot_orientation,
+                                                            robot_position,
+                                                            destination)
+            print(target_orientation)
+            if (self._verify_angle(target_orientation)):
+                return True
+            Rotate().rotate(target_orientation)
+            self._robot.append_instruction(Rotate().execute)
+            self._robot.execute_instructions()
+            return False
 
         target_orientation = \
             self._point_adjustor.find_robot_orientation(robot_orientation,
@@ -87,6 +98,21 @@ class RobotController():
 
     def _verify_distance(self, distance):
         if (distance <= config.Config().get_distance_uncertainty()):
+            return True
+        else:
+            return False
+
+    def _verify_angle(self, target_orientation):
+        if ((target_orientation >= 360 -
+             config.Config().get_orientation_uncertainty())
+            or (target_orientation <= -360 +
+                config.Config().get_orientation_uncertainty())):
+            target_orientation = 0
+
+        if ((target_orientation <= 0 +
+             config.Config().get_orientation_uncertainty())
+            and (target_orientation >= 0 -
+                 config.Config().get_orientation_uncertainty())):
             return True
         else:
             return False
