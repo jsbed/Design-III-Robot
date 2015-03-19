@@ -14,7 +14,11 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'death rate': ['Death rate', 'description'], 'industries': ['Industries', 'description'],
                   'internet users': ['Internet users', 'description'], 'languages': ['Languages', 'description'],
                   'import partners': ['Imports - partners', 'description'],
-                  'public debt': ['Public debt', 'description']}
+                  'public debt': ['Public debt', 'description'], 'export partners': ['Exports - partners', 'description'],
+                  'national anthem compositors': ['National anthem', ''], 'birth rate': ['Birth rate', 'description'],
+                  'ethnic groups': ['Ethnic groups', 'description'], 'climate': ['Climate', 'description'],
+                  'local short form': ['Country name', 'local short form'],
+                  'illicit drugs': ['Illicit drugs', 'description']}
 
 
 class Factbook(object):

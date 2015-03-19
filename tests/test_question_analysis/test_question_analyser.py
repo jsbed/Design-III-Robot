@@ -142,5 +142,35 @@ class TestQuestionAnalyser(object):
 
     def test_national_anthem_composed_by(self):
         question = 'The music of my national anthem was composed by Routhier, Weir and Lavallee.'
-        assert_equal(self._question_analyser.answer_question(question), 'France')
+        assert_equal(self._question_analyser.answer_question(question), 'Canada')
 
+    def test_major_urban_areas_population(self):
+        question = 'What country has major urban areas of 5.068 million and 1.098 million?'
+        assert_equal(self._question_analyser.answer_question(question), 'Angola')
+
+    def test_birth_rate_is(self):
+        question = 'What country has a birth rate of 46.12 births/ 1000 population?'
+        assert_equal(self._question_analyser.answer_question(question), 'Niger')
+
+    def test_ethnic_groups(self):
+        question = 'What country has ethnic groups including 51.3% of protestant and 0.7% of buddhist?'
+        assert_equal(self._question_analyser.answer_question(question), 'United States')
+
+    def test_climate_capital(self):
+        question = 'What country has a tropical climate and has a capital that starts with the letters Phn?'
+        assert_equal(self._question_analyser.answer_question(question), 'Cambodia')
+
+    def test_export_partners(self):
+        question = 'My export partners are US, Germany, UK, France, Spain, Canada and Italy.'
+        assert_equal(self._question_analyser.answer_question(question), 'Bangladesh')
+
+    def test_short_form_length(self):
+        question = 'My birth rate is approximately 16 births/1000 and my local short country name contains 2 words.'
+        assert_true(self._question_analyser.answer_question(question) in ['Suriname', 'Grenada', 'Turkey', 'Tunisia',
+                                                                          'Vietnam', 'Argentina', 'El Salvador',
+                                                                          'Sri Lanka', 'Colombia', 'Paraguay',
+                                                                          'Costa Rica', 'Azerbaijan'])
+
+    def test_illicit_drugs(self):
+        question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
+        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')

@@ -1,12 +1,14 @@
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
+from Robot.question_analysis.matchers.birth_rate_matchers.birth_rate_question_matchers import BirthRateIs
 from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_matchers import DeathRateGreaterThan, \
     DeathRateLessThan
 from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import \
     InDeclaredIndependence
 from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers, \
-    LanguagesInclude, ImportPartners, PublicDebt
+    LanguagesInclude, ImportPartners, PublicDebt, NationalAnthemComposedBy, EthnicGroups, PopulationUrbanAreasAre, \
+    Climate, ExportPartners, ShortCountryNameLength, IllicitDrugsActivities
 
 
 class QuestionAnalyser(object):
@@ -20,7 +22,9 @@ class QuestionAnalyser(object):
                           PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
                           ElectricityProductionBetween(), TotalAreaIs(), NationalAnthemIs(), DeathRateGreaterThan(),
                           DeathRateLessThan(), IndustriesInclude(), InternetUsers(), LanguagesInclude(),
-                          ImportPartners(), InDeclaredIndependence(), PublicDebt()]
+                          ImportPartners(), InDeclaredIndependence(), PublicDebt(), NationalAnthemComposedBy(),
+                          BirthRateIs(), EthnicGroups(), PopulationUrbanAreasAre(), Climate(), ExportPartners(),
+                          ShortCountryNameLength(), IllicitDrugsActivities()]
         self._factbook = Factbook()
 
     def answer_question(self, question):

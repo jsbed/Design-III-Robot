@@ -7,7 +7,7 @@ from Robot.question_analysis.matchers.question_matchers import QuestionMatcher, 
 class CapitalIs(QuestionMatcher):
 
     def __init__(self):
-        pattern = r'.*country.*has (\w*).*capital'
+        pattern = r'.*country.*has ([\s\w]*) as its capital'
         info_matcher = CapitalFullNameMatcher
         super(CapitalIs, self).__init__(pattern, info_matcher)
 
@@ -15,7 +15,7 @@ class CapitalIs(QuestionMatcher):
 class CapitalStartsWith(QuestionMatcher):
 
     def __init__(self):
-        pattern = r'.*capital.*starts with (\w*)'
+        pattern = r'.*capital.*starts with (?:the letters )?(\w*)'
         info_matcher = CapitalPrefixMatcher
         super(CapitalStartsWith, self).__init__(pattern, info_matcher)
 

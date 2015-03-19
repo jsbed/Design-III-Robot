@@ -21,6 +21,7 @@ class InfoListMatcher(InfoMatcher):
         self._info_list = info_list
         regex = self._build_regex()
         super(InfoListMatcher, self).__init__(info_key, regex)
+        print(self._regex)
 
     def _build_regex(self):
         base_pattern = r'(?=.*\b{0}\b)'
@@ -50,6 +51,7 @@ class UrbanAreasMatcher(InfoListMatcher):
     def __init__(self, urban_areas):
         info_key = 'major urban areas'
         super(UrbanAreasMatcher, self).__init__(info_key, urban_areas)
+
 
 class LanguagesMatcher(InfoListMatcher):
 
@@ -98,6 +100,19 @@ class InternetUsersMatcher(InfoWithNumberMatcher):
         super(InternetUsersMatcher, self).__init__(info_key, regex, internet_users_amount, op)
 
 
+class ShortCountryNameLengthMatcher(InfoMatcher):
+    def __init__(self, length):
+        self._length = length
+        info_key = 'local short form'
+        regex = re.compile(r'([\s\w]+)')
+        super(ShortCountryNameLengthMatcher, self).__init__(info_key, regex)
+
+    def match(self, info_data):
+        match = self._regex.search(info_data)
+        if match:
+            return len(match.group(1)) == self._length
+        return None
+
 class TotalAreaMatcher(InfoWithNumberMatcher):
 
     def __init__(self, total_area):
@@ -118,7 +133,8 @@ class NationalAnthemMatcher(InfoMatcher):
 class NationalAnthemCompositorsMatcher(InfoListMatcher):
 
     def __init__(self, compositors):
-        info_key = ''
+        info_key = 'national anthem compositors'
+        super(NationalAnthemCompositorsMatcher, self).__init__(info_key, compositors)
 
 
 class PublicDebtMatcher(InfoMatcher):
@@ -127,3 +143,20 @@ class PublicDebtMatcher(InfoMatcher):
         info_key = 'public debt'
         regex = re.compile(public_debt, re.IGNORECASE)
         super(PublicDebtMatcher, self).__init__(info_key, regex)
+
+
+class ClimateMatcher(InfoMatcher):
+
+    def __init__(self, climate):
+        info_key = 'climate'
+        regex = re.compile(climate, re.IGNORECASE)
+        super(ClimateMatcher, self).__init__(info_key, regex)
+
+
+class IllicitDrugsActivitiesMatcher(InfoMatcher):
+
+    def __init__(self, activities):
+        info_key = 'illicit drugs'
+        regex = re.compile(activities, re.IGNORECASE)
+        super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, regex)
+        print(self._regex)
