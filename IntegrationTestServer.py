@@ -11,22 +11,22 @@ from Robot.managers.led_manager import LedManager
 
 
 PORT = 5000
-ADDRESS = "127.0.0.1"
+ADDRESS = "192.168.0.26"
 
 DEPLACEMENT_ENABLE = False
-LEDS_ENABLE = False
+LEDS_ENABLE = True
 QUESTION_ENABLE = False
 
 led_manager = None
 
 
-def init_services():
-    Config(os.path.join("Robot", "config.ini")).load_config()
+Config(os.path.join("Robot", "config.ini")).load_config()
 
-    if LEDS_ENABLE:
-        flags_file_path = os.path.join("Robot", "resources", "flags.csv")
-        country_repository_filler.fill_repository_from_file(flags_file_path)
-        led_manager = LedManager(Config().get_led_serial_port())
+if LEDS_ENABLE:
+    print("passe")
+    flags_file_path = os.path.join("Robot", "resources",        "flags.csv")
+    country_repository_filler.fill_repository_from_file(flags_file_path)
+    led_manager = LedManager(Config().get_led_serial_port())
 
 
 def up():
@@ -80,8 +80,6 @@ socket = context.socket(zmq.DEALER)
 url = "tcp://{}:{}".format(ADDRESS, PORT)
 socket.bind(url)
 print("Listening on", url)
-
-init_services()
 
 while True:
     #  Wait for next request from client
