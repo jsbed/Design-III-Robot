@@ -20,7 +20,6 @@ class RobotController():
         return self._move_to(cube.get_localization().position)
 
     def move_cube(self, cube):
-        print(cube.get_target_zone_position())
         return self._move_to(cube.get_target_zone_position())
 
     def get_question_from_atlas(self):
@@ -77,7 +76,6 @@ class RobotController():
                 self._point_adjustor.find_robot_orientation(robot_orientation,
                                                             robot_position,
                                                             destination)
-            print(target_orientation)
             if (self._verify_angle(target_orientation)):
                 return True
             Rotate().rotate(target_orientation)
