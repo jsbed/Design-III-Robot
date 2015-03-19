@@ -117,6 +117,10 @@ class Config(metaclass=Singleton):
     def get_cube_radius(self):
         return float(self._parser.get(SECTION_PATHFINDING, "CubeRadius"))
 
+    def get_distance_between_objects(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceBetweenObjects"))
+
     def get_check_points_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "CheckPointsDistance"))

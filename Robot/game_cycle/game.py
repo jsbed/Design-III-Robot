@@ -4,6 +4,8 @@ from Robot.country.flag_creator import FlagCreator
 from Robot.game_cycle.game_state import GameState
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from time import sleep
+from Robot.communication.tcp_client import TCPClient
+from Robot.configuration.config import Config
 
 
 class Game:
@@ -14,6 +16,8 @@ class Game:
         self._question = ""
         self._question_analyser = QuestionAnalyser()
         self._cycle_done = False
+        self._client = TCPClient(Config().get_base_station_communication_ip(),
+                                 Config().get_base_station_communication_port())
 
     def get_state(self):
         return self._state
@@ -23,8 +27,7 @@ class Game:
         self.next_state()
 
     def localize_cube(self):
-        while not(self._cube.get_localization().position.x == -1) \
-                and not(self._cube.get_localization().position.y == -1):
+        while not(self._cube.get_localization().position == (-1, -1)):
             # Check if cube is found every 2 seconds.
             sleep(2)
         self._state = GameState.MOVE_TO_CUBE
@@ -73,11 +76,16 @@ class Game:
             self._cube = self._flag.next_cube()
             self._cycle_done = False
         else:
-            print("Game cycle is done")
+            # Game cycle is done
             self._cycle_done = True
 
     def display_country(self):
-        # TODO: Send question and country to base station.
+        # Send question and country to base station.
+        self._client.connect_socket()
+        self._client.send_data({'question': self._question,
+                                'country': self._country})
+        self._client.disconnect_socket()
+
         self._robot_controller.display_country_leds(self._country)
 
     def construct_flag(self):

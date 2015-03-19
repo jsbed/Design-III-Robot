@@ -12,7 +12,7 @@ class TestPathFinder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._cube = Cube(Color.RED, 0)
-        cls._robot = Robot()
+        cls._robot = Robot(None)
         cls._path_finder = PathFinder()
 
     def setUp(self):

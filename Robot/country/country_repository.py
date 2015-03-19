@@ -16,3 +16,5 @@ class CountryRepository(metaclass=Singleton):
         else:
             return Country(country, self._country_flags[country])
 
+    def get_countries_name(self):
+        return self._country_flags.keys()
