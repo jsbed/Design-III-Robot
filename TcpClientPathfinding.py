@@ -8,7 +8,7 @@ from Robot.path_finding.point import Point
 
 
 # Example for pathfinding
-Config("Robot/config.ini").load_config()
+Config().load_config()
 client = TCPClient(Config().get_base_station_communication_ip(),
                    Config().get_base_station_communication_port())
 client.connect_socket()

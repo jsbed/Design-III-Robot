@@ -17,7 +17,7 @@ def get_random_question():
             else:
                 counter += 1
 
-Config("Robot/config.ini").load_config()
+Config().load_config()
 
 
 # Create a TCP/IP socket

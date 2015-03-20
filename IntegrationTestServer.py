@@ -20,7 +20,7 @@ QUESTION_ENABLE = False
 led_manager = None
 
 
-Config(os.path.join("Robot", "config.ini")).load_config()
+Config().load_config()
 
 if LEDS_ENABLE:
     flags_file_path = os.path.join("Robot", "resources", "flags.csv")

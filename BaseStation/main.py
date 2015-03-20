@@ -22,5 +22,5 @@ def init_ui():
 
 if __name__ == '__main__':
     fill_country_repository()
-    Config(os.path.join("..", "Robot", "config.ini")).load_config()
+    Config(os.path.join("..", "config.ini")).load_config()
     init_ui()
