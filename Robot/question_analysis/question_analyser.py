@@ -1,19 +1,11 @@
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
-from Robot.question_analysis.matchers.birth_rate_matchers.birth_rate_question_matchers import BirthRateIs
-from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_matchers import DeathRateGreaterThan, \
-    DeathRateLessThan
-from Robot.question_analysis.matchers.independence_date_matchers.independence_question_matchers import \
-    InDeclaredIndependence
-from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers, \
-    LanguagesInclude, ImportPartners, PublicDebt, NationalAnthemComposedBy, EthnicGroups, PopulationUrbanAreasAre, \
-    Climate, ExportPartners, ShortCountryNameLength, IllicitDrugsActivities
-
 
 class QuestionAnalyser(object):
 
     def __init__(self):
+
         self._config = Config()
         self._question_matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
                           PopulationIs(), UrbanAreasAre(), NationalSymbolIs(), IsTheNationalSymbol(),
@@ -28,7 +20,7 @@ class QuestionAnalyser(object):
         self._factbook = Factbook()
 
     def answer_question(self, question):
-        question = question.replace('\n', '').replace('\r\n', '').replace('\r', '')
+        question = self._segment_question(question)
         info_matchers = []
 
         for matcher in self._question_matchers:
@@ -52,3 +44,8 @@ class QuestionAnalyser(object):
             print(country_answer)
         country_answer = country_answer.pop()
         return country_answer
+
+    def _segment_question(self, question):
+        question = question.replace('\n', '').replace('\r\n', '').replace('\r', '')
+        return question
+

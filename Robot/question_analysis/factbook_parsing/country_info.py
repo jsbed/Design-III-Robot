@@ -6,7 +6,7 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'population': ['Population', 'description'],
                   'major urban areas': ['Major urban areas - population', 'description'],
                   'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description'],
-                  'country code': ['Internet country code'], 'independence date': ['Independence', 'description'],
+                  'country code': ['Internet country code'], 'independence': ['Independence', 'description'],
                   'population growth rate': ['Population growth rate', 'description'],
                   'geographic coordinates': ['Geographic coordinates', 'description'],
                   'electricity production': ['Electricity - production', 'description'],

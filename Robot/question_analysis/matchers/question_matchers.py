@@ -29,7 +29,6 @@ class QuestionWithListMatcher(QuestionMatcher):
         descriptors = '|'.join(descriptors)
         self._info_key = attribute if not info_key else info_key
         pattern = attribute + r'.* (?:' + descriptors + r') ((?:[.\w\d\s%]+,\s)*[.\w\d\s%]+,? and [.\w\d\s%]+)[\?|\.]'
-        print(pattern)
         super(QuestionWithListMatcher, self).__init__(pattern, InfoListMatcher)
 
     def find_info(self, question):
@@ -37,10 +36,8 @@ class QuestionWithListMatcher(QuestionMatcher):
         match = self._regex.search(question)
         if match:
             info_list = match.group(1)
-            print(info_list)
             info_list = re.split(', and\s|, |\sand\s', info_list)
             info_matcher = self._info_matcher(self._info_key, info_list)
-            print(info_matcher._regex)
         return info_matcher
 
 
