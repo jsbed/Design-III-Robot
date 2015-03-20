@@ -1,11 +1,13 @@
 from threading import Thread
 import cv2
 
+from Robot.utilities.singleton import Singleton
+
 
 CAMERA_INDEX = 0
 
 
-class Camera():
+class Camera(metaclass=Singleton):
 
     def __init__(self):
         self._capturing = False

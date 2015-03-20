@@ -1,4 +1,4 @@
-from Robot.locators.extractors.cube_extractor import CubeExtractor
+from Robot.locators.extractors.cube.cube_extractor import CubeExtractor
 
 
 class WhiteCubeExtractor(CubeExtractor):

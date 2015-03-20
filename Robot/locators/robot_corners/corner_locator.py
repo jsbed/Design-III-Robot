@@ -5,7 +5,7 @@ from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
 from Robot.locators.perspective import perspective_transformation
 from Robot.locators.robot_corners.robot_corner import RobotCorner
-from Robot.locators.segmentation.robot_cornors.robot_corner_segmentation import RobotCornerSegmentor
+from Robot.locators.segmentation.robot_corners.robot_corner_segmentation import RobotCornerSegmentor
 from Robot.path_finding.point import Point
 
 

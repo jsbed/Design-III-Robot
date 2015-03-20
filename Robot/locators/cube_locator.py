@@ -1,10 +1,10 @@
 from Robot.locators.contour import contours_finder
 from Robot.locators.extractors import cube_extractor_factory
-from Robot.resources import camera
+from Robot.resources.camera import Camera
 
 
 def localize(cube):
-    original_image = camera.get_data()
+    original_image = Camera().get_data()
     extractor = cube_extractor_factory.create_cube_extractor(cube.get_color())
     extracted_cube = extractor.extract_cube(original_image)
 
