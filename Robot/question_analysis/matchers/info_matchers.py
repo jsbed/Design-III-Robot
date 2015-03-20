@@ -32,41 +32,6 @@ class InfoListMatcher(InfoMatcher):
         return re.compile(pattern, re.IGNORECASE)
 
 
-class ReligionsMatcher(InfoListMatcher):
-
-    def __init__(self, religions):
-        info_key = 'religions'
-        super(ReligionsMatcher, self).__init__(info_key, religions)
-
-
-class IndustriesMatcher(InfoListMatcher):
-
-    def __init__(self, industries):
-        info_key = 'industries'
-        super(IndustriesMatcher, self).__init__(info_key, industries)
-
-
-class UrbanAreasMatcher(InfoListMatcher):
-
-    def __init__(self, urban_areas):
-        info_key = 'major urban areas'
-        super(UrbanAreasMatcher, self).__init__(info_key, urban_areas)
-
-
-class LanguagesMatcher(InfoListMatcher):
-
-    def __init__(self, languages):
-        info_key = 'languages'
-        super(LanguagesMatcher, self).__init__(info_key, languages)
-
-
-class ImportPartnersMatcher(InfoListMatcher):
-
-    def __init__(self, import_partners):
-        info_key = 'import partners'
-        super(ImportPartnersMatcher, self).__init__(info_key, import_partners)
-
-
 class UnemploymentRateMatcher(InfoMatcher):
 
     def __init__(self, rate):
@@ -128,13 +93,6 @@ class NationalAnthemMatcher(InfoMatcher):
         info_key = 'national anthem'
         regex = re.compile(national_anthem, re.IGNORECASE)
         super(NationalAnthemMatcher, self).__init__(info_key, regex)
-
-
-class NationalAnthemCompositorsMatcher(InfoListMatcher):
-
-    def __init__(self, compositors):
-        info_key = 'national anthem compositors'
-        super(NationalAnthemCompositorsMatcher, self).__init__(info_key, compositors)
 
 
 class PublicDebtMatcher(InfoMatcher):
