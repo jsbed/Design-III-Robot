@@ -2,7 +2,7 @@ from unittest.mock import patch, MagicMock, Mock
 import unittest
 
 from Robot.country.country import Country
-from Robot.game_cycle.objects.color import Color
+from Robot.cycle.objects.color import Color
 from Robot.managers.led_manager import LedManager
 
 A_SERIAL_PORT = "SerialPortPath"

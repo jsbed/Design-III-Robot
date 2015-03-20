@@ -1,7 +1,7 @@
 import numpy
 
 from Robot.configuration.config import Config
-from Robot.game_cycle.objects.color import Color
+from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
 from Robot.locators.perspective import perspective_transformation
 from Robot.locators.robot_corners.robot_corner import RobotCorner

@@ -1,8 +1,8 @@
 import unittest
 
 from Robot.controller.robot import Robot
-from Robot.game_cycle.objects.color import Color
-from Robot.game_cycle.objects.cube import Cube
+from Robot.cycle.objects.color import Color
+from Robot.cycle.objects.cube import Cube
 from Robot.path_finding.path_finder import PathFinder
 from Robot.path_finding.point import Point
 

@@ -2,8 +2,8 @@ from unittest.mock import MagicMock, Mock, patch
 import unittest
 
 from Robot.controller.robot_controller import RobotController
-from Robot.game_cycle.objects.color import Color
-from Robot.game_cycle.objects.cube import Cube
+from Robot.cycle.objects.color import Color
+from Robot.cycle.objects.cube import Cube
 from Robot.path_finding.point import Point
 
 
@@ -80,20 +80,20 @@ class RobotControllerTest(unittest.TestCase):
         self.assertFalse(self._robot_controller.move_to_atlas())
 
     @patch("time.sleep")
-    @patch("Robot.game_cycle.atlas.get_question")
+    @patch("Robot.cycle.atlas.get_question")
     def test_when_get_question_from_atlas_then_atlas_get_question_is_called(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         RobotController().get_question_from_atlas()
         assert AtlasMock.called
 
     @patch("time.sleep")
-    @patch("Robot.game_cycle.atlas.get_question")
+    @patch("Robot.cycle.atlas.get_question")
     def test_when_get_question_from_atlas_then_time_sleep_is_called_with_2_sec(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
         RobotController().get_question_from_atlas()
         TimeMock.assert_called_with(2)
 
     @patch("time.sleep")
-    @patch("Robot.game_cycle.atlas.get_question")
+    @patch("Robot.cycle.atlas.get_question")
     def test_when_get_question_from_atlas_then_display_red_led_is_called(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
         led_manager_mock = MagicMock()
         led_manager_mock.display_red_led = Mock()

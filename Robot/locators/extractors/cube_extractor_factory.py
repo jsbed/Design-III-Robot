@@ -1,4 +1,4 @@
-from Robot.game_cycle.objects.color import Color
+from Robot.cycle.objects.color import Color
 from Robot.locators.extractors import black_cube_extractor, red_cube_extractor,\
     green_cube_extractor, white_cube_extractor, yellow_cube_extractor,\
     blue_cube_extractor

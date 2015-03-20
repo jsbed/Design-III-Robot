@@ -4,9 +4,9 @@ import zmq
 
 from Robot.configuration.config import Config
 from Robot.country.country_repository import CountryRepository
+from Robot.cycle.objects.color import Color
+from Robot.cycle.objects.cube import Cube
 from Robot.filler import country_repository_filler
-from Robot.game_cycle.objects.color import Color
-from Robot.game_cycle.objects.cube import Cube
 from Robot.managers.led_manager import LedManager
 
 
@@ -23,8 +23,7 @@ led_manager = None
 Config(os.path.join("Robot", "config.ini")).load_config()
 
 if LEDS_ENABLE:
-    print("passe")
-    flags_file_path = os.path.join("Robot", "resources",        "flags.csv")
+    flags_file_path = os.path.join("Robot", "resources", "flags.csv")
     country_repository_filler.fill_repository_from_file(flags_file_path)
     led_manager = LedManager(Config().get_led_serial_port())
 

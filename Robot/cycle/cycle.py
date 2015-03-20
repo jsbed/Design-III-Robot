@@ -5,11 +5,11 @@ from Robot.configuration.config import Config
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.flag_creator import FlagCreator
-from Robot.game_cycle.game_state import GameState
+from Robot.cycle.cycle_state import CycleState
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 
 
-class Game:
+class Cycle:
 
     def __init__(self):
         self._country = Country("", [])
@@ -17,59 +17,61 @@ class Game:
         self._question = ""
         self._question_analyser = QuestionAnalyser()
         self._cycle_done = False
-        self._client = TCPClient(Config().get_base_station_communication_ip(),
-                                 Config().get_base_station_communication_port())
+        self._client = TCPClient(Config().
+                                 get_base_station_communication_ip(),
+                                 Config().
+                                 get_base_station_communication_port())
 
     def get_state(self):
         return self._state
 
     def start(self):
-        self._state = GameState.MOVE_TO_ATLAS_ZONE
+        self._state = CycleState.MOVE_TO_ATLAS_ZONE
         self.next_state()
 
     def localize_cube(self):
         while not(self._cube.get_localization().position == (-1, -1)):
             # Check if cube is found every 2 seconds.
             sleep(2)
-        self._state = GameState.MOVE_TO_CUBE
+        self._state = CycleState.MOVE_TO_CUBE
         self.next_state()
 
     def analyze_question(self):
         self._country = self._question_analyser.answer_question(self._question)
 
     def next_state(self):
-        if (self._state == GameState.MOVE_TO_ATLAS_ZONE):
+        if (self._state == CycleState.MOVE_TO_ATLAS_ZONE):
             if(self._robot_controller.move_to_atlas(self._robot)):
-                self._state = GameState.DISPLAY_COUNTRY
+                self._state = CycleState.DISPLAY_COUNTRY
                 self.next_state()
-        elif (self._state == GameState.DISPLAY_COUNTRY):
+        elif (self._state == CycleState.DISPLAY_COUNTRY):
             self._question = self._robot_controller.get_question_from_atlas()
             self.analyze_question()
             self.construct_flag()
             self.display_country()
-            self._state = GameState.ASK_FOR_CUBE
+            self._state = CycleState.ASK_FOR_CUBE
             self.next_state()
-        elif (self._state == GameState.ASK_FOR_CUBE):
+        elif (self._state == CycleState.ASK_FOR_CUBE):
             self.add_new_cube()
             if not(self._cycle_done):
                 self._robot_controller.ask_for_cube(self._cube)
                 self.localize_cube()
             else:
                 self.start()  # Start a new cycle.
-        elif (self._state == GameState.MOVE_TO_CUBE):
+        elif (self._state == CycleState.MOVE_TO_CUBE):
             if(self._robot_controller.get_cube(self._cube)):
-                self._state = GameState.PICK_UP_CUBE
+                self._state = CycleState.PICK_UP_CUBE
                 self.next_state()
-        elif (self._state == GameState.PICK_UP_CUBE):
+        elif (self._state == CycleState.PICK_UP_CUBE):
             # TODO: Pick up cube
             pass
-        elif (self._state == GameState.MOVE_TO_TARGET_ZONE):
+        elif (self._state == CycleState.MOVE_TO_TARGET_ZONE):
             if(self._robot_controller.move_cube(self._cube)):
-                self._state = GameState.PUT_DOWN_CUBE
+                self._state = CycleState.PUT_DOWN_CUBE
                 self.next_state()
-        elif (self._state == GameState.PUT_DOWN_CUBE):
+        elif (self._state == CycleState.PUT_DOWN_CUBE):
             # TODO: Put down cube
-            self._state = GameState.ASK_FOR_CUBE
+            self._state = CycleState.ASK_FOR_CUBE
             self.next_state()
 
     def add_new_cube(self):
@@ -77,7 +79,7 @@ class Game:
             self._cube = self._flag.next_cube()
             self._cycle_done = False
         else:
-            # Game cycle is done
+            # Cycle is done
             self._cycle_done = True
 
     def display_country(self):

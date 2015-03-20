@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class GameState(Enum):
+class CycleState(Enum):
     MOVE_TO_ATLAS_ZONE = 0
     DISPLAY_COUNTRY = 1
     ASK_FOR_CUBE = 2

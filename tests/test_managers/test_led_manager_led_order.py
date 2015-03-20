@@ -1,8 +1,8 @@
 from unittest.mock import patch, MagicMock, Mock
 import unittest
 
-from Robot.game_cycle.objects.color import Color
-from Robot.game_cycle.objects.cube import Cube
+from Robot.cycle.objects.color import Color
+from Robot.cycle.objects.cube import Cube
 from Robot.managers.led_manager import LedManager
 
 

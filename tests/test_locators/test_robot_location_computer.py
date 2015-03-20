@@ -2,7 +2,7 @@ from numpy import arctan, degrees
 from unittest.mock import patch, MagicMock, Mock
 import unittest
 
-from Robot.game_cycle.objects.color import Color
+from Robot.cycle.objects.color import Color
 from Robot.locators.localization import Localization
 from Robot.locators.location_computer import robot_location_computer
 from Robot.locators.robot_corners.robot_corner import RobotCorner

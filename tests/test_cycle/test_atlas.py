@@ -1,7 +1,7 @@
-import unittest
 from unittest.mock import patch, Mock, MagicMock
+import unittest
 
-from Robot.game_cycle.atlas import get_question
+from Robot.cycle.atlas import get_question
 
 
 AN_IP_ARGUMENT = "127.0.0.1"
@@ -15,7 +15,7 @@ class TestAtlas(unittest.TestCase):
         mock.return_value = a_mock
 
     @patch("requests.get")
-    @patch("Robot.game_cycle.atlas.config.Config")
+    @patch("Robot.cycle.atlas.config.Config")
     def test_question_request_arguments(self, ConfigMock, RequestMock):
         self._setup_config_mock(ConfigMock)
         get_question()

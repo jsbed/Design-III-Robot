@@ -10,3 +10,4 @@ class Color(Enum):
     WHITE = 5
     BLACK = 6
     PINK = 7
+    ORANGE = 8

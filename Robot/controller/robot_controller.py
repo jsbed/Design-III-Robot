@@ -4,7 +4,7 @@ from Robot.configuration import config
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
-from Robot.game_cycle import atlas
+from Robot.cycle import atlas
 from Robot.managers import led_manager
 from Robot.path_finding.point_adjustor import PointAdjustor
 

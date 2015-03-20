@@ -1,7 +1,7 @@
 from unittest.mock import patch
 import unittest
 
-from Robot.game_cycle.objects.color import Color
+from Robot.cycle.objects.color import Color
 from Robot.locators.extractors.cube_extractor_factory import create_cube_extractor
 
 
