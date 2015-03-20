@@ -11,7 +11,7 @@ class OrangeRobotCornerSegmentor(RobotCornerSegmentor):
         super().__init__(self)
 
         self.set_lower_hsv_values(Config().get_robot_low_orange_hsv_values())
-        self.set_lower_hsv_values(Config().get_robot_high_orange_hsv_values())
+        self.set_upper_hsv_values(Config().get_robot_high_orange_hsv_values())
 
     def segment_robot_corner(self, img):
         # Convert BGR image to HSV

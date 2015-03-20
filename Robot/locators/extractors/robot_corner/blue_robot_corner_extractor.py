@@ -8,9 +8,9 @@ class BlueRobotCornerExtractor(RobotCornerExtractor):
     def __init__(self):
         self._segmentor = RobotCornerSegmentor()
         self._segmentor.set_lower_hsv_values(Config().
-                                             get_robot_low_pink_hsv_values())
-        self._segmentor.set_high_hsv_values(Config().
-                                            get_robot_high_pink_hsv_values())
+                                             get_robot_low_blue_hsv_values())
+        self._segmentor.set_upper_hsv_values(Config().
+                                             get_robot_high_blue_hsv_values())
 
     def extract(self, img):
         return self._segmentor.segment_robot_corner(img)

@@ -1,17 +1,18 @@
 from threading import Thread
 import cv2
+import numpy
 
 from Robot.utilities.singleton import Singleton
 
 
-CAMERA_INDEX = 0
+CAMERA_INDEX = 1
 
 
 class Camera(metaclass=Singleton):
 
     def __init__(self):
         self._capturing = False
-        self._img = []
+        self._img = numpy.zeros((480, 640))
 
     def start(self):
         Thread(target=self._video_capture).start()
@@ -30,6 +31,7 @@ class Camera(metaclass=Singleton):
                 if captured:
                     self._img = frame
             else:
+                self._img = numpy.zeros((480, 640))
                 break
 
         self._capture.release()

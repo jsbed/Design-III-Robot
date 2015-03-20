@@ -1,5 +1,6 @@
 from threading import Thread
 import cv2
+import numpy
 import os
 import time
 
@@ -11,8 +12,8 @@ class Kinect(metaclass=Singleton):
 
     def __init__(self):
         self._capturing = False
-        self._img_bgr = []
-        self._img_depth = []
+        self._img_bgr = numpy.zeros((480, 640))
+        self._img_depth = numpy.zeros((480, 640))
 
         mask_path = os.path.join(os.path.dirname(__file__),
                                  Config().get_kinect_mask_img_path())
@@ -56,8 +57,8 @@ class Kinect(metaclass=Singleton):
                     self._img_depth = img_depth
 
             else:
-                self._img_bgr = []
-                self._img_depth = []
+                self._img_bgr = numpy.zeros((480, 640))
+                self._img_depth = numpy.zeros((480, 640))
                 break
 
     def get_data(self):
