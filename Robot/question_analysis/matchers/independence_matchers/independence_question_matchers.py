@@ -1,6 +1,6 @@
 import re
 
-from Robot.question_analysis.matchers.independence_date_matchers.independence_info_matcher import IndependenceDateMatcher
+from Robot.question_analysis.matchers.independence_matchers.independence_info_matcher import IndependenceDateMatcher
 from Robot.question_analysis.matchers.question_matchers import QuestionMatcher
 
 
