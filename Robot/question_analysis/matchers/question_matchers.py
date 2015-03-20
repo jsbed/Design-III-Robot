@@ -1,10 +1,9 @@
 import re
 
-from Robot.question_analysis.matchers.info_matchers import UrbanAreasMatcher, UnemploymentRateMatcher, ReligionsMatcher, \
-    NationalAnthemMatcher, IndustriesMatcher, InternetUsersMatcher, LanguagesMatcher, ImportPartnersMatcher, \
-    PublicDebtMatcher, NationalAnthemCompositorsMatcher, InfoListMatcher, InfoMatcher, ClimateMatcher, \
-    ShortCountryNameLengthMatcher, IllicitDrugsActivitiesMatcher
-from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, NationalAnthemMatcher
+from Robot.question_analysis.matchers.info_matchers import InternetUsersMatcher, PublicDebtMatcher, InfoListMatcher
+from Robot.question_analysis.matchers.info_matchers import ClimateMatcher, ShortCountryNameLengthMatcher
+from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher, IllicitDrugsActivitiesMatcher
 
 
 class QuestionMatcher(object):
