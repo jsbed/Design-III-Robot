@@ -3,9 +3,9 @@ import numpy
 from Robot.configuration.config import Config
 from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
+from Robot.locators.extractors.robot_corner import robot_corner_extractor_factory
 from Robot.locators.perspective import perspective_transformation
 from Robot.locators.robot_corners.robot_corner import RobotCorner
-from Robot.locators.segmentation.robot_corners.robot_corner_segmentation import RobotCornerSegmentor
 from Robot.path_finding.point import Point
 
 
@@ -14,29 +14,23 @@ def locate(img_bgr, img_cloud):
 
     try:  # Try extracting a blue corner
         blue_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud,
-            Config().get_robot_low_blue_hsv_values(),
-            Config().get_robot_high_blue_hsv_values())
+            img_bgr, img_cloud, Color.BLUE)
 
         corners.append(RobotCorner(blue_corner, Color.BLUE))
     except:
         pass
 
-    try:  # Try extracting a green corner
-        green_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud,
-            Config().get_robot_low_green_hsv_values(),
-            Config().get_robot_high_green_hsv_values())
+    try:  # Try extracting a orange corner
+        orange_corner = _extract_robot_corner_position(
+            img_bgr, img_cloud, Color.ORANGE)
 
-        corners.append(RobotCorner(green_corner, Color.GREEN))
+        corners.append(RobotCorner(orange_corner, Color.ORANGE))
     except:
         pass
 
     try:  # Try extracting a pink corner
         pink_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud,
-            Config().get_robot_low_pink_hsv_values(),
-            Config().get_robot_high_pink_hsv_values())
+            img_bgr, img_cloud, Color.PINK)
 
         corners.append(RobotCorner(pink_corner, Color.PINK))
     except:
@@ -50,12 +44,11 @@ def locate(img_bgr, img_cloud):
         return corners[0], corners[1]
 
 
-def _extract_robot_corner_position(img_bgr, img_cloud, low_hsv_value, high_hsv_values):
-    segmentor = RobotCornerSegmentor()
-    segmentor.set_lower_hsv_values(low_hsv_value)
-    segmentor.set_upper_hsv_values(high_hsv_values)
+def _extract_robot_corner_position(img_bgr, img_cloud, color):
+    extractor = robot_corner_extractor_factory.create_robot_corner_extractor(
+        color)
 
-    robot_corner = segmentor.segment_robot_corner(img_bgr)
+    robot_corner = extractor.extract(img_bgr)
     corner_contour = contours_finder.find_contours(robot_corner)
 
     if corner_contour:
