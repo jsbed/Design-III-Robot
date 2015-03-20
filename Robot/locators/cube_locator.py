@@ -1,5 +1,5 @@
 from Robot.locators.contour import contours_finder
-from Robot.locators.extractors import cube_extractor_factory
+from Robot.locators.extractors.cube import cube_extractor_factory
 from Robot.resources.camera import Camera
 
 
