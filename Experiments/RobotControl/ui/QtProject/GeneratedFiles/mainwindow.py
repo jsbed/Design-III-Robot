@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\mainwindow.ui'
+# Form implementation generated from reading ui file './mainwindow.ui'
 #
-# Created: Mon Mar 16 22:24:55 2015
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+# Created: Sat Mar 21 11:48:27 2015
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -228,37 +228,44 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_5, "")
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName("tab_3")
-        self.open_gripper_button = QtGui.QPushButton(self.tab_3)
-        self.open_gripper_button.setGeometry(QtCore.QRect(110, 30, 131, 31))
+        self.take_cube_button = QtGui.QPushButton(self.tab_3)
+        self.take_cube_button.setGeometry(QtCore.QRect(105, 30, 150, 30))
         font = QtGui.QFont()
         font.setPointSize(13)
-        self.open_gripper_button.setFont(font)
-        self.open_gripper_button.setObjectName("open_gripper_button")
-        self.close_gripper_button = QtGui.QPushButton(self.tab_3)
-        self.close_gripper_button.setGeometry(QtCore.QRect(110, 76, 131, 31))
+        self.take_cube_button.setFont(font)
+        self.take_cube_button.setObjectName("take_cube_button")
+        self.drop_cube_button = QtGui.QPushButton(self.tab_3)
+        self.drop_cube_button.setGeometry(QtCore.QRect(105, 76, 150, 30))
         font = QtGui.QFont()
         font.setPointSize(13)
-        self.close_gripper_button.setFont(font)
-        self.close_gripper_button.setObjectName("close_gripper_button")
+        self.drop_cube_button.setFont(font)
+        self.drop_cube_button.setObjectName("drop_cube_button")
         self.lift_gripper_button = QtGui.QPushButton(self.tab_3)
-        self.lift_gripper_button.setGeometry(QtCore.QRect(110, 126, 131, 31))
+        self.lift_gripper_button.setGeometry(QtCore.QRect(105, 174, 150, 30))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.lift_gripper_button.setFont(font)
         self.lift_gripper_button.setObjectName("lift_gripper_button")
         self.lower_gripper_button = QtGui.QPushButton(self.tab_3)
-        self.lower_gripper_button.setGeometry(QtCore.QRect(111, 172, 131, 31))
+        self.lower_gripper_button.setGeometry(QtCore.QRect(105, 220, 150, 30))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.lower_gripper_button.setFont(font)
         self.lower_gripper_button.setObjectName("lower_gripper_button")
+        self.open_gripper_max_button = QtGui.QPushButton(self.tab_3)
+        self.open_gripper_max_button.setGeometry(
+            QtCore.QRect(105, 126, 150, 30))
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.open_gripper_max_button.setFont(font)
+        self.open_gripper_max_button.setObjectName("open_gripper_max_button")
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.tabWidget.addTab(self.tab_4, "")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 420, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 420, 25))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
 
@@ -341,14 +348,16 @@ class Ui_MainWindow(object):
             "MainWindow", "Close All LEDs", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QtGui.QApplication.translate(
             "MainWindow", "LEDs", None, QtGui.QApplication.UnicodeUTF8))
-        self.open_gripper_button.setText(QtGui.QApplication.translate(
-            "MainWindow", "Ouvrir pinces", None, QtGui.QApplication.UnicodeUTF8))
-        self.close_gripper_button.setText(QtGui.QApplication.translate(
-            "MainWindow", "Fermer pinces", None, QtGui.QApplication.UnicodeUTF8))
+        self.take_cube_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "Prendre cube", None, QtGui.QApplication.UnicodeUTF8))
+        self.drop_cube_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "Laisser cube", None, QtGui.QApplication.UnicodeUTF8))
         self.lift_gripper_button.setText(QtGui.QApplication.translate(
             "MainWindow", "Lever", None, QtGui.QApplication.UnicodeUTF8))
         self.lower_gripper_button.setText(QtGui.QApplication.translate(
             "MainWindow", "Baisser", None, QtGui.QApplication.UnicodeUTF8))
+        self.open_gripper_max_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "Ouvrir pince max", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate(
             "MainWindow", "Préhenseur", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate(

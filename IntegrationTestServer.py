@@ -2,35 +2,42 @@ import os
 
 import zmq
 
-from Robot.communication import serial_port
+from Robot.communication.serial_port import SerialPort
 from Robot.configuration.config import Config
 from Robot.country.country_repository import CountryRepository
 from Robot.cycle.objects.color import Color
 from Robot.cycle.objects.cube import Cube
 from Robot.filler import country_repository_filler
+from Robot.managers.gripper_manager import GripperManager
 from Robot.managers.led_manager import LedManager
 
 
 PORT = 5000
-ADDRESS = "192.168.0.26"
+ADDRESS = "127.0.0.1"
 
 DEPLACEMENT_ENABLE = False
-LEDS_ENABLE = True
+LEDS_ENABLE = False
 QUESTION_ENABLE = False
+GRIPPER_ENABLED = False
 
 led_manager = None
+gripper_manager = None
 stm_serial = None
 
 Config().load_config()
 
 if DEPLACEMENT_ENABLE or LEDS_ENABLE:
-    stm_serial = serial_port.SerialPort(Config().get_stm_serial_port_path(
+    stm_serial = SerialPort(Config().get_stm_serial_port_path(
     ), baudrate=Config().get_stm_serial_port_baudrate())
 
 if LEDS_ENABLE:
     flags_file_path = os.path.join("Robot", "resources", "flags.csv")
     country_repository_filler.fill_repository_from_file(flags_file_path)
     led_manager = LedManager(stm_serial)
+
+if GRIPPER_ENABLED:
+    pololu_serial = SerialPort(Config().get_pololu_serial_port_path())
+    gripper_manager = GripperManager(pololu_serial)
 
 
 def up():
@@ -113,5 +120,15 @@ while True:
         led_manager.close_red_led()
     elif message == "close all leds" and LEDS_ENABLE:
         led_manager.close_leds()
+    elif message == "take cube" and GRIPPER_ENABLED:
+        gripper_manager.take_cube()
+    elif message == "drop cube" and GRIPPER_ENABLED:
+        gripper_manager.release_cube()
+    elif message == "open gripper" and GRIPPER_ENABLED:
+        gripper_manager.widest_gripper()
+    elif message == "lift gripper" and GRIPPER_ENABLED:
+        gripper_manager.lift_gripper()
+    elif message == "lower cube" and GRIPPER_ENABLED:
+        gripper_manager.lower_gripper()
     else:
         print("Message filtered:", message)

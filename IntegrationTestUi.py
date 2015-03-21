@@ -5,6 +5,7 @@ from PySide import QtGui
 from Experiments.RobotControl.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
 from Experiments.RobotControl.ui.deplacement import Deplacement
 from Experiments.RobotControl.ui.leds import Leds
+from Experiments.RobotControl.ui.prehenseur import Prehenseur
 from Robot.communication.tcp_client import TCPClient
 
 
@@ -18,6 +19,7 @@ class Main(QtGui.QMainWindow):
                                      int(self.ui.port_line_edit.text()))
         self._deplacement = Deplacement(self.ui, self._tcp_client)
         self._leds = Leds(self.ui, self._tcp_client)
+        self._prehenseur = Prehenseur(self.ui, self._tcp_client)
         self.setFixedSize(self.size())
         self._setup_ui()
 

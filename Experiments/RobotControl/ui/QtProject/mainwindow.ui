@@ -640,13 +640,13 @@ de question</string>
      <attribute name="title">
       <string>Préhenseur</string>
      </attribute>
-     <widget class="QPushButton" name="open_gripper_button">
+     <widget class="QPushButton" name="take_cube_button">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>105</x>
         <y>30</y>
-        <width>131</width>
-        <height>31</height>
+        <width>150</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -655,16 +655,16 @@ de question</string>
        </font>
       </property>
       <property name="text">
-       <string>Ouvrir pinces</string>
+       <string>Prendre cube</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="close_gripper_button">
+     <widget class="QPushButton" name="drop_cube_button">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>105</x>
         <y>76</y>
-        <width>131</width>
-        <height>31</height>
+        <width>150</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -673,16 +673,16 @@ de question</string>
        </font>
       </property>
       <property name="text">
-       <string>Fermer pinces</string>
+       <string>Laisser cube</string>
       </property>
      </widget>
      <widget class="QPushButton" name="lift_gripper_button">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>126</y>
-        <width>131</width>
-        <height>31</height>
+        <x>105</x>
+        <y>174</y>
+        <width>150</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -697,10 +697,10 @@ de question</string>
      <widget class="QPushButton" name="lower_gripper_button">
       <property name="geometry">
        <rect>
-        <x>111</x>
-        <y>172</y>
-        <width>131</width>
-        <height>31</height>
+        <x>105</x>
+        <y>220</y>
+        <width>150</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="font">
@@ -710,6 +710,24 @@ de question</string>
       </property>
       <property name="text">
        <string>Baisser</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="open_gripper_max_button">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>126</y>
+        <width>150</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ouvrir pince max</string>
       </property>
      </widget>
     </widget>
@@ -726,7 +744,7 @@ de question</string>
      <x>0</x>
      <y>0</y>
      <width>420</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
