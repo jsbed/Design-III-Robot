@@ -1,12 +1,15 @@
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
+from Robot.question_analysis.question_segmentator import QuestionSegmentator
+
 
 class QuestionAnalyser(object):
 
     def __init__(self):
 
         self._config = Config()
+        self._question_segmentator = QuestionSegmentator()
         self._question_matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
                           PopulationIs(), UrbanAreasAre(), NationalSymbolIs(), IsTheNationalSymbol(),
                           OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
@@ -20,7 +23,7 @@ class QuestionAnalyser(object):
         self._factbook = Factbook()
 
     def answer_question(self, question):
-        question = self._segment_question(question)
+        questions = self._question_segmentator.segment_question(question)
         info_matchers = []
 
         for matcher in self._question_matchers:
@@ -44,8 +47,3 @@ class QuestionAnalyser(object):
             print(country_answer)
         country_answer = country_answer.pop()
         return country_answer
-
-    def _segment_question(self, question):
-        question = question.replace('\n', '').replace('\r\n', '').replace('\r', '')
-        return question
-
