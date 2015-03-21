@@ -28,3 +28,9 @@ class TestQuestionSegmentator(object):
                     'my population is greater than 12000', 'my capital starts with 1337.']
         actual = self._question_segmentator.segment_question(question)
         assert_equal(actual, expected)
+
+    def test_segmentate_single_attribute_question(self):
+        question = 'What country has a population growth rate of 1.46%?'
+        expected = ['What country has a population growth rate of 1.46%?']
+        actual = self._question_segmentator.segment_question(question)
+        assert_equal(actual, expected)

@@ -1,5 +1,7 @@
 from collections import namedtuple
 from operator import attrgetter
+import re
+
 from Robot.question_analysis.factbook_parsing.country_info import INFO_KEY_ALIAS
 
 
@@ -23,6 +25,7 @@ class QuestionSegmentator(object):
 
     def _clean_question(self, question):
         question = question.replace('\n', '').replace('\r\n', '').replace('\r', '')
+        question = re.sub(r'/\s?1000\spopulation', '/1000', question)
         question = ' '.join(question.split())
         return question
 
@@ -30,11 +33,11 @@ class QuestionSegmentator(object):
         """
         Returns positions of attributes in the question. Positions are sorted.
         """
-        attributes_position = []
+        attributes_position = set()
         for attribute in self._attributes:
             position = question.find(attribute)
             if position != -1:
-                attributes_position.append(position)
+                attributes_position.add(position)
         return sorted(attributes_position)
 
     def _remove_subquestion(self, question, attribute_position):
