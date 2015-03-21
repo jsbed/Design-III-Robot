@@ -1,6 +1,7 @@
 import re
 
-from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, NationalAnthemMatcher
+from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, NationalAnthemMatcher, \
+    UnemploymentRateGreaterThanMatcher
 from Robot.question_analysis.matchers.info_matchers import InternetUsersMatcher, PublicDebtMatcher, InfoListMatcher
 from Robot.question_analysis.matchers.info_matchers import ClimateMatcher, ShortCountryNameLengthMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher, IllicitDrugsActivitiesMatcher
@@ -62,6 +63,14 @@ class UnemploymentRateIs(QuestionMatcher):
         pattern = r'unemployment rate is ([\d.]+)%'
         info_matcher = UnemploymentRateMatcher
         super(UnemploymentRateIs, self).__init__(pattern, info_matcher)
+
+
+class UnemploymenRateGreaterThan(QuestionMatcher):
+
+    def __init__(self):
+        pattern = r'unemployment rate is greater than ([\d.]+)%'
+        info_matcher = UnemploymentRateGreaterThanMatcher
+        super(UnemploymenRateGreaterThan, self).__init__(pattern, info_matcher)
 
 
 class IndustriesInclude(QuestionWithListMatcher):

@@ -1,6 +1,7 @@
 from Robot.configuration.config import Config
 from Robot.question_analysis.factbook_parsing.country_info import Factbook
 from Robot.question_analysis.matchers import *
+from Robot.question_analysis.matchers.question_matchers import UnemploymenRateGreaterThan
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
 
 
@@ -19,26 +20,27 @@ class QuestionAnalyser(object):
                           DeathRateLessThan(), IndustriesInclude(), InternetUsers(), LanguagesInclude(),
                           ImportPartners(), InDeclaredIndependence(), PublicDebt(), NationalAnthemComposedBy(),
                           BirthRateIs(), EthnicGroups(), PopulationUrbanAreasAre(), Climate(), ExportPartners(),
-                          ShortCountryNameLength(), IllicitDrugsActivities()]
+                          ShortCountryNameLength(), IllicitDrugsActivities(), UnemploymenRateGreaterThan()]
         self._factbook = Factbook()
 
     def answer_question(self, question):
-        questions = self._question_segmentator.segment_question(question)
-        info_matchers = []
-
-        for matcher in self._question_matchers:
-            info_matcher = matcher.find_info(question)
-            if info_matcher:
-                info_matchers.append(info_matcher)
-
         country_matches = []
-        for info_matcher in info_matchers:
-            matches = self._factbook.get_matches(info_matcher)
-            if matches:
-                country_matches.append(matches)
+        questions = self._question_segmentator.segment_question(question)
+        for question in questions:
+            info_matchers = []
 
-        if not country_matches:
-            raise Exception("No country found")
+            for matcher in self._question_matchers:
+                info_matcher = matcher.find_info(question)
+                if info_matcher:
+                    info_matchers.append(info_matcher)
+
+            for info_matcher in info_matchers:
+                matches = self._factbook.get_matches(info_matcher)
+                if matches:
+                    country_matches.append(matches)
+
+            if not country_matches:
+                raise Exception("No country found")
 
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:

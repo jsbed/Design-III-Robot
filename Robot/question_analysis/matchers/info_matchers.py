@@ -65,6 +65,14 @@ class InternetUsersMatcher(InfoWithNumberMatcher):
         super(InternetUsersMatcher, self).__init__(info_key, regex, internet_users_amount, op)
 
 
+class UnemploymentRateGreaterThanMatcher(InfoWithNumberMatcher):
+
+    def __init__(self, rate):
+        info_key = 'unemployment rate'
+        regex = re.compile(r'([\d.]+)%')
+        op = '>'
+        super(UnemploymentRateGreaterThanMatcher, self).__init__(info_key, regex, rate, op)
+
 class ShortCountryNameLengthMatcher(InfoMatcher):
     def __init__(self, length):
         self._length = length

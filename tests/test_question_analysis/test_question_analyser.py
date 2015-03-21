@@ -113,8 +113,8 @@ class TestQuestionAnalyser(object):
 
     def test_unemployement_industries_include(self):
         question = 'My unemployment rate is greater than 25% and my industries include tourism and footwear.'
-        assert_true(self._question_analyser.answer_question(question) in ['Indonesia', 'Italy', 'Portugal', 'Spain',
-                                                                          'Malta', 'Tunisia', 'Saint Kitts and Nevis'])
+        assert_true(self._question_analyser.answer_question(question) in ['Saint Kitts and Nevis', 'Spain',
+                                                                           'Indonesia', 'Malta'])
 
     def test_industries_include(self):
         question = 'What country has industries including the world’s largest producer of platinum, gold and chromium?'
