@@ -14,6 +14,7 @@ SECTION_CUBE_SEGMENTATION = "CUBESEGMENTATION"
 SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
+SECTION_GRIPPER = "GRIPPERDATA"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
 SECTION_SERIAL_PORT = "SERIALPORT"
 
@@ -30,9 +31,6 @@ class Config(metaclass=Singleton):
 
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
-
-    def get_kinect_connection_port(self):
-        return int(self._parser.get(SECTION_DEFAULT, "KinectConnectionPort"))
 
     def get_base_station_communication_port(self):
         return int(self._parser.get(SECTION_DEFAULT,
@@ -108,6 +106,26 @@ class Config(metaclass=Singleton):
     def get_perspective_rotation_y(self):
         return float(self._parser.get(SECTION_PERSPECTIVE, "RotationYAxis"))
 
+    def get_lower_gripper_values(self):
+        return json.loads(self._parser.get(SECTION_GRIPPER,
+                                           "LowerGripper"))
+
+    def get_lift_gripper_values(self):
+        return json.loads(self._parser.get(SECTION_GRIPPER,
+                                           "LiftGripper"))
+
+    def get_take_cube_gripper_values(self):
+        return json.loads(self._parser.get(SECTION_GRIPPER,
+                                           "TakeCube"))
+
+    def get_release_cube_gripper_values(self):
+        return json.loads(self._parser.get(SECTION_GRIPPER,
+                                           "TakeCube"))
+
+    def get_widest_gripper_values(self):
+        return json.loads(self._parser.get(SECTION_GRIPPER,
+                                           "WidestGripper"))
+
     def get_robot_corner_size(self):
         return float(self._parser.get(SECTION_PERSPECTIVE, "RobotCornerSize"))
 
@@ -154,6 +172,9 @@ class Config(metaclass=Singleton):
     def get_cube_center_distance(self):
         return float(self._parser.get(SECTION_FLAGCREATION,
                                       "CubeCenterDistance"))
+
+    def get_pololu_serial_port_path(self):
+        return self._parser.get(SECTION_SERIAL_PORT, "PololuSerialPort")
 
     def get_stm_serial_port_path(self):
         return self._parser.get(SECTION_SERIAL_PORT, "STMSerialPort")
