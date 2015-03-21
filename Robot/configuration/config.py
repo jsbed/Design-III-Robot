@@ -155,5 +155,8 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_FLAGCREATION,
                                       "CubeCenterDistance"))
 
-    def get_led_serial_port(self):
-        return self._parser.get(SECTION_SERIAL_PORT, "LedSerialPort")
+    def get_stm_serial_port_path(self):
+        return self._parser.get(SECTION_SERIAL_PORT, "STMSerialPort")
+
+    def get_stm_serial_port_baudrate(self):
+        return int(self._parser.get(SECTION_SERIAL_PORT, "STMBaudRate"))

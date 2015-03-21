@@ -2,6 +2,7 @@ import os
 
 import zmq
 
+from Robot.communication import serial_port
 from Robot.configuration.config import Config
 from Robot.country.country_repository import CountryRepository
 from Robot.cycle.objects.color import Color
@@ -18,14 +19,18 @@ LEDS_ENABLE = True
 QUESTION_ENABLE = False
 
 led_manager = None
-
+stm_serial = None
 
 Config().load_config()
+
+if DEPLACEMENT_ENABLE or LEDS_ENABLE:
+    stm_serial = serial_port.SerialPort(Config().get_stm_serial_port_path(
+    ), baudrate=Config().get_stm_serial_port_baudrate())
 
 if LEDS_ENABLE:
     flags_file_path = os.path.join("Robot", "resources", "flags.csv")
     country_repository_filler.fill_repository_from_file(flags_file_path)
-    led_manager = LedManager(Config().get_led_serial_port())
+    led_manager = LedManager(stm_serial)
 
 
 def up():

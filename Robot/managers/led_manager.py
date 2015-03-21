@@ -1,6 +1,3 @@
-import serial
-
-
 class LedManager():
 
     '''
@@ -26,7 +23,7 @@ class LedManager():
 
     def __init__(self, serial_port):
         self._led_status = "F0000000000"
-        self._serial_port = serial.Serial(serial_port, baudrate=19200)
+        self._serial_port = serial_port
 
     def display_country(self, country):
         self._led_status = self._format_country_to_string(country)
@@ -52,7 +49,7 @@ class LedManager():
         self._display_new_led_status()
 
     def _display_new_led_status(self):
-        self._serial_port.write(self._led_status.encode())
+        self._serial_port.send_string(self._led_status)
 
     def _format_country_to_string(self, country):
         formated_string = "F"

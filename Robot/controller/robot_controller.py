@@ -15,7 +15,7 @@ class RobotController():
         self._robot = Robot(None)
         self._point_adjustor = PointAdjustor()
         self._led_manager = led_manager.LedManager(
-            config.Config().get_led_serial_port())
+            config.Config().get_stm_serial_port_path())
 
     def get_cube(self, cube):
         return self._move_to(cube.get_localization().position)
