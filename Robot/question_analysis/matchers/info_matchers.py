@@ -15,6 +15,22 @@ class InfoMatcher(object):
         return self._regex.search(info_data) is not None
 
 
+class InfoWithNumberMatcher(InfoMatcher):
+
+    def __init__(self, info_key, regex, expected_info, op):
+        self._expected_info = expected_info.replace(',', '')
+        self._ops = {'=': operator.eq, '>': operator.gt, '<': operator.lt}
+        self._op = self._ops[op]
+        super(InfoWithNumberMatcher, self).__init__(info_key, regex)
+
+    def match(self, info_data):
+        match = self._regex.search(info_data)
+        if match:
+            actual_info = match.group(1).replace(',', '')
+            return self._op(actual_info, self._expected_info)
+        return None
+
+
 class InfoListMatcher(InfoMatcher):
 
     def __init__(self, info_key, info_list):
@@ -38,22 +54,6 @@ class UnemploymentRateMatcher(InfoMatcher):
         info_key = 'unemployment rate'
         regex = re.compile('{0}%'.format(rate))
         super(UnemploymentRateMatcher, self).__init__(info_key, regex)
-
-
-class InfoWithNumberMatcher(InfoMatcher):
-
-    def __init__(self, info_key, regex, expected_info, op):
-        self._expected_info = expected_info.replace(',', '')
-        self._ops = {'=': operator.eq, '>':operator.gt, '<': operator.lt}
-        self._op = self._ops[op]
-        super(InfoWithNumberMatcher, self).__init__(info_key, regex)
-
-    def match(self, info_data):
-        match = self._regex.search(info_data)
-        if match:
-            actual_info = match.group(1).replace(',', '')
-            return self._op(actual_info, self._expected_info)
-        return None
 
 
 class InternetUsersMatcher(InfoWithNumberMatcher):

@@ -10,6 +10,7 @@ class DeathRateGreaterThan(QuestionMatcher):
         info_matcher = DeathRateGreaterThanMatcher
         super(DeathRateGreaterThan, self).__init__(pattern, info_matcher)
 
+
 class DeathRateLessThan(QuestionMatcher):
 
     def __init__(self):
