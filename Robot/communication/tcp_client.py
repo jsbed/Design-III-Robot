@@ -1,5 +1,4 @@
 import zmq
-import json
 
 
 class TCPClient():
@@ -34,6 +33,6 @@ class TCPClient():
 
     def send_data(self, data):
         try:
-            self._socket.send(bytes(json.dumps(data), "utf-8"))
+            self._socket.send(bytes(data, "utf-8"))
         except:
             print('Send failed')

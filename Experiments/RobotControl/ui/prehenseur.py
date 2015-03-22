@@ -13,7 +13,7 @@ class Prehenseur():
         self._ui.lower_gripper_button.clicked.connect(self._lower_gripper)
 
     def _take_cube(self):
-        self._tcp_client.send_data("take_cube")
+        self._tcp_client.send_data("take cube")
 
     def _drop_cube(self):
         self._tcp_client.send_data("drop cube")
