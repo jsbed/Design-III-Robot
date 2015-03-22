@@ -44,6 +44,10 @@ class Config(metaclass=Singleton):
         return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,
                                              "KinectMask"))
 
+    def get_perspective_matrix_path(self):
+        return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,
+                                             "PerspectiveArray"))
+
     def get_cube_low_blue_hsv_values(self):
         return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
                                            "LowBlueHSV"))

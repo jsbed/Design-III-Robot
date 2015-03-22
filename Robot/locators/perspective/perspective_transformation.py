@@ -13,8 +13,8 @@ def get_rotation_matrix(angle):
 
 
 def transform(point):
-    perspective_matrix = numpy.load(os.path.join("Robot", "resources",
-                                                 "perspective_array.npy"))
+    perspective_matrix = numpy.load(os.path.join(
+        "Robot", "resources", Config().get_perspective_matrix_path()))
 
     invert_x_matrix = numpy.array([[-1, 0, 0],
                                    [0, 1, 0],
