@@ -6,7 +6,6 @@ import numpy
 import time
 
 from Robot.configuration.config import Config
-from Robot.locators import robot_locator
 
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
@@ -98,13 +97,6 @@ while True:
     cv2.imshow("cloud", img_p)
 
     cc = cv2.waitKey(10)
-    loc = None
-    try:
-        loc = robot_locator.localize(img_i, img_p)
-    except Exception as e:
-        print(str(e))
-    else:
-        print(loc.position, loc.orientation)
 
     if cc == 27:  # Touche Echap quitte
         break
