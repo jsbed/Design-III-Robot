@@ -14,6 +14,7 @@ SECTION_CUBE_SEGMENTATION = "CUBESEGMENTATION"
 SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
+SECTION_LEDS = "LEDS"
 SECTION_GRIPPER = "GRIPPERDATA"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
 SECTION_SERIAL_PORT = "SERIALPORT"
@@ -172,6 +173,12 @@ class Config(metaclass=Singleton):
     def get_cube_center_distance(self):
         return float(self._parser.get(SECTION_FLAGCREATION,
                                       "CubeCenterDistance"))
+
+    def get_red_led_wait_time(self):
+        return float(self._parser.get(SECTION_LEDS, "RedLedWaitTime"))
+
+    def get_display_country_wait_time(self):
+        return float(self._parser.get(SECTION_LEDS, "DisplayCountryWaitTime"))
 
     def get_pololu_serial_port_path(self):
         return self._parser.get(SECTION_SERIAL_PORT, "PololuSerialPort")
