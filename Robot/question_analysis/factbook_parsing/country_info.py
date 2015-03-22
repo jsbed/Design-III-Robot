@@ -1,5 +1,6 @@
 import os
 import pickle
+from collections import OrderedDict
 
 
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
@@ -19,6 +20,8 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'ethnic groups': ['Ethnic groups', 'description'], 'climate': ['Climate', 'description'],
                   'local short form': ['Country name', 'local short form'],
                   'illicit drugs': ['Illicit drugs', 'description']}
+# sort the dictionary by the length of the keys
+INFO_KEY_ALIAS = OrderedDict(sorted(INFO_KEY_ALIAS.items(), key=lambda el: len(el[0])))
 
 
 class Factbook(object):
