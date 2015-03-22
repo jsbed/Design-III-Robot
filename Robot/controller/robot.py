@@ -1,6 +1,8 @@
 from Robot.locators.localization import Localization
 from Robot.path_finding.point import Point
 
+FIRST_INSTRUCTION = 0
+
 
 class Robot():
 
@@ -13,7 +15,7 @@ class Robot():
         self._instructions.append(instruction)
 
     def execute_instructions(self):
-        command = self._instructions.pop(0)
+        command = self._instructions.pop(FIRST_INSTRUCTION)
         command(self._serial_port)
 
     def update_localization(self):

@@ -1,6 +1,11 @@
 from Robot.controller.robot_instruction import RobotInstruction
 import serial
 
+NUMBER_OF_BYTES = 8
+EMPTY_BYTE = "0"
+CLOCKWISE_ROTATION = "ROR"
+ANTICLOCKWISE_ROTATION = "ROL"
+
 
 class Rotate(RobotInstruction):
     def rotate(self, angle):
@@ -13,15 +18,17 @@ class Rotate(RobotInstruction):
 
     def _format_angle_to_string(self):
         if (self._angle < 0):
-            formated_string = "RO"  # ****Need command for negative angle****
+            formated_string = CLOCKWISE_ROTATION
             self._angle = abs(self._angle)
+
         else:
-            formated_string = "RO"
+            formated_string = ANTICLOCKWISE_ROTATION
 
         angle_string = str(self._angle)
 
-        while(len(angle_string) < 9):
-            angle_string = "0" + angle_string
+        while(len(angle_string) < NUMBER_OF_BYTES):
+            angle_string = EMPTY_BYTE + angle_string
 
         formated_string += angle_string
+
         return formated_string

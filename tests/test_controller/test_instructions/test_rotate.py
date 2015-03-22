@@ -4,8 +4,8 @@ from Robot.controller.instructions.rotate import Rotate
 
 
 A_SERIAL_PORT = "SerialPortPath"
-ROTATE_120_DEGREES_CLOCKWISE_ENCODED_STRING = "RO000000120".encode()
-ROTATE_50_DEGREES_ANTICLOCKWISE_ENCODED_STRING = "RO000000050".encode()  # ****Need command for negative angle****
+ROTATE_120_DEGREES_CLOCKWISE_ENCODED_STRING = "ROL00000120".encode()
+ROTATE_50_DEGREES_ANTICLOCKWISE_ENCODED_STRING = "ROR00000050".encode()
 
 
 class RotateTest(unittest.TestCase):
