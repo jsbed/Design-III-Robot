@@ -8,13 +8,13 @@ from Robot.cycle.objects.cube import Cube
 from Robot.path_finding.point import Point
 
 
-EXPECTED_FIRST_CUBE = Cube(Color.WHITE, Point(75, 36), index=6)
-EXPECTED_SECOND_CUBE = Cube(Color.BLUE, Point(51, 36), index=8)
-EXPECTED_THIRD_CUBE = Cube(Color.BLUE, Point(75, 48), index=3)
-EXPECTED_FOURTH_CUBE = Cube(Color.BLACK, Point(63, 48), index=4)
-EXPECTED_FIFTH_CUBE = Cube(Color.YELLOW, Point(51, 48), index=5)
-EXPECTED_SIXTH_CUBE = Cube(Color.RED, Point(75, 60), index=0)
-EXPECTED_LAST_CUBE = Cube(Color.GREEN, Point(63, 60), index=1)
+EXPECTED_FIRST_CUBE = Cube(Color.WHITE, Point(76.5, 34.5), index=6)
+EXPECTED_SECOND_CUBE = Cube(Color.BLUE, Point(52.5, 34.5), index=8)
+EXPECTED_THIRD_CUBE = Cube(Color.BLUE, Point(76.5, 46.5), index=3)
+EXPECTED_FOURTH_CUBE = Cube(Color.BLACK, Point(64.5, 46.5), index=4)
+EXPECTED_FIFTH_CUBE = Cube(Color.YELLOW, Point(52.5, 46.5), index=5)
+EXPECTED_SIXTH_CUBE = Cube(Color.RED, Point(76.5, 58.5), index=0)
+EXPECTED_LAST_CUBE = Cube(Color.GREEN, Point(64.5, 58.5), index=1)
 
 
 class FlagCreatorTest(unittest.TestCase):
@@ -39,8 +39,8 @@ class FlagCreatorTest(unittest.TestCase):
     def _setup_config_mock(self, mock):
         a_mock = MagicMock()
         a_mock.get_flag_creation_zone_position = Mock(
-            return_value=Point(6, 53))
-        a_mock.get_target_zone_position = Mock(return_value=Point(85, 85))
+            return_value=Point(5, 55))
+        a_mock.get_target_zone_position = Mock(return_value=Point(85.5, 85.5))
         a_mock.get_cube_radius = Mock(return_value=4)
         a_mock.get_cube_center_distance = Mock(return_value=12)
 
