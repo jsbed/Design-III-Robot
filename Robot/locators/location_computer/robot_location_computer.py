@@ -1,6 +1,21 @@
+'''
+Pink________| |________Blue
+    |                  |
+    |                  |
+    |                  |
+    |                  |
+    |                  |
+    |                  |
+    |__________________|
+Orange                 Pink
+
+Gripper facing upwards is 0 degrees
+'''
+
 from numpy import arctan, degrees, cos, sin, pi
 
 from Robot.configuration import config
+from Robot.cycle.objects.color import Color
 from Robot.locators.localization import Localization
 from Robot.path_finding.point import Point
 
@@ -23,4 +38,30 @@ def compute(close_corner, far_corner):
     if (middle_point.x < close_corner.location.x):
         orientation *= -1
 
-    return Localization(location, degrees(orientation))
+    exact_orientation = _find_exact_orientation_from_corner_colors(
+        orientation, close_corner, far_corner)
+
+    return Localization(location, exact_orientation)
+
+
+def _find_exact_orientation_from_corner_colors(orientation, close_corner, far_corner):
+    if (close_corner.color == Color.ORANGE and far_corner.color == Color.PINK):
+        if (close_corner.location.x < far_corner.location.x):
+            orientation = pi / 2 - orientation
+    elif (close_corner.color == Color.PINK and far_corner.color == Color.BLUE):
+        if (close_corner.location.x < far_corner.location.x):
+            orientation = pi - orientation
+        else:
+            orientation += 3 * pi / 2
+    elif (close_corner.color == Color.BLUE and far_corner.color == Color.PINK):
+        if (close_corner.location.x < far_corner.location.x):
+            orientation = 3 * pi / 2 - orientation
+        else:
+            orientation += pi
+    elif (close_corner.color == Color.PINK and far_corner.color == Color.ORANGE):
+        if (close_corner.location.x < far_corner.location.x):
+            orientation = 2 * pi - orientation
+        else:
+            orientation += pi / 2
+
+    return degrees(orientation)
