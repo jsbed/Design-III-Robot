@@ -10,20 +10,19 @@ import numpy as np
 
 DATA_DIRECTORY = "Data-HSV"
 
-LOW_H = 0
-LOW_S = 1
-LOW_V = 2
-HIGH_H = 3
-HIGH_S = 4
-HIGH_V = 5
-
 if not os.path.exists(DATA_DIRECTORY):
     os.makedirs(DATA_DIRECTORY)
 
 DATA_COUNT = len(os.listdir(DATA_DIRECTORY))
 
+
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', "--data", dest="data")
+parser.add_argument("low_h")
+parser.add_argument("low_s")
+parser.add_argument("low_v")
+parser.add_argument("high_h")
+parser.add_argument("high_s")
+parser.add_argument("high_v")
 args = parser.parse_args()
 
 
@@ -48,19 +47,19 @@ if (args.data):
         for i in range(len(data)):
             data[i] = int(data[i])
 
-    cv2.setTrackbarPos('Low-H', 'mask', data[LOW_H])
-    cv2.setTrackbarPos('High-H', 'mask', data[HIGH_H])
-    cv2.setTrackbarPos('Low-S', 'mask', data[LOW_S])
-    cv2.setTrackbarPos('High-S', 'mask', data[HIGH_S])
-    cv2.setTrackbarPos('Low-V', 'mask', data[LOW_V])
-    cv2.setTrackbarPos('High-V', 'mask', data[HIGH_V])
+    cv2.setTrackbarPos('Low-H', 'mask', args.low_h)
+    cv2.setTrackbarPos('High-H', 'mask', args.low_s)
+    cv2.setTrackbarPos('Low-S', 'mask', args.low_v)
+    cv2.setTrackbarPos('High-S', 'mask', args.high_h)
+    cv2.setTrackbarPos('Low-V', 'mask', args.high_s)
+    cv2.setTrackbarPos('High-V', 'mask', args.high_v)
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
 flags, img_bgr = captObj.read()
 time.sleep(1)
 
 while True:
-        # On recupere une nouvelle image
+    # On recupere une nouvelle image
     captObj.grab()
 
     # On va chercher les infos
@@ -82,11 +81,15 @@ while True:
     high_v = cv2.getTrackbarPos('High-V', 'mask')
 
     # define range of blue color in HSV
-    lower = np.array([low_h, low_s, low_v])
-    upper = np.array([high_h, high_s, high_v])
+    lower_lower_red = np.array([low_h, low_s, low_v])
+    lower_upper_red = np.array([180, high_s, high_v])
+    upper_lower_red = np.array([0, low_s, low_v])
+    upper_upper_red = np.array([high_h, high_s, high_v])
 
     # Threshold the HSV image to get only blue colors
-    mask = cv2.inRange(img_hsv, lower, upper)
+    mask_lower = cv2.inRange(img_hsv, lower_lower_red, lower_upper_red)
+    mask_upper = cv2.inRange(img_hsv, upper_lower_red, upper_upper_red)
+    mask = mask_lower + mask_upper
 
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(img_bgr, img_bgr, mask=mask)

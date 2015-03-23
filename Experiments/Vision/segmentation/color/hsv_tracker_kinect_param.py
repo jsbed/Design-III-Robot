@@ -10,20 +10,18 @@ import numpy as np
 
 DATA_DIRECTORY = "Data-HSV"
 
-LOW_H = 0
-LOW_S = 1
-LOW_V = 2
-HIGH_H = 3
-HIGH_S = 4
-HIGH_V = 5
-
 if not os.path.exists(DATA_DIRECTORY):
     os.makedirs(DATA_DIRECTORY)
 
 DATA_COUNT = len(os.listdir(DATA_DIRECTORY))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', "--data", dest="data")
+parser.add_argument("low_h")
+parser.add_argument("low_s")
+parser.add_argument("low_v")
+parser.add_argument("high_h")
+parser.add_argument("high_s")
+parser.add_argument("high_v")
 args = parser.parse_args()
 
 
@@ -48,12 +46,12 @@ if (args.data):
         for i in range(len(data)):
             data[i] = int(data[i])
 
-    cv2.setTrackbarPos('Low-H', 'mask', data[LOW_H])
-    cv2.setTrackbarPos('High-H', 'mask', data[HIGH_H])
-    cv2.setTrackbarPos('Low-S', 'mask', data[LOW_S])
-    cv2.setTrackbarPos('High-S', 'mask', data[HIGH_S])
-    cv2.setTrackbarPos('Low-V', 'mask', data[LOW_V])
-    cv2.setTrackbarPos('High-V', 'mask', data[HIGH_V])
+    cv2.setTrackbarPos('Low-H', 'mask', args.low_h)
+    cv2.setTrackbarPos('High-H', 'mask', args.low_s)
+    cv2.setTrackbarPos('Low-S', 'mask', args.low_v)
+    cv2.setTrackbarPos('High-S', 'mask', args.high_h)
+    cv2.setTrackbarPos('Low-V', 'mask', args.high_s)
+    cv2.setTrackbarPos('High-V', 'mask', args.high_v)
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
 flags, img_bgr = captObj.read()
