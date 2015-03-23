@@ -24,6 +24,7 @@ class RobotController():
         self._led_manager.display_red_led()
         time.sleep(config.Config().get_red_led_wait_time())
         self._led_manager.close_red_led()
+
         return atlas.get_question()
 
     def arrived_at_zone_atlas(self):
@@ -36,7 +37,6 @@ class RobotController():
 
         if (self._robot_is_next_to_target_point()):
             return True
-
         else:
             return False
 
@@ -60,8 +60,7 @@ class RobotController():
     def robot_is_next_to_target_with_correct_orientation(self, target):
         self._update_robot_localization()
         next_point = self._find_next_destination_point(target)
-        self._distance = \
-            self._point_adjustor. \
+        self._distance = self._point_adjustor. \
             _calculate_distance_between_points(self._robot_position,
                                                next_point)
 
@@ -96,14 +95,11 @@ class RobotController():
         return next_point
 
     def _robot_has_correct_orientation(self, destination):
-        target_orientation = \
-            self._point_adjustor.find_robot_orientation(self._robot_orientation,  # @IgnorePep8
-                                                        self._robot_position,
-                                                        destination)
+        target_orientation = self._point_adjustor.find_robot_orientation(
+            self._robot_orientation, self._robot_position, destination)
 
         if (self._robot_is_facing_correct_angle(target_orientation)):
             return True
-
         else:
             Rotate().rotate(target_orientation)
             self._robot.append_instruction(Rotate().execute)
@@ -141,6 +137,5 @@ class RobotController():
         if ((angle_difference <= angle_uncertainty)
                 and (angle_difference >= -angle_uncertainty)):
             return True
-
         else:
             return False
