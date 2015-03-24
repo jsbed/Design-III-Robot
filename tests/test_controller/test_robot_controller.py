@@ -104,24 +104,16 @@ class RobotControllerTest(unittest.TestCase):
     def test_when_robot_move_to_point_then_rotate_is_called(self, RobotMock, RotateMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         self._setup_robot_mock(RobotMock, Point(50, 50), 0)
-        rotate_mock = MagicMock()
-        RotateMock.return_value = rotate_mock
-
         RobotController().move_robot_to(Point(95, 20))
-        RobotController().move_to_atlas()
-        self.assertEqual(rotate_mock.rotate.call_count, 2)
+        assert RotateMock.called
 
     @patch('Robot.controller.robot_controller.Move')
     @patch('Robot.controller.robot_controller.Robot')
     def test_when_robot_move_to_point_then_move_is_called(self, RobotMock, MoveMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         self._setup_robot_mock(RobotMock, Point(50, 50), 0)
-        move_mock = MagicMock()
-        MoveMock.return_value = move_mock
-
         RobotController().move_robot_to(Point(95, 20))
-        RobotController().move_to_atlas()
-        self.assertEqual(move_mock.move.call_count, 2)
+        assert MoveMock.called
 
     @patch('Robot.controller.robot_controller.Robot')
     def test_when_robot_move_to_point_then_append_instruction_is_called_twice(self, RobotMock, LedManagerMock, ConfigMock):
@@ -193,3 +185,38 @@ class RobotControllerTest(unittest.TestCase):
 
         RobotController().ask_for_cube(self._cube)
         assert led_manager_mock.next_flag_led.called
+
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_no_instructions_are_remaining(self, RobotMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        robot_mock.get_instructions.return_value = []
+        RobotMock.return_value = robot_mock
+
+        self.assertFalse(RobotController().instruction_remaining())
+
+    @patch('Robot.controller.robot_controller.Rotate')
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_an_instruction_is_remaining(self, RobotMock, RotateMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        rotate_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        robot_mock.get_instructions.return_value = [rotate_mock.rotate]
+        RotateMock.return_value = rotate_mock
+        RobotMock.return_value = robot_mock
+
+        self.assertTrue(RobotController().instruction_remaining())
+
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_next_instruction_then_execute_instruction_is_called(self, RobotMock, LedManagerMock, ConfigMock):
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        RobotMock.return_value = robot_mock
+
+        RobotController().next_instruction()
+        assert robot_mock.execute_instructions.called

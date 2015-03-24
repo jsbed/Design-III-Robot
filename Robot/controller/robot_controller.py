@@ -15,7 +15,8 @@ ANGLE_DIFFERENCE_NULL = 0
 class RobotController():
 
     def __init__(self):
-        self._robot = Robot(None)
+        self._robot = Robot(
+            config.Config().get_stm_serial_port_path())
         self._point_adjustor = PointAdjustor()
         self._led_manager = led_manager.LedManager(
             config.Config().get_stm_serial_port_path())
@@ -80,6 +81,15 @@ class RobotController():
 
         self._move_robot_towards_target_point(next_point)
 
+    def instruction_remaining(self):
+        if not self._robot.get_instructions():
+            return False
+        else:
+            return True
+
+    def next_instruction(self):
+        self._robot.execute_instructions()
+
     def _update_robot_localization(self):
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
@@ -106,10 +116,10 @@ class RobotController():
             return False
 
     def _move_robot_towards_target_point(self, destination):
-        target_orientation = \
-            self._point_adjustor.find_robot_orientation(self._robot_orientation,  # @IgnorePep8
-                                                        self._robot_position,
-                                                        destination)
+        target_orientation = self._point_adjustor.find_robot_orientation(
+            self._robot_orientation,
+            self._robot_position,
+            destination)
 
         self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
