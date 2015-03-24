@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
 #
-# Created: Fri Mar  6 10:10:36 2015
+# Created: Mon Mar 23 20:48:36 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -192,7 +192,7 @@ class Ui_MainWindow(object):
         self.questionLabel.setFont(font)
         self.questionLabel.setObjectName("questionLabel")
         self.label_4 = QtGui.QLabel(self.centralWidget)
-        self.label_4.setGeometry(QtCore.QRect(80, 620, 61, 19))
+        self.label_4.setGeometry(QtCore.QRect(127, 620, 61, 19))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(50)
@@ -200,7 +200,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.label_5 = QtGui.QLabel(self.centralWidget)
-        self.label_5.setGeometry(QtCore.QRect(80, 690, 41, 21))
+        self.label_5.setGeometry(QtCore.QRect(127, 690, 41, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(50)
@@ -208,7 +208,7 @@ class Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtGui.QLabel(self.centralWidget)
-        self.label_6.setGeometry(QtCore.QRect(80, 650, 41, 20))
+        self.label_6.setGeometry(QtCore.QRect(127, 650, 41, 20))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(50)
@@ -216,7 +216,7 @@ class Ui_MainWindow(object):
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.label_7 = QtGui.QLabel(self.centralWidget)
-        self.label_7.setGeometry(QtCore.QRect(80, 570, 81, 41))
+        self.label_7.setGeometry(QtCore.QRect(127, 570, 81, 41))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setWeight(75)
@@ -224,7 +224,7 @@ class Ui_MainWindow(object):
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
         self.line = QtGui.QFrame(self.centralWidget)
-        self.line.setGeometry(QtCore.QRect(160, 620, 51, 20))
+        self.line.setGeometry(QtCore.QRect(207, 620, 51, 20))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -255,19 +255,19 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName("line")
         self.label_8 = QtGui.QLabel(self.centralWidget)
-        self.label_8.setGeometry(QtCore.QRect(160, 680, 69, 48))
+        self.label_8.setGeometry(QtCore.QRect(196, 680, 49, 49))
         self.label_8.setText("")
         self.label_8.setPixmap(QtGui.QPixmap(":/resources/robot.png"))
         self.label_8.setScaledContents(True)
         self.label_8.setObjectName("label_8")
         self.table_label = QtGui.QLabel(self.centralWidget)
-        self.table_label.setGeometry(QtCore.QRect(80, 10, 350, 550))
+        self.table_label.setGeometry(QtCore.QRect(120, 20, 260, 540))
         self.table_label.setText("")
         self.table_label.setPixmap(QtGui.QPixmap(":/resources/table.png"))
         self.table_label.setScaledContents(True)
         self.table_label.setObjectName("table_label")
         self.label_9 = QtGui.QLabel(self.centralWidget)
-        self.label_9.setGeometry(QtCore.QRect(160, 650, 25, 18))
+        self.label_9.setGeometry(QtCore.QRect(207, 650, 19, 19))
         self.label_9.setText("")
         self.label_9.setPixmap(QtGui.QPixmap(":/resources/cube.png"))
         self.label_9.setScaledContents(True)

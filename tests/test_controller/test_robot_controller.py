@@ -29,7 +29,7 @@ class RobotControllerTest(unittest.TestCase):
     @staticmethod
     def _setup_config_mock(mock):
         a_mock = MagicMock()
-        a_mock.get_height = Mock(return_value=251)
+        a_mock.get_height = Mock(return_value=231)
         a_mock.get_width = Mock(return_value=111)
         a_mock.get_cube_radius = Mock(return_value=4)
         a_mock.get_robot_radius = Mock(return_value=11)

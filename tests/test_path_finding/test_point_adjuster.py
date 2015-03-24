@@ -19,7 +19,7 @@ class TestPointAdjuster(unittest.TestCase):
 
     def _setup_config_mock(self, mock):
         a_mock = MagicMock()
-        a_mock.get_height = Mock(return_value=251)
+        a_mock.get_height = Mock(return_value=231)
         a_mock.get_width = Mock(return_value=111)
         a_mock.get_cube_radius = Mock(return_value=4)
         a_mock.get_robot_radius = Mock(return_value=11)
@@ -60,7 +60,7 @@ class TestPointAdjuster(unittest.TestCase):
     def test_when_cube_is_near_north_wall(self):
         self._point_test = Point(50, 232)
         self._orientation_test = 90
-        self._cube.set_localization_position(Point(50, 251))
+        self._cube.set_localization_position(Point(50, 227))
         self._find_target_point_and_robot_orientation()
 
     def test_when_cube_is_near_south_wall(self):
