@@ -101,8 +101,7 @@ class RobotController():
         if (self._robot_is_facing_correct_angle(target_orientation)):
             return True
         else:
-            Rotate().rotate(target_orientation)
-            self._robot.append_instruction(Rotate().execute)
+            self._robot.append_instruction(Rotate(target_orientation))
             self._robot.execute_instructions()
             return False
 
@@ -112,10 +111,8 @@ class RobotController():
                                                         self._robot_position,
                                                         destination)
 
-        Rotate().rotate(target_orientation)
-        Move().move(self._distance)
-        self._robot.append_instruction(Rotate().execute)
-        self._robot.append_instruction(Move().execute)
+        self._robot.append_instruction(Rotate(target_orientation))
+        self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
 
     def _robot_is_next_to_target_point(self):

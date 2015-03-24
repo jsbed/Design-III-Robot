@@ -16,7 +16,7 @@ class Robot():
 
     def execute_instructions(self):
         command = self._instructions.pop(FIRST_INSTRUCTION)
-        command(self._serial_port)
+        command.execute(self._serial_port)
 
     def update_localization(self):
         pass

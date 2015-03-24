@@ -1,5 +1,5 @@
 from Robot.controller.robot_instruction import RobotInstruction
-import serial
+
 
 NUMBER_OF_BYTES = 9
 EMPTY_BYTE = "0"
@@ -9,13 +9,14 @@ MOVE_FOWARD = "GO"
 
 
 class Move(RobotInstruction):
-    def move(self, distance_cm):
+
+    def __init__(self, distance_cm):
         self._distance_mm = (distance_cm * CM_TO_MM_MULTIPLIER)
 
     def execute(self, serial_port):
-        self._serial_port = serial.Serial(serial_port)
-        command = self._format_distance_to_string()
-        self._serial_port.write(command.encode())
+        if (self._distance_mm != 0):
+            command_to_send = self._format_distance_to_string()
+            serial_port.send_string(command_to_send)
 
     def _format_distance_to_string(self):
         if (self._distance_mm < 0):

@@ -1,5 +1,5 @@
 from Robot.controller.robot_instruction import RobotInstruction
-import serial
+
 
 NUMBER_OF_BYTES = 8
 EMPTY_BYTE = "0"
@@ -8,13 +8,14 @@ ANTICLOCKWISE_ROTATION = "ROL"
 
 
 class Rotate(RobotInstruction):
-    def rotate(self, angle):
+
+    def __init__(self, angle):
         self._angle = angle
 
     def execute(self, serial_port):
-        self._serial_port = serial.Serial(serial_port)
-        command = self._format_angle_to_string()
-        self._serial_port.write(command.encode())
+        if (self._angle != 0):
+            command_to_send = self._format_angle_to_string()
+            serial_port.send_string(command_to_send)
 
     def _format_angle_to_string(self):
         if (self._angle < 0):
