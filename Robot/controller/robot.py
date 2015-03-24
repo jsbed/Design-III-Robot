@@ -1,5 +1,4 @@
 from Robot.locators.localization import Localization
-from Robot.path_finding.point import Point
 
 FIRST_INSTRUCTION = 0
 
@@ -7,7 +6,7 @@ FIRST_INSTRUCTION = 0
 class Robot():
 
     def __init__(self, serial_port):
-        self._localization = Localization(Point(0, 0), 0)
+        self._localization = Localization(None, None, unknown=True)
         self._serial_port = serial_port
         self._instructions = []
 
