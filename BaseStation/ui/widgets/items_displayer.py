@@ -15,10 +15,10 @@ class ItemsDisplayer():
         self._robot_image = QImage()
         self._cube_image = QImage()
         self._config = Config()
+        self._table_area = QtCore.QRect(self._widget.table_label.geometry())
 
     def display_robot(self, position):
         (x, y) = position
-        self._table_area = QtCore.QRect(self._widget.table_label.geometry())
         self._robot_position = QtCore.QPoint(self._table_area.left() + x
                                              * self._table_area.width()
                                              / self._config.get_table_width(),
@@ -30,7 +30,6 @@ class ItemsDisplayer():
         self._robot_image = QImage(":/resources/robot.png")
 
     def display_path(self, destination):
-        self._table_area = QtCore.QRect(self._widget.table_label.geometry())
         self._destination = QtCore.QPoint(self._table_area.left() +
                                           destination[0]
                                           * self._table_area.width()
