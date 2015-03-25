@@ -65,4 +65,4 @@ class TcpServer(QThread):
 
     def _send_localization(self, localization):
         localization_response = create_localization_response(localization)
-        self._socket.send(bytes(localization_response))
+        self._socket.send(bytes(localization_response, "utf-8"))
