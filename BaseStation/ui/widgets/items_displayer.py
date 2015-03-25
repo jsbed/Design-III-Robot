@@ -4,7 +4,7 @@ from PySide.QtCore import Qt, QPoint
 from Robot.configuration.config import Config
 
 
-class PathDisplayer():
+class ItemsDisplayer():
 
     def __init__(self, widget):
         self._widget = widget
@@ -16,31 +16,28 @@ class PathDisplayer():
         self._cube_image = QImage()
         self._config = Config()
 
-    def display_path(self, path):
+    def display_robot(self, position):
+        (x, y) = position
         self._table_area = QtCore.QRect(self._widget.table_label.geometry())
-        self._robot_position = QtCore.QPoint(self._table_area.left() + path[0]
+        self._robot_position = QtCore.QPoint(self._table_area.left() + x
                                              * self._table_area.width()
                                              / self._config.get_table_width(),
                                              self._table_area.top() +
                                              self._table_area.height()
-                                             - path[1]
+                                             - y
                                              * self._table_area.height()
                                              / self._config.get_table_height())
         self._robot_image = QImage(":/resources/robot.png")
-        self._half_way = QtCore.QPoint(self._table_area.left() + path[2]
-                                       * self._table_area.width()
-                                       / self._config.get_table_width(),
-                                       self._table_area.top() +
-                                       self._table_area.height()
-                                       - path[3]
-                                       * self._table_area.height()
-                                       / self._config.get_table_height())
-        self._destination = QtCore.QPoint(self._table_area.left() + path[4]
+
+    def display_path(self, destination):
+        self._table_area = QtCore.QRect(self._widget.table_label.geometry())
+        self._destination = QtCore.QPoint(self._table_area.left() +
+                                          destination[0]
                                           * self._table_area.width()
                                           / self._config.get_table_width(),
                                           self._table_area.top() +
                                           self._table_area.height()
-                                          - path[5]
+                                          - destination[1]
                                           * self._table_area.height()
                                           / self._config.get_table_height())
 
@@ -66,9 +63,9 @@ class PathDisplayer():
 
     def draw_path(self):
         path = QPainterPath()
-        path.moveTo(self._robot_position.x(), self._robot_position.y())
-        path.lineTo(self._half_way.x(), self._half_way.y())
-        path.lineTo(self._destination.x(), self._destination.y())
+        if not (self._destination == QtCore.QPoint(0, 0)):
+            path.moveTo(self._robot_position.x(), self._robot_position.y())
+            path.lineTo(self._destination.x(), self._destination.y())
         return path
 
     def draw_robot(self):
