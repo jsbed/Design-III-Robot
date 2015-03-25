@@ -62,10 +62,8 @@ class RobotController():
             _calculate_distance_between_points(self._robot_position,
                                                next_point)
 
-        if (self._robot_is_next_to_target_point()):
-            return self._robot_has_correct_orientation(target)
-        else:
-            return False
+        return (self._robot_is_next_to_target_point() and
+                self._robot_has_correct_orientation(target))
 
     def move_robot_to(self, destination):
         self._update_robot_localization()
