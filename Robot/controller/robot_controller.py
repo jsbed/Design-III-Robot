@@ -81,6 +81,21 @@ class RobotController():
 
         self._move_robot_towards_target_point(next_point)
 
+    def push_cube(self):
+        self._robot.append_instruction(Move(config.Config().
+                                            get_push_cube_distance()))
+        self._robot.execute_instructions()
+
+    def move_forward_to_target_zone(self):
+        self._robot.append_instruction(Move(config.Config().
+                                            get_distance_between_objects()))
+        self._robot.execute_instructions()
+
+    def move_backward_from_target_zone(self):
+        self._robot.append_instruction(Move(-(config.Config().
+                                            get_distance_between_objects())))
+        self._robot.execute_instructions()
+
     def instruction_remaining(self):
         if not self._robot.get_instructions():
             return False

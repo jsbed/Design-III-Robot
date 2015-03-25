@@ -8,8 +8,9 @@ from Robot.cycle.objects.cube import Cube
 from Robot.path_finding.point import Point
 
 
-@patch('Robot.path_finding.point_adjustor.config.Config')
-@patch('Robot.managers.led_manager.LedManager')
+@patch('Robot.controller.robot_controller.config.Config')
+@patch('Robot.controller.robot_controller.led_manager.LedManager')
+@patch('Robot.controller.robot_controller.PointAdjustor')
 class RobotControllerTest(unittest.TestCase):
 
     @classmethod
@@ -52,8 +53,12 @@ class RobotControllerTest(unittest.TestCase):
         self._robot_controller = RobotController()
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_get_and_move_cube_with_long_distance_and_wrong_orientation(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_get_and_move_cube_with_long_distance_and_wrong_orientation(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=10)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(80, 30), 120)
         self.assertFalse(self._robot_controller.
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_localization().position))
@@ -62,8 +67,12 @@ class RobotControllerTest(unittest.TestCase):
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_target_zone_position()))
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_get_and_move_cube_with_long_distance_and_right_orientation(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_get_and_move_cube_with_long_distance_and_right_orientation(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(80, 30), 0)
         self.assertFalse(self._robot_controller.
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_localization().position))
@@ -72,8 +81,12 @@ class RobotControllerTest(unittest.TestCase):
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_target_zone_position()))
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_get_and_move_cube_when_arrived_to_cube_with_wrong_orientation(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_get_and_move_cube_when_arrived_to_cube_with_wrong_orientation(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=0)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=25)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(65, 200), 120)
         self.assertFalse(self._robot_controller.
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_localization().position))
@@ -82,8 +95,12 @@ class RobotControllerTest(unittest.TestCase):
                          robot_is_next_to_target_with_correct_orientation(self._cube.get_target_zone_position()))
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_get_and_move_cube_when_arrived_to_cube_with_right_orientation(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_get_and_move_cube_when_arrived_to_cube_with_right_orientation(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=0)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(65, 200), 0)
         self.assertTrue(self._robot_controller.
                         robot_is_next_to_target_with_correct_orientation(self._cube.get_localization().position))
@@ -92,32 +109,50 @@ class RobotControllerTest(unittest.TestCase):
                         robot_is_next_to_target_with_correct_orientation(self._cube.get_target_zone_position()))
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_move_to_atlas_with_short_and_long_distance(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_move_to_atlas_with_short_and_long_distance(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(95, 20), 90)
         self.assertTrue(self._robot_controller.arrived_at_zone_atlas())
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(20, 30), 90)
         self.assertFalse(self._robot_controller.arrived_at_zone_atlas())
 
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_robot_move_to_point_then_rotate_is_called(self, RobotMock, RotateMock, LedManagerMock, ConfigMock):
+    def test_when_robot_move_to_point_then_rotate_is_called(self, RobotMock, RotateMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(50, 50), 0)
         RobotController().move_robot_to(Point(95, 20))
         assert RotateMock.called
 
     @patch('Robot.controller.robot_controller.Move')
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_robot_move_to_point_then_move_is_called(self, RobotMock, MoveMock, LedManagerMock, ConfigMock):
+    def test_when_robot_move_to_point_then_move_is_called(self, RobotMock, MoveMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(50, 50), 0)
         RobotController().move_robot_to(Point(95, 20))
         assert MoveMock.called
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_robot_move_to_point_then_append_instruction_is_called_twice(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_when_robot_move_to_point_then_append_instruction_is_called_twice(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         robot_mock = MagicMock()
         robot_mock.get_localization_position.return_value = Point(50, 50)
         robot_mock.get_localization_orientation.return_value = 0
@@ -128,8 +163,12 @@ class RobotControllerTest(unittest.TestCase):
         self.assertEqual(robot_mock.append_instruction.call_count, 4)
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_robot_move_to_point_then_execute_instructions_is_called(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_when_robot_move_to_point_then_execute_instructions_is_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock._calculate_distance_between_points = Mock(return_value=50)
+        point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
+        PointAdjustorMock.return_value = point_adjustor_mock
         robot_mock = MagicMock()
         robot_mock.get_localization_position.return_value = Point(50, 50)
         robot_mock.get_localization_orientation.return_value = 0
@@ -141,21 +180,21 @@ class RobotControllerTest(unittest.TestCase):
 
     @patch("time.sleep")
     @patch("Robot.cycle.atlas.get_question")
-    def test_when_get_question_from_atlas_then_atlas_get_question_is_called(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
+    def test_when_get_question_from_atlas_then_atlas_get_question_is_called(self, AtlasMock, TimeMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         RobotController().get_question_from_atlas()
         assert AtlasMock.called
 
     @patch("time.sleep")
     @patch("Robot.cycle.atlas.get_question")
-    def test_when_get_question_from_atlas_then_time_sleep_is_called_with_2_sec(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
+    def test_when_get_question_from_atlas_then_time_sleep_is_called_with_2_sec(self, AtlasMock, TimeMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         RobotController().get_question_from_atlas()
         TimeMock.assert_called_with(2)
 
     @patch("time.sleep")
     @patch("Robot.cycle.atlas.get_question")
-    def test_when_get_question_from_atlas_then_display_red_led_is_called(self, AtlasMock, TimeMock, LedManagerMock, ConfigMock):
+    def test_when_get_question_from_atlas_then_display_red_led_is_called(self, AtlasMock, TimeMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         led_manager_mock = MagicMock()
         led_manager_mock.display_red_led = Mock()
         LedManagerMock.return_value = led_manager_mock
@@ -164,7 +203,7 @@ class RobotControllerTest(unittest.TestCase):
         assert led_manager_mock.display_red_led.called
 
     @patch("time.sleep")
-    def test_when_display_country_leds_then_display_country_is_called(self, TimeMock, LedManagerMock, ConfigMock):
+    def test_when_display_country_leds_then_display_country_is_called(self, TimeMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         led_manager_mock = MagicMock()
         led_manager_mock.display_country = Mock()
         LedManagerMock.return_value = led_manager_mock
@@ -173,12 +212,12 @@ class RobotControllerTest(unittest.TestCase):
         assert led_manager_mock.display_country.called
 
     @patch("time.sleep")
-    def test_when_display_country_leds_then_time_sleep_is_called_with_5_sec(self, TimeMock, LedManagerMock, ConfigMock):
+    def test_when_display_country_leds_then_time_sleep_is_called_with_5_sec(self, TimeMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         RobotController().display_country_leds(self._a_country)
         TimeMock.assert_called_with(5)
 
-    def test_when_ask_for_cube_then_next_flag_led_is_called(self, LedManagerMock, ConfigMock):
+    def test_when_ask_for_cube_then_next_flag_led_is_called(self, PointAdjustorMock, LedManagerMock, ConfigMock):
         led_manager_mock = MagicMock()
         led_manager_mock.next_flag_led = Mock()
         LedManagerMock.return_value = led_manager_mock
@@ -187,7 +226,7 @@ class RobotControllerTest(unittest.TestCase):
         assert led_manager_mock.next_flag_led.called
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_no_instructions_are_remaining(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_when_no_instructions_are_remaining(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         robot_mock = MagicMock()
         robot_mock.get_localization_position.return_value = Point(50, 50)
@@ -199,7 +238,7 @@ class RobotControllerTest(unittest.TestCase):
 
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_an_instruction_is_remaining(self, RobotMock, RotateMock, LedManagerMock, ConfigMock):
+    def test_when_an_instruction_is_remaining(self, RobotMock, RotateMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         robot_mock = MagicMock()
         rotate_mock = MagicMock()
@@ -212,7 +251,7 @@ class RobotControllerTest(unittest.TestCase):
         self.assertTrue(RobotController().instruction_remaining())
 
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_next_instruction_then_execute_instruction_is_called(self, RobotMock, LedManagerMock, ConfigMock):
+    def test_when_next_instruction_then_execute_instruction_is_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
         robot_mock = MagicMock()
         robot_mock.get_localization_position.return_value = Point(50, 50)
         robot_mock.get_localization_orientation.return_value = 0
@@ -220,3 +259,38 @@ class RobotControllerTest(unittest.TestCase):
 
         RobotController().next_instruction()
         assert robot_mock.execute_instructions.called
+
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_push_cube_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        RobotMock.return_value = robot_mock
+
+        RobotController().push_cube()
+        assert robot_mock.append_instruction.called
+        assert robot_mock.execute_instructions.called
+
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_move_forward_to_target_zone_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        RobotMock.return_value = robot_mock
+
+        RobotController().move_forward_to_target_zone()
+        assert robot_mock.execute_instructions.called
+
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_move_backward_from_target_zone_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        RobotMock.return_value = robot_mock
+
+        RobotController().move_backward_from_target_zone()
+        assert robot_mock.execute_instructions.called
+

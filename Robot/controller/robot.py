@@ -31,3 +31,6 @@ class Robot():
 
     def get_localization(self):
         return self._localization
+
+    def get_instructions(self):
+        return self._instructions
