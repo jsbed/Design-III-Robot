@@ -40,19 +40,13 @@ cv2.createTrackbar('High-S', 'mask', 0, 255, nothing)
 cv2.createTrackbar('Low-V', 'mask', 0, 255, nothing)
 cv2.createTrackbar('High-V', 'mask', 0, 255, nothing)
 
-if (args.data):
-    # Load data
-    with open(args.data) as file:
-        data = file.readline().split(", ")
-        for i in range(len(data)):
-            data[i] = int(data[i])
 
-    cv2.setTrackbarPos('Low-H', 'mask', args.low_h)
-    cv2.setTrackbarPos('High-H', 'mask', args.low_s)
-    cv2.setTrackbarPos('Low-S', 'mask', args.low_v)
-    cv2.setTrackbarPos('High-S', 'mask', args.high_h)
-    cv2.setTrackbarPos('Low-V', 'mask', args.high_s)
-    cv2.setTrackbarPos('High-V', 'mask', args.high_v)
+cv2.setTrackbarPos('Low-H', 'mask', args.low_h)
+cv2.setTrackbarPos('High-H', 'mask', args.low_s)
+cv2.setTrackbarPos('Low-S', 'mask', args.low_v)
+cv2.setTrackbarPos('High-S', 'mask', args.high_h)
+cv2.setTrackbarPos('Low-V', 'mask', args.high_s)
+cv2.setTrackbarPos('High-V', 'mask', args.high_v)
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
 flags, img_bgr = captObj.read()
