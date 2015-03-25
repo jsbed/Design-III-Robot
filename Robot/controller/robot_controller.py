@@ -36,10 +36,7 @@ class RobotController():
             _calculate_distance_between_points(self._robot_position,
                                                target_point)
 
-        if (self._robot_is_next_to_target_point()):
-            return True
-        else:
-            return False
+        return self._robot_is_next_to_target_point()
 
     def move_to_atlas(self):
         self._update_robot_localization()
@@ -67,7 +64,6 @@ class RobotController():
 
         if (self._robot_is_next_to_target_point()):
             return self._robot_has_correct_orientation(target)
-
         else:
             return False
 
@@ -93,14 +89,11 @@ class RobotController():
 
     def move_backward_from_target_zone(self):
         self._robot.append_instruction(Move(-(config.Config().
-                                            get_distance_between_objects())))
+                                              get_distance_between_objects())))
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
-        if not self._robot.get_instructions():
-            return False
-        else:
-            return True
+        return len(self._robot.get_instructions()) > 0
 
     def next_instruction(self):
         self._robot.execute_instructions()
@@ -141,10 +134,7 @@ class RobotController():
         self._robot.execute_instructions()
 
     def _robot_is_next_to_target_point(self):
-        if (self._distance <= config.Config().get_distance_uncertainty()):
-            return True
-        else:
-            return False
+        return self._distance <= config.Config().get_distance_uncertainty()
 
     def _robot_is_facing_correct_angle(self, angle_difference):
         angle_uncertainty = (FULL_ROTATION -
@@ -156,8 +146,5 @@ class RobotController():
 
         angle_uncertainty = config.Config().get_orientation_uncertainty()
 
-        if ((angle_difference <= angle_uncertainty)
-                and (angle_difference >= -angle_uncertainty)):
-            return True
-        else:
-            return False
+        return (angle_difference <= angle_uncertainty and
+                angle_difference >= -angle_uncertainty)

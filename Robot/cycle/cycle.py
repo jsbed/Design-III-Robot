@@ -1,3 +1,5 @@
+import time
+
 from Robot.communication.tcp_client import TCPClient
 from Robot.configuration import config
 from Robot.controller.robot_controller import RobotController
@@ -6,9 +8,8 @@ from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
-from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.managers.gripper_manager import GripperManager
-import time
+from Robot.question_analysis.question_analyser import QuestionAnalyser
 
 
 CHECK_FOR_CUBE_DELAY = 2
@@ -73,7 +74,6 @@ class Cycle:
         if(self._robot_controller.arrived_at_zone_atlas()):
             self._state = CycleState.DISPLAY_COUNTRY
             self._next_state()
-
         else:
             self._robot_controller.move_to_atlas()
 

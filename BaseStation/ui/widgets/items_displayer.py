@@ -1,6 +1,7 @@
 from PySide import QtCore
-from PySide.QtGui import QPen, QPainterPath, QImage
 from PySide.QtCore import Qt, QPoint
+from PySide.QtGui import QPen, QPainterPath, QImage
+
 from Robot.configuration.config import Config
 
 
@@ -18,7 +19,7 @@ class ItemsDisplayer():
         self._table_area = QtCore.QRect(self._widget.table_label.geometry())
 
     def display_robot(self, position):
-        (x, y) = position
+        x, y = position
         self._robot_position = QtCore.QPoint(self._table_area.left() + x
                                              * self._table_area.width()
                                              / self._config.get_table_width(),
@@ -71,16 +72,16 @@ class ItemsDisplayer():
         position = QPoint(0, 0)
         if not(self._robot_image.isNull()):
             position = QPoint(self._robot_position.x() -
-                              (self._robot_image.width()/2),
+                              (self._robot_image.width() / 2),
                               self._robot_position.y() -
-                              (self._robot_image.height()/2))
+                              (self._robot_image.height() / 2))
         return position, self._robot_image
 
     def draw_cube(self):
         position = QPoint(0, 0)
         if not(self._cube_image.isNull()):
             position = QPoint(self._cube_position.x() -
-                              (self._cube_image.width()/2),
+                              (self._cube_image.width() / 2),
                               self._cube_position.y() -
-                              (self._cube_image.height()/2))
+                              (self._cube_image.height() / 2))
         return position, self._cube_image
