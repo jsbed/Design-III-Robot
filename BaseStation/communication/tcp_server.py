@@ -28,10 +28,18 @@ class TcpServer(QThread):
         while True:
             try:
                 data = self._socket.recv().decode("utf-8")
-                self.signal.customSignal.emit(data)
+
+                self._interprete_received_data(data)
             except Exception as e:
-                print(e)
                 self._send_message("Base Station Server error: " + str(e))
+
+    def _interprete_received_data(self, received_data):
+        if received_data == REQUEST_ROBOT_LOCALIZATION:
+            pass
+        elif received_data == REQUEST_CUBE_LOCALIZATION:
+            pass
+        else:
+            self.signal.customSignal.emit(received_data)
 
     def _send_message(self, message):
         self.signal.customSignal.emit(json.dumps({"message": message}))
