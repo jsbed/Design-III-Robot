@@ -20,7 +20,9 @@ while(1):
     if (localization.unknown):
         print("robot location unknown")
     else:
-        print(localization.position, localization.orientation)
+        print(localization.position,
+              localization.orientation,
+              localization.orientation % 45)
 
     if cc == 10:  # Enter to stop
         Kinect().stop()
