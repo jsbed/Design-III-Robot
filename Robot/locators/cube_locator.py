@@ -6,9 +6,9 @@ from Robot.resources.camera import Camera
 from Robot.resources.kinect import Kinect
 
 
-def localize_with_camera(cube):
+def localize_with_camera(cube_color):
     original_image = Camera().get_data()
-    extractor = cube_extractor_factory.create_cube_extractor(cube.get_color())
+    extractor = cube_extractor_factory.create_cube_extractor(cube_color)
     extracted_cube = extractor.extract_cube(original_image)
 
     contours = contours_finder.find_contours(extracted_cube)
@@ -17,11 +17,11 @@ def localize_with_camera(cube):
 
 
 # Does not work with a White or Black cube
-def localize_with_kinect(cube):
+def localize_with_kinect(cube_color):
     try:
         img_bgr, img_cloud = Kinect().get_data()
         cube_extractor = cube_extractor_factory.create_cube_extractor(
-            cube.get_color())
+            cube_color)
         extracted_cube = cube_extractor.extract_cube(img_bgr)
 
         return cube_location_computer.compute(extracted_cube, img_cloud)
