@@ -9,7 +9,7 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description'],
                   'country code': ['Internet country code'], 'independence': ['Independence', 'description'],
                   'population growth rate': ['Population growth rate', 'description'],
-                  'geographic coordinates': ['Geographic coordinates', 'description'],
+                  'latitude': ['Geographic coordinates', 'description'], 'longitude': ['Geographic coordinates', 'description'],
                   'electricity production': ['Electricity - production', 'description'],
                   'total area': ['Area', 'total'], 'national anthem': ['National anthem', 'name'],
                   'death rate': ['Death rate', 'description'], 'industries': ['Industries', 'description'],
@@ -18,7 +18,7 @@ INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemplo
                   'public debt': ['Public debt', 'description'], 'export partners': ['Exports - partners', 'description'],
                   'national anthem compositors': ['National anthem', ''], 'birth rate': ['Birth rate', 'description'],
                   'ethnic groups': ['Ethnic groups', 'description'], 'climate': ['Climate', 'description'],
-                  'local short form': ['Country name', 'local short form'],
+                  'local short country name': ['Country name', 'local short form'],
                   'illicit drugs': ['Illicit drugs', 'description']}
 # sort the dictionary by the length of the keys
 INFO_KEY_ALIAS = OrderedDict(sorted(INFO_KEY_ALIAS.items(), key=lambda el: len(el[0])))

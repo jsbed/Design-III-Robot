@@ -3,13 +3,14 @@ import re
 from Robot.question_analysis.matchers.info_matchers import UnemploymentRateMatcher, NationalAnthemMatcher, \
     UnemploymentRateGreaterThanMatcher
 from Robot.question_analysis.matchers.info_matchers import InternetUsersMatcher, PublicDebtMatcher, InfoListMatcher
-from Robot.question_analysis.matchers.info_matchers import ClimateMatcher, ShortCountryNameLengthMatcher
+from Robot.question_analysis.matchers.info_matchers import ClimateMatcher
 from Robot.question_analysis.matchers.info_matchers import TotalAreaMatcher, IllicitDrugsActivitiesMatcher
 
 
 class QuestionMatcher(object):
 
-    def __init__(self, pattern, info_matcher):
+    def __init__(self, pattern, info_matcher, attribute):
+        self._attribute = attribute
         self._regex = re.compile(pattern, re.IGNORECASE)
         self._info_matcher = info_matcher
 
@@ -17,7 +18,7 @@ class QuestionMatcher(object):
         info_matcher = None
         match = self._regex.search(question)
         if match:
-            info_matcher = self._info_matcher(match.group(1))
+            info_matcher = self._info_matcher(self._attribute, match.group(1))
         return info_matcher
 
 
@@ -26,11 +27,12 @@ class QuestionWithListMatcher(QuestionMatcher):
     Matcher class for questions with multiple information joined by conjunctions.
     """
 
-    def __init__(self, attribute, descriptors, info_key=None):
+    def __init__(self, attribute, info_key=None):
+        descriptors = [r'including(?:.*? of)?', 'include', 'including', 'are', 'of', 'composed by']
         descriptors = '|'.join(descriptors)
-        self._info_key = attribute if not info_key else info_key
+        info_key = attribute if not info_key else info_key
         pattern = attribute + r'.* (?:' + descriptors + r') ((?:[.\w\d\s%]+,\s)*[.\w\d\s%]+,? and [.\w\d\s%]+)[\?|\.]'
-        super(QuestionWithListMatcher, self).__init__(pattern, InfoListMatcher)
+        super(QuestionWithListMatcher, self).__init__(pattern, InfoListMatcher, info_key)
 
     def find_info(self, question):
         info_matcher = None
@@ -38,7 +40,7 @@ class QuestionWithListMatcher(QuestionMatcher):
         if match:
             info_list = match.group(1)
             info_list = re.split(', and\s|, |\sand\s', info_list)
-            info_matcher = self._info_matcher(self._info_key, info_list)
+            info_matcher = self._info_matcher(self._attribute, info_list)
         return info_matcher
 
 
@@ -72,7 +74,7 @@ class UnemploymenRateGreaterThan(QuestionMatcher):
         info_matcher = UnemploymentRateGreaterThanMatcher
         super(UnemploymenRateGreaterThan, self).__init__(pattern, info_matcher)
 
-
+"""
 class IndustriesInclude(QuestionWithListMatcher):
 
     def __init__(self):
@@ -127,6 +129,8 @@ class ExportPartners(QuestionWithListMatcher):
         descriptors = ['include', 'are']
         attribute = 'export partners'
         super(ExportPartners, self).__init__(attribute, descriptors)
+
+"""
 
 
 class NationalAnthemComposedBy(QuestionWithListMatcher):

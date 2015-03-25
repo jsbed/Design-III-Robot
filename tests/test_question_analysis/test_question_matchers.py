@@ -1,18 +1,51 @@
 from nose.tools import assert_true
-from Robot.question_analysis.matchers import GrowthRateBetween
 
-from Robot.question_analysis.matchers.question_matchers import UrbanAreasAre
+from Robot.question_analysis.attributes import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
+    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher
 
 
-def test_urban_areas():
-    question = 'The major urban areas of this country are Santiago, Valparaiso and Concepcion.'
-    urban_areas_are = UrbanAreasAre()
-    assert_true(urban_areas_are.find_info(question))
+class TestQuestionMatchers(object):
+    def __init__(self):
+        pass
 
-def test_growth_rate_between():
-    question = 'My population growth rate is between 15% and 25%'
-    growth_rate_between = GrowthRateBetween()
-    assert_true(growth_rate_between.find_info(question))
+    def test_equals_matcher(self):
+        question = 'My public debt is 7.9% of GDP.'
+        equals_matcher = EqualsMatcher('public debt')
+        info_matcher = equals_matcher.find_info(question)
+        assert_true(info_matcher.match('7.9% (2013)'))
 
-def test_national_symbol():
-    question = 'The lotus blossom is the national symbol of this country.'
+    def test_greater_than_matcher(self):
+        question = 'population is greater than 42.'
+        greater_than_matcher = GreaterThanMatcher('population')
+        info_matcher = greater_than_matcher.find_info(question)
+        assert_true(info_matcher.match('50 (2013)'))
+
+    def test_less_than_matcher(self):
+        question = 'population is less than 42.'
+        less_than_matcher = LessThanMatcher('population')
+        info_matcher = less_than_matcher.find_info(question)
+        assert_true(info_matcher.match('40 (2013)'))
+
+    def test_starts_with_matcher(self):
+        question = 'capital starts with ott.'
+        starts_with_matcher = StartsWithMatcher('capital')
+        info_matcher = starts_with_matcher.find_info(question)
+        assert_true(info_matcher.match('Ottawa'))
+
+    def test_ends_with_matcher(self):
+        question = 'capital ends with cas.'
+        ends_with_matcher = EndsWithMatcher('capital')
+        info_matcher = ends_with_matcher.find_info(question)
+        assert_true(info_matcher.match('Caracas'))
+
+    def test_interval_matcher(self):
+        question = 'population between 41 and 43'
+        interval_matcher = QuestionWithIntervalMatcher('population')
+        info_matcher = interval_matcher.find_info(question)
+        assert_true(info_matcher.match('42'))
+
+    def test_text_question_matcher(self):
+        question = 'My birth rate is approximately 16 births/1000'
+        text_question_matcher = EqualsMatcher('birth rate')
+        info_matcher = text_question_matcher.find_info(question)
+        assert_true(info_matcher.match('16'))

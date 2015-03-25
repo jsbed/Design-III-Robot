@@ -14,16 +14,16 @@ from Robot.question_analysis.matchers.independence_matchers.independence_questio
 from Robot.question_analysis.matchers.independence_matchers.independence_question_matchers import IndependenceDeclaredIn
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateOf
 from Robot.question_analysis.matchers.population_growth_matchers.growth_rate_question_matchers import GrowthRateBetween
-from Robot.question_analysis.matchers.population_matchers.population_question_matchers import PopulationIs, PopulationGreaterThan
-from Robot.question_analysis.matchers.question_matchers import UrbanAreasAre, UnemploymentRateIs, ReligionsAre, TotalAreaIs
+#from Robot.question_analysis.matchers.population_matchers.population_question_matchers import PopulationIs, PopulationGreaterThan
+#from Robot.question_analysis.matchers.question_matchers import UrbanAreasAre, UnemploymentRateIs, ReligionsAre, TotalAreaIs
 from Robot.question_analysis.matchers.birth_rate_matchers.birth_rate_question_matchers import BirthRateIs
 from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_matchers import DeathRateGreaterThan
 from Robot.question_analysis.matchers.death_rate_matchers.death_rate_question_matchers import DeathRateLessThan
 from Robot.question_analysis.matchers.independence_matchers.independence_question_matchers import InDeclaredIndependence
-from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers
-from Robot.question_analysis.matchers.question_matchers import LanguagesInclude, ImportPartners, PublicDebt
-from Robot.question_analysis.matchers.question_matchers import NationalAnthemComposedBy, EthnicGroups
-from Robot.question_analysis.matchers.question_matchers import PopulationUrbanAreasAre, Climate, ExportPartners
+#from Robot.question_analysis.matchers.question_matchers import NationalAnthemIs, IndustriesInclude, InternetUsers
+#from Robot.question_analysis.matchers.question_matchers import LanguagesInclude, ImportPartners, PublicDebt
+#from Robot.question_analysis.matchers.question_matchers import NationalAnthemComposedBy, EthnicGroups
+#from Robot.question_analysis.matchers.question_matchers import PopulationUrbanAreasAre, Climate, ExportPartners
 from Robot.question_analysis.matchers.question_matchers import ShortCountryNameLength, IllicitDrugsActivities
 
 __all__ = ['CapitalIs', 'CapitalStartsWith', 'CapitalEndsWith', 'PopulationIs', 'NationalSymbolIs',

@@ -1,7 +1,6 @@
 from Robot.configuration.config import Config
-from Robot.question_analysis.factbook_parsing.country_info import Factbook
-from Robot.question_analysis.matchers import *
-from Robot.question_analysis.matchers.question_matchers import UnemploymenRateGreaterThan
+from Robot.question_analysis.attributes import QuestionMatcherGenerator
+from Robot.question_analysis.factbook_parsing.country_info import Factbook, INFO_KEY_ALIAS
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
 
 
@@ -11,25 +10,23 @@ class QuestionAnalyser(object):
 
         self._config = Config()
         self._question_segmentator = QuestionSegmentator()
-        self._question_matchers = [CapitalIs(), CapitalStartsWith(), CapitalEndsWith(), UnemploymentRateIs(),
-                          PopulationIs(), UrbanAreasAre(), NationalSymbolIs(), IsTheNationalSymbol(),
-                          OneOfNationalSymbolIs(), ReligionsAre(), InternetCountryCodeIs(), HasInternetCountryCode(),
-                          IsTheDateOfIndependence(), DeclaredIndependenceOn(), IndependenceDeclaredIn(),
-                          PopulationGreaterThan(), GrowthRateOf(), GrowthRateBetween(), LatitudeIs(), LongitudeIs(),
-                          ElectricityProductionBetween(), TotalAreaIs(), NationalAnthemIs(), DeathRateGreaterThan(),
-                          DeathRateLessThan(), IndustriesInclude(), InternetUsers(), LanguagesInclude(),
-                          ImportPartners(), InDeclaredIndependence(), PublicDebt(), NationalAnthemComposedBy(),
-                          BirthRateIs(), EthnicGroups(), PopulationUrbanAreasAre(), Climate(), ExportPartners(),
-                          ShortCountryNameLength(), IllicitDrugsActivities(), UnemploymenRateGreaterThan()]
         self._factbook = Factbook()
+        self._question_matcher_generator = QuestionMatcherGenerator()
 
     def answer_question(self, question):
         country_matches = []
         questions = self._question_segmentator.segment_question(question)
+        self._attributes = INFO_KEY_ALIAS
         for question in questions:
             info_matchers = []
+            #find attribute, get question matchers
+            question_attribute = None
+            for attribute in self._attributes:
+                if attribute in question:
+                    question_attribute = attribute
+            question_matchers = self._question_matcher_generator.get_question_matchers(question_attribute)
 
-            for matcher in self._question_matchers:
+            for matcher in question_matchers:
                 info_matcher = matcher.find_info(question)
                 if info_matcher:
                     info_matchers.append(info_matcher)
