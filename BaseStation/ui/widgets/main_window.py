@@ -1,8 +1,8 @@
 import json
 
 from PySide import QtGui
-from PySide.QtCore import Qt
-from PySide.QtGui import QBrush, QTransform
+from PySide.QtCore import QPoint, Qt
+from PySide.QtGui import QBrush
 
 from BaseStation.communication.tcp_server import RequestTcpServer, SignalTcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -87,7 +87,6 @@ class Main(QtGui.QMainWindow, Observer):
         painter = QtGui.QPainter()
         pen = self._items_displayer.set_pen()
         brush = QBrush()
-        rotation = QTransform
 
         painter.begin(self)
         painter.setPen(pen)
@@ -98,8 +97,13 @@ class Main(QtGui.QMainWindow, Observer):
             self._items_displayer.draw_robot()
         cube_position, cube_image = self._items_displayer.draw_cube()
 
-        painter.drawImage(robot_position, robot_image)
-        rotation.rotate(robot_image, robot_rotation)
+        painter.translate(robot_position.x() + robot_image.width() / 2,
+                          robot_position.y() + robot_image.height() / 2)
+        painter.rotate(robot_rotation)
+
+        painter.drawImage(QPoint(-robot_image.width() / 2,
+                                 -robot_image.height() / 2), robot_image)
+        painter.resetTransform()
         painter.drawImage(cube_position, cube_image)
         painter.drawPath(path)
 
