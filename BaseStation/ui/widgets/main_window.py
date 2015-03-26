@@ -1,13 +1,13 @@
 import json
 
 from PySide import QtGui
-from PySide.QtCore import QPoint, Qt
-from PySide.QtGui import QBrush
+from PySide.QtCore import Qt
 
 from BaseStation.communication.tcp_server import RequestTcpServer, SignalTcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
 from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
 from BaseStation.ui.utilities.Outputer import Outputer
+from BaseStation.ui.widgets.drawing_label import DrawingLabel
 from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
 from BaseStation.ui.widgets.items_displayer import ItemsDisplayer
 from Robot.utilities.observer import Observer
@@ -24,7 +24,8 @@ class Main(QtGui.QMainWindow, Observer):
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
         self._flag_displayer = FlagDisplayer(self.ui)
-        self._items_displayer = ItemsDisplayer(self.ui)
+        self._items_displayer = ItemsDisplayer(self.ui.table_label.geometry())
+        self._drawing_label = DrawingLabel(self._items_displayer, self)
         self._request_server = RequestTcpServer()
         self._signal_server = SignalTcpServer()
         self._setup_ui()
@@ -82,30 +83,3 @@ class Main(QtGui.QMainWindow, Observer):
 
     def _update_chronometer_label(self):
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
-
-    def paintEvent(self, event):
-        painter = QtGui.QPainter()
-        pen = self._items_displayer.set_pen()
-        brush = QBrush()
-
-        painter.begin(self)
-        painter.setPen(pen)
-        painter.setBrush(brush)
-
-        path = self._items_displayer.draw_path()
-        robot_position, robot_rotation, robot_image = \
-            self._items_displayer.draw_robot()
-        cube_position, cube_image = self._items_displayer.draw_cube()
-
-        painter.translate(robot_position.x() + robot_image.width() / 2,
-                          robot_position.y() + robot_image.height() / 2)
-        painter.rotate(robot_rotation)
-
-        painter.drawImage(QPoint(-robot_image.width() / 2,
-                                 -robot_image.height() / 2), robot_image)
-        painter.resetTransform()
-        painter.drawImage(cube_position, cube_image)
-        painter.drawPath(path)
-
-        painter.end()
-        self.update()
