@@ -11,3 +11,7 @@ class SerialPort():
 
     def send_array_of_ints(self, array):
         self._serial.write(bytearray(array))
+
+    def wait_for_read_line(self):
+        while not self._serial.readline():
+            pass
