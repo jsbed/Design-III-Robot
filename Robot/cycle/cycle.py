@@ -155,10 +155,10 @@ class Cycle(Observer):
         self._next_state()
 
     def _localize_cube(self):
+        self._robot_controller.move_robot_to_localize_cube()
+        self._state = CycleState.MOVE_TO_CUBE
         while (self._cube.get_localization().position is None):
             time.sleep(CHECK_FOR_CUBE_DELAY)
-
-        self._state = CycleState.MOVE_TO_CUBE
         self._next_state()
 
     def _display_country(self):

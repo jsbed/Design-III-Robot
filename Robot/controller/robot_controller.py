@@ -10,6 +10,7 @@ from Robot.path_finding.point_adjustor import PointAdjustor
 
 FULL_ROTATION = 360
 ANGLE_DIFFERENCE_NULL = 0
+FACE_NORTH = 90
 
 
 class RobotController():
@@ -74,6 +75,18 @@ class RobotController():
                                                next_point)
 
         self._move_robot_towards_target_point(next_point)
+
+    def move_robot_to_localize_cube(self):
+        self._update_robot_localization()
+        self._distance = \
+            self._point_adjustor. \
+            _calculate_distance_between_points(self._robot_position,
+                                               config.Config().
+                                               get_localize_cube_position())
+
+        self._move_robot_towards_target_point(config.Config().
+                                              get_localize_cube_position())
+        self._robot.append_instruction(Rotate(FACE_NORTH))
 
     def push_cube(self):
         self._robot.append_instruction(Move(config.Config().

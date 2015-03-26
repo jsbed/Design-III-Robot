@@ -294,3 +294,15 @@ class RobotControllerTest(unittest.TestCase):
         RobotController().move_backward_from_target_zone()
         assert robot_mock.execute_instructions.called
 
+    @patch('Robot.controller.robot_controller.Robot')
+    def test_when_move_robot_to_localize_cube_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, PointAdjustorMock, LedManagerMock, ConfigMock):
+        self._setup_config_mock(ConfigMock)
+        robot_mock = MagicMock()
+        robot_mock.get_localization_position.return_value = Point(50, 50)
+        robot_mock.get_localization_orientation.return_value = 0
+        RobotMock.return_value = robot_mock
+
+        RobotController().move_robot_to_localize_cube()
+        self.assertEqual(robot_mock.append_instruction.call_count, 3)
+        assert robot_mock.execute_instructions.called
+

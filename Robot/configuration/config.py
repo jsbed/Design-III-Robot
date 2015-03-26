@@ -170,6 +170,10 @@ class Config(metaclass=Singleton):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
                                                        "AtlasZonePosition")))
 
+    def get_localize_cube_position(self):
+        return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
+                                                       "LocalizeCubePosition")))
+
     def get_target_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_FLAGCREATION,
                                                        "TargetZonePosition")))
