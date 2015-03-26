@@ -21,7 +21,7 @@ class ItemsDisplayer():
 
     def display_robot(self, position, orientation):
         x, y = position
-        self._robot_position = QtCore.QPoint(self._table_area.left() + x
+        self._robot_position = QtCore.QPoint(self._table_area.right() - x
                                              * self._table_area.width()
                                              / self._config.get_table_width(),
                                              self._table_area.top() +
