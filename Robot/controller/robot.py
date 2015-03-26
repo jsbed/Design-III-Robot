@@ -1,5 +1,7 @@
+from Robot.communication.base_station_client import BaseStationClient
 from Robot.locators.localization import Localization
 from Robot.utilities.observable import Observable
+
 
 FIRST_INSTRUCTION = 0
 INSTRUCTION_FINISHED = "finished instruction"
@@ -23,7 +25,7 @@ class Robot(Observable):
         self.notify(INSTRUCTION_FINISHED, None)
 
     def update_localization(self):
-        pass
+        self._localization = BaseStationClient().request_robot_localization()
 
     def set_localization_position(self, value):
         self._localization.position = value

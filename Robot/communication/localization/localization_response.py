@@ -15,7 +15,7 @@ def create_localization_response(localization):
     return json.dumps(response, "utf-8")
 
 
-def get_localization_from_localization_response(response):
+def create_localization_from_localization_response(response):
     response = json.loads(response)
 
     if response["unknown"]:

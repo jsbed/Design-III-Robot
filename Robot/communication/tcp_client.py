@@ -36,3 +36,9 @@ class TCPClient():
             self._socket.send(bytes(data, "utf-8"))
         except:
             print('Send failed')
+
+    def get_data(self):
+        try:
+            return self._socket.recv().decode("utf-8")
+        except:
+            print('Recv failed')

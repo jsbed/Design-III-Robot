@@ -1,12 +1,11 @@
-from PySide.QtCore import QThread
 import json
+
+from PySide.QtCore import QThread
 import zmq
 
 from BaseStation.ui.utilities.Signal import Signal
-from Robot.communication import localization_request, localization_response
-from Robot.communication.localization_request import ROBOT_LOCALIZATION_REQUEST,\
-    CUBE_LOCALIZATION_REQUEST
-from Robot.communication.localization_response import create_localization_response
+from Robot.communication.localization.localization_request import ROBOT_LOCALIZATION_REQUEST, CUBE_LOCALIZATION_REQUEST
+from Robot.communication.localization.localization_response import create_localization_response
 from Robot.configuration.config import Config
 from Robot.cycle.objects.color import Color
 from Robot.locators import robot_locator, cube_locator
@@ -19,7 +18,7 @@ class TcpServer(QThread):
         self._port = Config().get_base_station_communication_port()
         self._ip = Config().get_base_station_communication_ip()
         self._context = zmq.Context()
-        self._socket = self._context.socket(zmq.DEALER)
+        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
         self.signal = Signal()
 
     def run(self):
@@ -57,6 +56,10 @@ class TcpServer(QThread):
 
     def _send_robot_localization_response(self):
         robot_localization = robot_locator.localize()
+
+        while robot_localization.unknown:
+            robot_localization = robot_locator.localize()
+
         self._send_localization(robot_localization)
 
     def _send_cube_localization_response(self, color):
