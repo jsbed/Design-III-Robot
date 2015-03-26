@@ -2,6 +2,7 @@ import time
 
 from Robot.communication.tcp_client import TCPClient
 from Robot.configuration import config
+from Robot.controller.robot import INSTRUCTION_FINISHED
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.country_repository import CountryRepository
@@ -11,7 +12,6 @@ from Robot.cycle.objects.cube import Cube
 from Robot.managers.gripper_manager import GripperManager
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
-from Robot.controller.robot import INSTRUCTION_FINISHED
 
 
 CHECK_FOR_CUBE_DELAY = 2
