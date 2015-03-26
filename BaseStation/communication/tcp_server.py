@@ -4,11 +4,12 @@ from PySide.QtCore import QThread
 import zmq
 
 from BaseStation.ui.utilities.Signal import Signal
+from Robot.communication.localization.localization_dto import create_localization_dto
 from Robot.communication.localization.localization_request import ROBOT_LOCALIZATION_REQUEST, CUBE_LOCALIZATION_REQUEST
-from Robot.communication.localization.localization_response import create_localization_response
 from Robot.configuration.config import Config
 from Robot.cycle.objects.color import Color
 from Robot.locators import robot_locator, cube_locator
+
 
 QUESTION_OK_SIGNAL = "question ok signal"
 ASK_NEW_QUESTION_SIGNAL = "ask new question"
@@ -71,8 +72,8 @@ class RequestTcpServer(QThread):
         self._send_localization(cube_localization)
 
     def _send_localization(self, localization):
-        localization_response = create_localization_response(localization)
-        self._socket.send(bytes(localization_response, "utf-8"))
+        localization_dto = create_localization_dto(localization)
+        self._socket.send(bytes(localization_dto, "utf-8"))
 
 
 class SignalTcpServer():
