@@ -4,17 +4,19 @@ import unittest
 from Robot.controller.robot import Robot
 
 
-A_SERIAL_PORT = "SerialPortPath"
-
-
 class RobotTest(unittest.TestCase):
 
     def setUp(self):
-        self._robot = Robot(A_SERIAL_PORT)
+        self._robot = Robot(self._create_serial_port_mock())
 
     def _create_instruction_mock(self):
         a_mock = MagicMock()
         a_mock.execute = Mock()
+        return a_mock
+
+    def _create_serial_port_mock(self):
+        a_mock = MagicMock()
+        a_mock.wait_for_read_line = Mock()
         return a_mock
 
     def test_given_an_instruction_when_execute_instruction_should_execute_given_instruction(self):

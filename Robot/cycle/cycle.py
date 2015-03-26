@@ -10,13 +10,15 @@ from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
 from Robot.managers.gripper_manager import GripperManager
 from Robot.question_analysis.question_analyser import QuestionAnalyser
+from Robot.utilities.observer import Observer
+from Robot.controller.robot import INSTRUCTION_FINISHED
 
 
 CHECK_FOR_CUBE_DELAY = 2
 WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 2
 
 
-class Cycle:
+class Cycle(Observer):
 
     def __init__(self):
         self._country = Country("", [])
@@ -28,6 +30,11 @@ class Cycle:
                                  get_base_station_communication_ip(),
                                  config.Config().
                                  get_base_station_communication_port())
+        self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
+
+    def observer_update(self, event, value):
+        if (event == INSTRUCTION_FINISHED):
+            self.continue_cycle()
 
     def start_cycle(self):
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
