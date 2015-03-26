@@ -1,15 +1,15 @@
+from PySide import QtGui
 import os
 import sys
-
-from PySide import QtGui
 
 from BaseStation.ui.widgets.main_window import Main
 from Robot.configuration.config import Config
 from Robot.filler import country_repository_filler
+from Robot.resources.kinect import Kinect
 
 
 def fill_country_repository():
-    flags_file_path = os.path.join("..", "Robot", "resources", "flags.csv")
+    flags_file_path = os.path.join("Robot", "resources", "flags.csv")
     country_repository_filler.fill_repository_from_file(flags_file_path)
 
 
@@ -21,6 +21,7 @@ def init_ui():
 
 
 if __name__ == '__main__':
+    Config().load_config()
     fill_country_repository()
-    Config(os.path.join("..", "config.ini")).load_config()
+    Kinect().start()
     init_ui()
