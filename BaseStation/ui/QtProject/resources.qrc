@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/black_flag.png</file>
+        <file>resources/blue_flag.png</file>
+        <file>resources/green_flag.png</file>
+        <file>resources/red_flag.png</file>
+        <file>resources/white_flag.png</file>
+        <file>resources/yellow_flag.png</file>
+        <file>resources/transparency.png</file>
+        <file>resources/flag_structure.png</file>
+        <file>resources/table.png</file>
+        <file>resources/robot.png</file>
+        <file>resources/cube.png</file>
+    </qresource>
+</RCC>

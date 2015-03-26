@@ -1,8 +1,11 @@
-from pathlib import Path
-import re
-import pickle
-
 from bs4 import BeautifulSoup
+from pathlib import Path
+import os
+import pickle
+import re
+
+from Robot.country.country_repository import CountryRepository
+from Robot.filler import country_repository_filler
 
 
 def _save_countries_info(countries):
@@ -81,7 +84,8 @@ def _format_field_info_list(field_info):
             str_position.append(index)
 
     if len(str_position) == 1:
-        field_info[str_position[0]] = {'description': field_info[str_position[0]]}
+        field_info[str_position[0]] = {
+            'description': field_info[str_position[0]]}
         str_position = []
 
     if not str_position:
@@ -114,10 +118,21 @@ def parse_country_info():
     country_data_dir = Path('./factbook/geos')
 
     for country_file in country_data_dir.glob('*.html'):
-        with country_file.open() as country_data:
-            country_soup = BeautifulSoup(country_data, 'lxml')
+        with country_file.open(encoding='latin-1') as country_data:
+            country_soup = BeautifulSoup(country_data)
             country_name = country_soup.find(class_='region_name1').text
-            panels = country_soup.find_all(id=re.compile('CollapsiblePanel1'))
-            countries[country_name] = _parse_panels(panels)
+
+            if country_name in country_flags:
+                print("Parsing", country_name)
+                panels = country_soup.find_all(
+                    id=re.compile('CollapsiblePanel1'))
+                countries[country_name] = _parse_panels(panels)
     _save_countries_info(countries)
+
+
+# Fill country repository from flags
+flags_file_path = os.path.join("..", "..", "resources", "flags.csv")
+country_repository_filler.fill_repository_from_file(flags_file_path)
+country_flags = CountryRepository().get_countries_name()
+
 parse_country_info()

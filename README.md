@@ -7,5 +7,9 @@
 ```
 #!python
 
+sudo apt-get install python3-pyside libzmq3-dev
 pip3 install -r /path/to/requirements.txt
 ```
+
+# Run tests #
+We run tests using [nose](https://nose.readthedocs.org/en/latest/) in the tests directory.

@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import cv2, os
-import numpy as np
 import argparse
+import cv2
+import os
 import time
+
+import numpy as np
+
 
 DATA_DIRECTORY = "Data-HSV"
 
@@ -45,12 +48,12 @@ if (args.data):
         for i in range(len(data)):
             data[i] = int(data[i])
 
-    cv2.setTrackbarPos('Low-H','mask', data[LOW_H])
-    cv2.setTrackbarPos('High-H','mask', data[HIGH_H])
-    cv2.setTrackbarPos('Low-S','mask', data[LOW_S])
-    cv2.setTrackbarPos('High-S','mask', data[HIGH_S])
-    cv2.setTrackbarPos('Low-V','mask', data[LOW_V])
-    cv2.setTrackbarPos('High-V','mask', data[HIGH_V])
+    cv2.setTrackbarPos('Low-H', 'mask', data[LOW_H])
+    cv2.setTrackbarPos('High-H', 'mask', data[HIGH_H])
+    cv2.setTrackbarPos('Low-S', 'mask', data[LOW_S])
+    cv2.setTrackbarPos('High-S', 'mask', data[HIGH_S])
+    cv2.setTrackbarPos('Low-V', 'mask', data[LOW_V])
+    cv2.setTrackbarPos('High-V', 'mask', data[HIGH_V])
 
 captObj = cv2.VideoCapture(cv2.CAP_OPENNI)
 flags, img_bgr = captObj.read()
@@ -59,7 +62,7 @@ time.sleep(1)
 while True:
         # On recupere une nouvelle image
     captObj.grab()
-    
+
     # On va chercher les infos
     flags_i, img_bgr = captObj.retrieve(None, cv2.CAP_OPENNI_BGR_IMAGE)
     flags_p, img_p = captObj.retrieve(None, cv2.CAP_OPENNI_DEPTH_MAP)
@@ -69,14 +72,14 @@ while True:
         continue
 
     img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
-    
+
     # get current positions of trackers
-    low_h = cv2.getTrackbarPos('Low-H','mask')
-    high_h = cv2.getTrackbarPos('High-H','mask')
-    low_s = cv2.getTrackbarPos('Low-S','mask')
-    high_s = cv2.getTrackbarPos('High-S','mask')
-    low_v = cv2.getTrackbarPos('Low-V','mask')
-    high_v = cv2.getTrackbarPos('High-V','mask')
+    low_h = cv2.getTrackbarPos('Low-H', 'mask')
+    high_h = cv2.getTrackbarPos('High-H', 'mask')
+    low_s = cv2.getTrackbarPos('Low-S', 'mask')
+    high_s = cv2.getTrackbarPos('High-S', 'mask')
+    low_v = cv2.getTrackbarPos('Low-V', 'mask')
+    high_v = cv2.getTrackbarPos('High-V', 'mask')
 
     # define range of blue color in HSV
     lower = np.array([low_h, low_s, low_v])
@@ -86,21 +89,21 @@ while True:
     mask = cv2.inRange(img_hsv, lower, upper)
 
     # Bitwise-AND mask and original image
-    res = cv2.bitwise_and(img_bgr,img_bgr, mask= mask)
+    res = cv2.bitwise_and(img_bgr, img_bgr, mask=mask)
 
-    cv2.imshow('mask',mask)
-    cv2.imshow('res', res)	
+    cv2.imshow('mask', mask)
+    cv2.imshow('res', res)
 
-
-    cc = cv2.waitKey(10) # Necessaire pour l'affichage effectif des images
-    if cc == 1048586: # Touche Enter (save data)
+    cc = cv2.waitKey(10)  # Necessaire pour l'affichage effectif des images
+    if cc == 1048586:  # Touche Enter (save data)
         with open(os.path.join(DATA_DIRECTORY, "data_{}.txt".format(str(DATA_COUNT))), "w") as file:
-            file.write(", ".join(map(str, [low_h, low_s, low_v, high_h, high_s, high_v])))
-        
+            file.write(
+                ", ".join(map(str, [low_h, low_s, low_v, high_h, high_s, high_v])))
+
         print("saved : data_{}.txt".format(str(DATA_COUNT)))
         DATA_COUNT += 1
 
-    if cc == 1048603: # Touche Echap quitte
+    if cc == 1048603:  # Touche Echap quitte
         break
 
 cv2.destroyAllWindows()
