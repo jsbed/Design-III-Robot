@@ -2,7 +2,7 @@ import json
 
 from PySide import QtGui
 from PySide.QtCore import Qt
-from PySide.QtGui import QBrush
+from PySide.QtGui import QBrush, QTransform
 
 from BaseStation.communication.tcp_server import RequestTcpServer, SignalTcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -87,16 +87,19 @@ class Main(QtGui.QMainWindow, Observer):
         painter = QtGui.QPainter()
         pen = self._items_displayer.set_pen()
         brush = QBrush()
+        rotation = QTransform
 
         painter.begin(self)
         painter.setPen(pen)
         painter.setBrush(brush)
 
         path = self._items_displayer.draw_path()
-        robot_position, robot_image = self._items_displayer.draw_robot()
+        robot_position, robot_rotation, robot_image = \
+            self._items_displayer.draw_robot()
         cube_position, cube_image = self._items_displayer.draw_cube()
 
         painter.drawImage(robot_position, robot_image)
+        rotation.rotate(robot_image, robot_rotation)
         painter.drawImage(cube_position, cube_image)
         painter.drawPath(path)
 

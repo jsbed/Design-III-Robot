@@ -10,6 +10,8 @@ class ItemsDisplayer():
     def __init__(self, widget):
         self._widget = widget
         self._robot_position = QtCore.QPoint(0, 0)
+        self._robot_orientation = 0
+        self._robot_current_orientation = 0
         self._half_way = QtCore.QPoint(0, 0)
         self._destination = QtCore.QPoint(0, 0)
         self._cube_position = QtCore.QPoint(0, 0)
@@ -18,7 +20,7 @@ class ItemsDisplayer():
         self._config = Config()
         self._table_area = QtCore.QRect(self._widget.table_label.geometry())
 
-    def display_robot(self, position):
+    def display_robot(self, position, orientation):
         x, y = position
         self._robot_position = QtCore.QPoint(self._table_area.left() + x
                                              * self._table_area.width()
@@ -28,6 +30,7 @@ class ItemsDisplayer():
                                              - y
                                              * self._table_area.height()
                                              / self._config.get_table_height())
+        self._robot_orientation = orientation
         self._robot_image = QImage(":/resources/robot.png")
 
     def display_path(self, destination):
@@ -75,7 +78,9 @@ class ItemsDisplayer():
                               (self._robot_image.width() / 2),
                               self._robot_position.y() -
                               (self._robot_image.height() / 2))
-        return position, self._robot_image
+            rotation = self._robot_current_orientation - self._robot_orientation
+            self._robot_current_orientation = self._robot_orientation
+        return position, rotation, self._robot_image
 
     def draw_cube(self):
         position = QPoint(0, 0)
