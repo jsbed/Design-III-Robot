@@ -1,6 +1,7 @@
-from PySide import QtGui
 import os
 import sys
+
+from PySide import QtGui
 
 from BaseStation.ui.widgets.main_window import Main
 from Robot.configuration.config import Config

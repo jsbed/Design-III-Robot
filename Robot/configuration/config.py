@@ -33,12 +33,16 @@ class Config(metaclass=Singleton):
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
-    def get_base_station_communication_port(self):
+    def get_base_station_request_server_port(self):
         return int(self._parser.get(SECTION_DEFAULT,
-                                    "BaseStationCommunicationPort"))
+                                    "BaseStationRequestServerPort"))
 
-    def get_base_station_communication_ip(self):
-        return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
+    def get_base_station_signal_server_port(self):
+        return int(self._parser.get(SECTION_DEFAULT,
+                                    "BaseStationSignalServerPort"))
+
+    def get_base_station_ip(self):
+        return self._parser.get(SECTION_DEFAULT, "BaseStationIP")
 
     def get_kinect_mask_img_path(self):
         return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,

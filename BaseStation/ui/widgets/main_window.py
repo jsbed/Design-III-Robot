@@ -4,7 +4,7 @@ from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QBrush
 
-from BaseStation.communication.tcp_server import TcpServer
+from BaseStation.communication.tcp_server import RequestTcpServer, SignalTcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
 from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
 from BaseStation.ui.utilities.Outputer import Outputer
@@ -25,7 +25,8 @@ class Main(QtGui.QMainWindow, Observer):
         self._chronometer = Chronometer()
         self._flag_displayer = FlagDisplayer(self.ui)
         self._items_displayer = ItemsDisplayer(self.ui)
-        self._tcp_server = TcpServer()
+        self._request_server = RequestTcpServer()
+        self._signal_server = SignalTcpServer()
         self._setup_ui()
         self._setup_tcp_server()
 
@@ -38,9 +39,14 @@ class Main(QtGui.QMainWindow, Observer):
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
         self._chronometer.attach(NEW_TIME_UPDATE, self)
 
+        self.ui.question_ok_button.setEnabled(False)
+        self.ui.new_question_button.setEnabled(False)
+
     def _setup_tcp_server(self):
-        self._tcp_server.signal.customSignal.connect(self._handle_tcp_signal)
-        self._tcp_server.start()
+        self._request_server.signal.customSignal.connect(
+            self._handle_tcp_signal)
+        self._request_server.start()
+        self._signal_server.start()
 
     def observer_update(self, event, value):
         if (event == NEW_TIME_UPDATE):
@@ -62,7 +68,8 @@ class Main(QtGui.QMainWindow, Observer):
             self._flag_displayer.display_country(signal_data["country"])
 
     def _start_cycle(self):
-        self._outputer.output("Start Cycle")
+        self._signal_server.send_start_cycle_signal()
+        self.ui.startCycle.setEnabled(False)
 
     def _start_chrono(self):
         self._chronometer.start()

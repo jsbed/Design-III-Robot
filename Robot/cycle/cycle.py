@@ -1,5 +1,6 @@
 import time
 
+from Robot.communication.base_station_client import BaseStationClient
 from Robot.communication.tcp_client import TCPClient
 from Robot.configuration import config
 from Robot.controller.robot import INSTRUCTION_FINISHED
@@ -26,10 +27,6 @@ class Cycle(Observer):
         self._question = ""
         self._cube = Cube(None, None)
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
-        self._client = TCPClient(config.Config().
-                                 get_base_station_communication_ip(),
-                                 config.Config().
-                                 get_base_station_communication_port())
         self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
 
     def observer_update(self, event, value):
@@ -162,9 +159,7 @@ class Cycle(Observer):
         self._next_state()
 
     def _display_country(self):
-        self._client.connect_socket()
-        self._client.send_data({'question': self._question,
-                                'country': self._country})
-        self._client.disconnect_socket()
+        BaseStationClient().send_question_and_country(self._question,
+                                                      self._country)
 
         self._robot_controller.display_country_leds(self._country)

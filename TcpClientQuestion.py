@@ -24,8 +24,8 @@ Config().load_config()
 context = zmq.Context()
 socket = context.socket(zmq.DEALER)
 url = "tcp://{}:{}".format(
-    Config().get_base_station_communication_ip(),
-    Config().get_base_station_communication_port())
+    Config().get_base_station_ip(),
+    Config().get_base_station_request_server_port())
 socket.connect(url)
 print('connecting to ' + url)
 

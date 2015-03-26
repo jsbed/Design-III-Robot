@@ -15,8 +15,8 @@ class CycleTest(unittest.TestCase):
     @staticmethod
     def _setup_config_mock(mock):
         a_mock = MagicMock()
-        a_mock.get_base_station_communication_port = Mock(return_value=3000)
-        a_mock.get_base_station_communication_ip = Mock(return_value="127.0.0.1")
+        a_mock.get_base_station_request_server_port = Mock(return_value=3000)
+        a_mock.get_base_station_ip = Mock(return_value="127.0.0.1")
         mock.return_value = a_mock
 
     @staticmethod

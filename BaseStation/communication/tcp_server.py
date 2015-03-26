@@ -10,13 +10,17 @@ from Robot.configuration.config import Config
 from Robot.cycle.objects.color import Color
 from Robot.locators import robot_locator, cube_locator
 
+QUESTION_OK_SIGNAL = "question ok signal"
+ASK_NEW_QUESTION_SIGNAL = "ask new question"
+START_CYCLE_SIGNAL = "start cycle"
 
-class TcpServer(QThread):
+
+class RequestTcpServer(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        self._port = Config().get_base_station_communication_port()
-        self._ip = Config().get_base_station_communication_ip()
+        self._port = Config().get_base_station_request_server_port()
+        self._ip = Config().get_base_station_ip()
         self._context = zmq.Context()
         self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
         self.signal = Signal()
@@ -24,7 +28,7 @@ class TcpServer(QThread):
     def run(self):
         url = "tcp://{}:{}".format(self._ip, self._port)
         self._socket.bind(url)
-        self._send_message("Base Station Server listening on port " +
+        self._send_message("Base Station Request Server listening on port " +
                            str(self._port))
         self._wait_for_messages()
 
@@ -69,3 +73,25 @@ class TcpServer(QThread):
     def _send_localization(self, localization):
         localization_response = create_localization_response(localization)
         self._socket.send(bytes(localization_response, "utf-8"))
+
+
+class SignalTcpServer():
+
+    def __init__(self):
+        self._port = Config().get_base_station_signal_server_port()
+        self._ip = Config().get_base_station_ip()
+        self._context = zmq.Context()
+        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
+
+    def start(self):
+        url = "tcp://{}:{}".format(self._ip, self._port)
+        self._socket.bind(url)
+
+    def send_question_ok_signal(self):
+        self._socket.send(bytes(QUESTION_OK_SIGNAL, "utf-8"))
+
+    def send_new_question_signal(self):
+        self._socket.send(bytes(ASK_NEW_QUESTION_SIGNAL, "utf-8"))
+
+    def send_start_cycle_signal(self):
+        self._socket.send(bytes(START_CYCLE_SIGNAL, "utf-8"))
