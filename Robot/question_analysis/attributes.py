@@ -69,7 +69,7 @@ class CapitalIs(QuestionMatcher):
 #value matcher national symbol ([\w'\s]+)(?:.|\?| and| is the), shouyld be for all
 
 END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$']
-BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ', r'(?:\s|^)the ']
+BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ', r'(?:\s|^)the ', r'^']
 
 
 class QuestionMatcher(object):
@@ -204,7 +204,7 @@ class LongitudeMatcher(TextQuestionMatcher):
 class IndependenceMatcher(TextQuestionMatcher):
 
     def __init__(self):
-        value_matcher = r'((?:\w*\s\d*){1,3})'
+        value_matcher = r'(\d*\s(?:January|February|March|April|May|June|July|August|September|October|November|December)?\s\d*)'
         attribute = 'independence'
         super(IndependenceMatcher, self).__init__(attribute, value_matcher)
 
