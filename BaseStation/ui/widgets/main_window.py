@@ -49,6 +49,10 @@ class Main(QtGui.QMainWindow, Observer):
         self.ui.new_question_button.setEnabled(False)
         self._robot_locator_worker.start()
 
+    # When closing Window
+    def closeEvent(self, event):
+        self._robot_locator_worker.stop()
+
     def _setup_tcp_servers(self):
         self._request_server.signal.custom_signal.connect(
             self._handle_tcp_signal)
