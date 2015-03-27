@@ -20,7 +20,7 @@ class Main(QtGui.QMainWindow, Observer):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        # self.setWindowState(Qt.WindowState.WindowFullScreen)
+        self.setWindowState(Qt.WindowState.WindowFullScreen)
 
         self._outputer = Outputer(self.ui.consoleBrowser)
         self._chronometer = Chronometer()
@@ -46,7 +46,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._chronometer.attach(NEW_TIME_UPDATE, self)
 
         self._set_question_buttons_enabled(False)
-        # self._robot_locator_worker.start()
+        self._robot_locator_worker.start()
 
     # When closing Window
     def closeEvent(self, event):

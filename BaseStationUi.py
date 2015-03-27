@@ -23,5 +23,5 @@ def init_ui():
 if __name__ == '__main__':
     Config().load_config()
     fill_country_repository()
-    # Kinect().start()
+    Kinect().start()
     init_ui()
