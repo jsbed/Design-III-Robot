@@ -21,7 +21,7 @@ ADDRESS = "127.0.0.1"
 DEPLACEMENT_ENABLE = False
 LEDS_ENABLE = False
 QUESTION_ENABLE = False
-GRIPPER_ENABLED = False
+GRIPPER_ENABLED = True
 
 robot = None
 led_manager = None
@@ -139,7 +139,7 @@ while True:
         gripper_manager.widest_gripper()
     elif message == "lift gripper" and GRIPPER_ENABLED:
         gripper_manager.lift_gripper()
-    elif message == "lower cube" and GRIPPER_ENABLED:
+    elif message == "lower gripper" and GRIPPER_ENABLED:
         gripper_manager.lower_gripper()
     else:
         print("Message filtered:", message)

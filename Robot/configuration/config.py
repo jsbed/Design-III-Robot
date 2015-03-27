@@ -129,7 +129,7 @@ class Config(metaclass=Singleton):
 
     def get_release_cube_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
-                                           "TakeCube"))
+                                           "ReleaseCube"))
 
     def get_widest_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
