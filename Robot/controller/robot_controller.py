@@ -7,10 +7,11 @@ from Robot.controller.robot import Robot
 from Robot.cycle import atlas
 from Robot.managers import led_manager
 from Robot.path_finding.point_adjustor import PointAdjustor
+from Robot.communication.base_station_client import BaseStationClient
 
 FULL_ROTATION = 360
 ANGLE_DIFFERENCE_NULL = 0
-FACE_NORTH = 90
+FACE_NORTH = 0
 
 
 class RobotController():
@@ -48,6 +49,7 @@ class RobotController():
                                                target_point)
 
         self._move_robot_towards_target_point(target_point)
+        self._send_new_path(config.Config().get_atlas_zone_position())
 
     def display_country_leds(self, country):
         self._led_manager.display_country(country)
@@ -75,6 +77,7 @@ class RobotController():
                                                next_point)
 
         self._move_robot_towards_target_point(next_point)
+        self._send_new_path(next_point)
 
     def move_robot_to_localize_cube(self):
         self._update_robot_localization()
@@ -87,6 +90,7 @@ class RobotController():
         self._move_robot_towards_target_point(config.Config().
                                               get_localize_cube_position())
         self._robot.append_instruction(Rotate(FACE_NORTH))
+        self._send_new_path(config.Config().get_localize_cube_position())
 
     def push_cube(self):
         self._robot.append_instruction(Move(config.Config().
@@ -143,6 +147,10 @@ class RobotController():
         self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
+
+    def _send_new_path(self, target_point):
+        path = [target_point.x, target_point.y]
+        BaseStationClient().send_path(path)
 
     def _robot_is_next_to_target_point(self):
         return self._distance <= config.Config().get_distance_uncertainty()
