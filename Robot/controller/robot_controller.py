@@ -86,10 +86,21 @@ class RobotController():
             _calculate_distance_between_points(self._robot_position,
                                                config.Config().
                                                get_localize_cube_position())
+        target_orientation = self._point_adjustor.find_robot_orientation(
+            self._robot_orientation,
+            self._robot_position,
+            config.Config().get_localize_cube_position())
 
-        self._move_robot_towards_target_point(config.Config().
-                                              get_localize_cube_position())
-        rotation = FACE_NORTH - self._robot_orientation
+        if (abs(target_orientation) > config.Config().get_orientation_max()):
+            self._robot.append_instruction(
+                Rotate(config.Config().get_orientation_max()))
+            self._robot.append_instruction(
+                Rotate(target_orientation -
+                       config.Config().get_orientation_max()))
+        else:
+            self._robot.append_instruction(Rotate(target_orientation))
+        self._robot.append_instruction(Move(self._distance))
+        rotation = FACE_NORTH - target_orientation - self._robot_orientation
         if (abs(rotation) > config.Config().get_orientation_max()):
             self._robot.append_instruction(
                 Rotate(config.Config().get_orientation_max()))
@@ -98,6 +109,7 @@ class RobotController():
                        config.Config().get_orientation_max()))
         else:
             self._robot.append_instruction(Rotate(rotation))
+        self._robot.execute_instructions()
         self._send_new_path(config.Config().get_localize_cube_position())
 
     def push_cube(self):
