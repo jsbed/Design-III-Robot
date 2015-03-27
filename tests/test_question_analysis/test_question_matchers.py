@@ -5,27 +5,42 @@ from Robot.question_analysis.attributes import EqualsMatcher, GreaterThanMatcher
     LatitudeMatcher
 
 
+def only_one(a_lst):
+    true_found = False
+    for v in a_lst:
+        if v:
+            if true_found:
+                return False
+            else:
+                true_found = True
+    return true_found
+
+
 class TestQuestionMatchers(object):
     def __init__(self):
         pass
+
+    def assert_info_matcher_list(self, info_matchers, data):
+        info_matcher_results = list(map(lambda el: el.match(data), info_matchers))
+        assert_true(only_one(info_matcher_results))
 
     def test_equals_matcher(self):
         question = 'My public debt is 7.9% of GDP.'
         equals_matcher = EqualsMatcher('public debt')
         info_matcher = equals_matcher.find_info(question)
-        assert_true(info_matcher.match('7.9% (2013)'))
+        self.assert_info_matcher_list(info_matcher, '7.9% (2013)')
 
     def test_greater_than_matcher(self):
         question = 'population is greater than 42.'
         greater_than_matcher = GreaterThanMatcher('population')
         info_matcher = greater_than_matcher.find_info(question)
-        assert_true(info_matcher.match('50 (2013)'))
+        self.assert_info_matcher_list(info_matcher, '50 (2013)')
 
     def test_less_than_matcher(self):
         question = 'population is less than 42.'
         less_than_matcher = LessThanMatcher('population')
         info_matcher = less_than_matcher.find_info(question)
-        assert_true(info_matcher.match('40 (2013)'))
+        self.assert_info_matcher_list(info_matcher, '40 (2013)')
 
     def test_starts_with_matcher(self):
         question = 'capital starts with ott.'
@@ -40,10 +55,10 @@ class TestQuestionMatchers(object):
         assert_true(info_matcher.match('Caracas'))
 
     def test_interval_matcher(self):
-        question = 'population between 41 and 43'
-        interval_matcher = QuestionWithIntervalMatcher('population')
+        question = 'My population growth rate is between 1.45% and 1.47%.'
+        interval_matcher = QuestionWithIntervalMatcher('population growth rate')
         info_matcher = interval_matcher.find_info(question)
-        assert_true(info_matcher.match('42'))
+        self.assert_info_matcher_list(info_matcher, '1.46% (2015 est.)')
 
     def test_approximation_question_matcher(self):
         question = 'My birth rate is approximately 16 births/1000'
@@ -62,4 +77,12 @@ class TestQuestionMatchers(object):
         latitude_matcher = LatitudeMatcher()
         info_matchers = latitude_matcher.find_info(question)
         info_matcher_results = list(map(lambda el: el.match('41 00 S, 174 00 E'), info_matchers))
+        assert_true(any(info_matcher_results))
+
+    def test_text_matcher(self):
+        question = 'The lotus blossom is the national symbol of this country.'
+        text_matcher = TextQuestionMatcher('national symbol')
+        info_matchers = text_matcher.find_info(question)
+        info_matcher_results = list(map(lambda el: el.match('yellow, five-pointed star on red field; lotus blossom'),
+                                        info_matchers))
         assert_true(any(info_matcher_results))

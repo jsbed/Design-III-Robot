@@ -53,9 +53,10 @@ class NumericInfoMatcher(InfoMatcher):
 
     def _cast_to_float(self, number):
         number = number.replace(',', '').replace(' ', '')
-        if number[-1] == '.':
-            number = number[:-1]
         try:
+            if number[-1] == '.':
+                number = number[:-1]
+
             number = float(number)
         except:
             number = None

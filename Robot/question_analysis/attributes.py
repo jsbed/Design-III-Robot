@@ -68,6 +68,9 @@ class CapitalIs(QuestionMatcher):
 #value matcher for date ((?:\w*\s\d*){1,3})
 #value matcher national symbol ([\w'\s]+)(?:.|\?| and| is the), shouyld be for all
 
+END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$']
+BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ', r'(?:\s|^)the ']
+
 
 class QuestionMatcher(object):
 
@@ -77,17 +80,20 @@ class QuestionMatcher(object):
         self._info_matcher = info_matcher
 
     def find_info(self, question):
-        info_matcher = None
-        match = self.get_match(question)
-        if match:
-            info_matcher = self._info_matcher(self._attribute, match)
-        return info_matcher
+        return self.get_info_matcher(question)
 
     def get_match(self, question):
         match = self._regex.search(question)
         if match:
             match = match.group(1)
         return match
+
+    def get_info_matcher(self, question):
+        info_matcher = None
+        match = self.get_match(question)
+        if match:
+            info_matcher = self._info_matcher(self._attribute, match)
+        return info_matcher
 
 
 class QuestionWithListMatcher(QuestionMatcher):
@@ -146,80 +152,25 @@ class EndsWithMatcher(QuestionMatcher):
 
 class TextQuestionMatcher(QuestionMatcher):
 
-    def __init__(self, attribute, value_matcher=r".?[\sa-zA-Z']+"):
-        self._descriptors = ['is', 'has', 'of', 'in', 'on', 'the']
-        pattern = ' (' + value_matcher + r')(?: as| and| is|\?|\.)'
-        info_matcher = InfoMatcher
-        super(TextQuestionMatcher, self).__init__(pattern, info_matcher, attribute)
+    def __init__(self, attribute, value_matcher=r"(.?[\sa-zA-Z']+)", info_matcher=InfoMatcher):
+        super(TextQuestionMatcher, self).__init__(value_matcher, info_matcher, attribute)
 
     def find_info(self, question):
         info_matchers = []
-        for descriptor in self._descriptors:
-            match = re.compile(descriptor + self._regex.pattern, re.IGNORECASE).search(question)
-            if match:
-                info_matchers.append(self._info_matcher(self._attribute, match.group(1)))
+        for begin_delimiter in BEGIN_DELIMITERS:
+            begin_positions = [position.end() for position in re.finditer(begin_delimiter, question, re.IGNORECASE)]
+            substrings = [question[position:] for position in begin_positions]
+
+            for end_delimiter in END_DELIMITERS:
+                for substring in substrings:
+                    end_positions = [position.start() for position in re.finditer(end_delimiter, substring, re.IGNORECASE)]
+                    values = [substring[:position] for position in end_positions]
+                    for value in values:
+                        info_matcher = self.get_info_matcher(value)
+                        if info_matcher:
+                            print(begin_delimiter, end_delimiter)
+                            info_matchers.append(info_matcher)
         return info_matchers
-
-
-class ContainsMatcher(QuestionMatcher):
-
-    def __init__(self, attribute):
-        pattern = r'contains (\d) words(?: as| and| is|\?|\.)?'
-        info_matcher = LengthMatcher
-        super(ContainsMatcher, self).__init__(pattern, info_matcher, attribute)
-
-
-class NumericQuestionMatcher(QuestionMatcher):
-
-    def __init__(self, attribute, pattern, op):
-        self._op = op
-        info_matcher = NumericInfoMatcher
-        super(NumericQuestionMatcher, self).__init__(pattern, info_matcher, attribute)
-
-    def find_info(self, question):
-        info_matcher = None
-        match = self._regex.search(question)
-        if match:
-            info_matcher = self._info_matcher(self._attribute, match.group(1), self._op)
-        return info_matcher
-
-
-class QuestionWithIntervalMatcher(QuestionMatcher):
-
-    def __init__(self, attribute):
-        pattern = r'between ([\d\.\s,]+) and ([\d\.\s,]+)(?: and| is|\?|\.)?'
-        info_matcher = BetweenMatcher
-        super(QuestionWithIntervalMatcher, self).__init__(pattern, info_matcher, attribute)
-
-    def find_info(self, question):
-        info_matcher = None
-        match = self._regex.search(question)
-        if match:
-            lower_bound = match.group(1)
-            upper_bound = match.group(2)
-            info_matcher = self._info_matcher(self._attribute, lower_bound, upper_bound)
-        return info_matcher
-
-
-class LessThanMatcher(NumericQuestionMatcher):
-
-    def __init__(self, attribute):
-        pattern = r'less than ([\d\.\s,]+)(?: and| is|\?|\.)?'
-        super(LessThanMatcher, self).__init__(attribute, pattern, '<')
-
-
-class GreaterThanMatcher(NumericQuestionMatcher):
-
-    def __init__(self, attribute):
-        pattern = r'greater than ([\d\.\s,]+)(?: and| is|\?|\.)?'
-        super(GreaterThanMatcher, self).__init__(attribute, pattern, '>')
-
-
-class EqualsMatcher(NumericQuestionMatcher):
-
-    def __init__(self, attribute):
-        pattern = r'is ([\d\.\s,]+)(?: and| is|\?|\.)?'
-        super(EqualsMatcher, self).__init__(attribute, pattern, '=')
 
 
 class LatitudeMatcher(TextQuestionMatcher):
@@ -232,8 +183,8 @@ class LatitudeMatcher(TextQuestionMatcher):
     def get_match(self, question):
         match = self._regex.search(question)
         if match:
-            latitude = match.group(1).replace('.', ' ')
-        return latitude
+            match = match.group(1).replace('.', ' ')
+        return match
 
 
 class LongitudeMatcher(TextQuestionMatcher):
@@ -246,8 +197,8 @@ class LongitudeMatcher(TextQuestionMatcher):
     def get_match(self, question):
         match = self._regex.search(question)
         if match:
-            longitude = match.group(1).replace('.', ' ')
-        return longitude
+            match = match.group(1).replace('.', ' ')
+        return match
 
 
 class IndependenceMatcher(TextQuestionMatcher):
@@ -256,6 +207,70 @@ class IndependenceMatcher(TextQuestionMatcher):
         value_matcher = r'((?:\w*\s\d*){1,3})'
         attribute = 'independence'
         super(IndependenceMatcher, self).__init__(attribute, value_matcher)
+
+
+class ContainsMatcher(QuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'contains (\d) words(?: as| and| is|\?|\.)?'
+        info_matcher = LengthMatcher
+        super(ContainsMatcher, self).__init__(pattern, info_matcher, attribute)
+
+
+class QuestionWithIntervalMatcher(TextQuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'between ([\d\.\s,]+)%? and ([\d\.\s,]+)%?'
+        info_matcher = BetweenMatcher
+        super(QuestionWithIntervalMatcher, self).__init__(attribute, pattern, info_matcher)
+
+    def get_info_matcher(self, question):
+        info_matcher = None
+        match = self.get_match(question)
+        if match:
+            lower_bound = match.group(1)
+            upper_bound = match.group(2)
+            info_matcher = self._info_matcher(self._attribute, lower_bound, upper_bound)
+        return info_matcher
+
+    def get_match(self, question):
+        return self._regex.search(question)
+
+
+class NumericQuestionMatcher(TextQuestionMatcher):
+
+    def __init__(self, attribute, pattern, op):
+        self._op = op
+        info_matcher = NumericInfoMatcher
+        super(NumericQuestionMatcher, self).__init__(attribute, pattern, info_matcher)
+
+    def get_info_matcher(self, question):
+        info_matcher = None
+        match = self.get_match(question)
+        if match:
+            info_matcher = self._info_matcher(self._attribute, match, self._op)
+        return info_matcher
+
+
+class LessThanMatcher(NumericQuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'less than ([\d\.\s,]+)%?'
+        super(LessThanMatcher, self).__init__(attribute, pattern, '<')
+
+
+class GreaterThanMatcher(NumericQuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'greater than ([\d\.\s,]+)%?'
+        super(GreaterThanMatcher, self).__init__(attribute, pattern, '>')
+
+
+class EqualsMatcher(NumericQuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'([\d\.\s,]+)%?'
+        super(EqualsMatcher, self).__init__(attribute, pattern, '=')
 
 
 class Climate(QuestionMatcher):

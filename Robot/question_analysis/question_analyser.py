@@ -43,6 +43,7 @@ class QuestionAnalyser(object):
             if not country_matches:
                 raise Exception("No country found")
 
+        print(country_matches)
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
             country_answer = country_answer.intersection(country_match)

@@ -44,7 +44,7 @@ class QuestionSegmentator(object):
         """
         remove and return the subquestion before the given attribute position
         """
-        SeparatorPosition = namedtuple('SeparatorPositions', ['separator', 'position'])
+        SeparatorPosition = namedtuple('SeparatorPosition', ['separator', 'position'])
         separator_positions = []
         subquestion = question[:attribute_position]
 
