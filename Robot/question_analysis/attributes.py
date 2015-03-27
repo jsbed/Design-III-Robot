@@ -78,10 +78,16 @@ class QuestionMatcher(object):
 
     def find_info(self, question):
         info_matcher = None
+        match = self.get_match(question)
+        if match:
+            info_matcher = self._info_matcher(self._attribute, match)
+        return info_matcher
+
+    def get_match(self, question):
         match = self._regex.search(question)
         if match:
-            info_matcher = self._info_matcher(self._attribute, match.group(1))
-        return info_matcher
+            match = match.group(1)
+        return match
 
 
 class QuestionWithListMatcher(QuestionMatcher):
@@ -140,10 +146,19 @@ class EndsWithMatcher(QuestionMatcher):
 
 class TextQuestionMatcher(QuestionMatcher):
 
-    def __init__(self, attribute, value_matcher=r"[.\s\w']+"):
-        pattern = r'(?:is|has|of|in|on|the) (' + value_matcher + r')(?: as| and| is|\?|\.)?'
+    def __init__(self, attribute, value_matcher=r".?[\sa-zA-Z']+"):
+        self._descriptors = ['is', 'has', 'of', 'in', 'on', 'the']
+        pattern = ' (' + value_matcher + r')(?: as| and| is|\?|\.)'
         info_matcher = InfoMatcher
         super(TextQuestionMatcher, self).__init__(pattern, info_matcher, attribute)
+
+    def find_info(self, question):
+        info_matchers = []
+        for descriptor in self._descriptors:
+            match = re.compile(descriptor + self._regex.pattern, re.IGNORECASE).search(question)
+            if match:
+                info_matchers.append(self._info_matcher(self._attribute, match.group(1)))
+        return info_matchers
 
 
 class ContainsMatcher(QuestionMatcher):
@@ -214,13 +229,25 @@ class LatitudeMatcher(TextQuestionMatcher):
         attribute = 'latitude'
         super(LatitudeMatcher, self).__init__(attribute, value_matcher)
 
+    def get_match(self, question):
+        match = self._regex.search(question)
+        if match:
+            latitude = match.group(1).replace('.', ' ')
+        return latitude
+
 
 class LongitudeMatcher(TextQuestionMatcher):
 
     def __init__(self):
-        value_matcher = r'(\d+\s\d+\s[E|W])'
+        value_matcher = r'(\d+[\s.]\d+\s[E|W])'
         attribute = 'longitude'
         super(LongitudeMatcher, self).__init__(attribute, value_matcher)
+
+    def get_match(self, question):
+        match = self._regex.search(question)
+        if match:
+            longitude = match.group(1).replace('.', ' ')
+        return longitude
 
 
 class IndependenceMatcher(TextQuestionMatcher):
@@ -280,7 +307,7 @@ class IllicitDrugsActivities(QuestionMatcher):
 class ApproximationMatcher(QuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'is (?:approximately )?([\d\.\s,]+)(?: and| is|\?|\.)?'
+        pattern = r'is approximately ([\d\.\s,]+)(?: and| is|\?|\.)?'
         info_matcher = NumericApproximationInfoMatcher
         super(ApproximationMatcher, self).__init__(pattern, info_matcher, attribute)
 
@@ -290,12 +317,15 @@ class QuestionMatcherGenerator(object):
     def __init__(self):
 
         self._attributes_with_exception = ['independence', 'illicit drugs', 'climate', 'ethnic groups',
-                                           'national anthem']
+                                           'national anthem', 'latitude', 'longitude']
+        self._specific_matchers = {'latitude': LatitudeMatcher(), 'longitude': LongitudeMatcher()}
 
     def get_question_matchers(self, attribute):
 
         if attribute not in self._attributes_with_exception:
             return [QuestionWithListMatcher(attribute), StartsWithMatcher(attribute), EndsWithMatcher(attribute),
-                    TextQuestionMatcher(attribute), ContainsMatcher(attribute), QuestionWithIntervalMatcher(attribute),
+                    ContainsMatcher(attribute), QuestionWithIntervalMatcher(attribute), TextQuestionMatcher(attribute),
                     LessThanMatcher(attribute), GreaterThanMatcher(attribute), EqualsMatcher(attribute),
                     ApproximationMatcher(attribute)]
+        else:
+            return [self._specific_matchers[attribute]]

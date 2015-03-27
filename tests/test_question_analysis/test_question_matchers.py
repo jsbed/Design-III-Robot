@@ -1,7 +1,8 @@
 from nose.tools import assert_true
 
 from Robot.question_analysis.attributes import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
-    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher, ContainsMatcher, ApproximationMatcher
+    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher, ContainsMatcher, ApproximationMatcher, \
+    LatitudeMatcher
 
 
 class TestQuestionMatchers(object):
@@ -44,7 +45,7 @@ class TestQuestionMatchers(object):
         info_matcher = interval_matcher.find_info(question)
         assert_true(info_matcher.match('42'))
 
-    def test_text_question_matcher(self):
+    def test_approximation_question_matcher(self):
         question = 'My birth rate is approximately 16 births/1000'
         text_question_matcher = ApproximationMatcher('birth rate')
         info_matcher = text_question_matcher.find_info(question)
@@ -55,3 +56,10 @@ class TestQuestionMatchers(object):
         contains_matcher = ContainsMatcher('capital')
         info_matcher = contains_matcher.find_info(question)
         assert_true(info_matcher.match('washington dc'))
+
+    def test_latitude_matcher(self):
+        question = 'What country has a latitude of 41.00 S?'
+        latitude_matcher = LatitudeMatcher()
+        info_matchers = latitude_matcher.find_info(question)
+        info_matcher_results = list(map(lambda el: el.match('41 00 S, 174 00 E'), info_matchers))
+        assert_true(any(info_matcher_results))

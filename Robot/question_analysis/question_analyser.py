@@ -1,3 +1,4 @@
+import collections
 from Robot.configuration.config import Config
 from Robot.question_analysis.attributes import QuestionMatcherGenerator
 from Robot.question_analysis.factbook_parsing.country_info import Factbook, INFO_KEY_ALIAS
@@ -29,7 +30,10 @@ class QuestionAnalyser(object):
             for matcher in question_matchers:
                 info_matcher = matcher.find_info(question)
                 if info_matcher:
-                    info_matchers.append(info_matcher)
+                    if isinstance(info_matcher, collections.Iterable):
+                        info_matchers.extend(info_matcher)
+                    else:
+                        info_matchers.append(info_matcher)
 
             for info_matcher in info_matchers:
                 matches = self._factbook.get_matches(info_matcher)

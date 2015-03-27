@@ -17,7 +17,7 @@ class QuestionSegmentator(object):
     def segment_question(self, question):
         question = self._clean_question(question)
         attributes_position = self._find_attributes_in_question(question)
-        while(len(attributes_position) > 1):
+        while len(attributes_position) > 1:
             question = self._remove_subquestion(question, attributes_position[1])
             del attributes_position[0]
         self._subquestions.append(question)
@@ -55,5 +55,6 @@ class QuestionSegmentator(object):
         separator_positions = sorted(separator_positions, key=attrgetter('position'))
 
         subquestion = subquestion[:separator_positions[-1].position]
+        subquestion += '?'
         self._subquestions.append(subquestion)
         return question[separator_positions[-1].position + len(separator_positions[-1].separator):]
