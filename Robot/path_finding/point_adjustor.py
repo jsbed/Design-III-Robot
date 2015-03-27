@@ -95,9 +95,22 @@ class PointAdjustor():
                                       self._target_point.y)
 
         else:
-            self._target_point = Point(self._target_point.x -
-                                       self._distance_between_points,
-                                       self._target_point.y)
+            if (self._cube_center.y <= (self._robot_position.y -
+                                        self._distance_between_points)):
+                self._target_point = Point(self._target_point.x,
+                                           self._target_point.y +
+                                           self._distance_between_points)
+
+            elif (self._cube_center.y >= (self._robot_position.y +
+                                          self._distance_between_points)):
+                self._target_point = Point(self._target_point.x,
+                                           self._target_point.y -
+                                           self._distance_between_points)
+
+            else:
+                self._target_point = Point(self._target_point.x -
+                                           self._distance_between_points,
+                                           self._target_point.y)
 
     @staticmethod
     def _calculate_angle_between_points(start, end):
