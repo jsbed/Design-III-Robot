@@ -180,13 +180,13 @@ class PublicDebtMatcher(InfoMatcher):
 class ClimateMatcher(InfoMatcher):
 
     def __init__(self, info_key, climate):
-        regex = re.compile(climate, re.IGNORECASE)
-        super(ClimateMatcher, self).__init__(info_key, regex)
+        pattern = climate
+        super(ClimateMatcher, self).__init__(info_key, pattern)
 
 
 class IllicitDrugsActivitiesMatcher(InfoMatcher):
 
     def __init__(self, info_key, activities):
-        regex = re.compile(activities, re.IGNORECASE)
-        super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, regex)
+        pattern = activities
+        super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, pattern)
         print(self._regex)

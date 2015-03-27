@@ -331,13 +331,14 @@ class QuestionMatcherGenerator(object):
 
     def __init__(self):
 
-        self._attributes_with_exception = ['independence', 'illicit drugs', 'climate', 'ethnic groups',
-                                           'national anthem', 'latitude', 'longitude']
-        self._specific_matchers = {'latitude': LatitudeMatcher(), 'longitude': LongitudeMatcher()}
+        self._specific_matchers = {'latitude': LatitudeMatcher(), 'longitude': LongitudeMatcher(),
+                                   'climate': Climate(), 'independence': IndependenceMatcher(),
+                                   'illicit drugs': IllicitDrugsActivities(), 'ethnic groups': EthnicGroups(),
+                                   'national anthem': NationalAnthemComposedBy()}
 
     def get_question_matchers(self, attribute):
 
-        if attribute not in self._attributes_with_exception:
+        if attribute not in self._specific_matchers.keys():
             return [QuestionWithListMatcher(attribute), StartsWithMatcher(attribute), EndsWithMatcher(attribute),
                     ContainsMatcher(attribute), QuestionWithIntervalMatcher(attribute), TextQuestionMatcher(attribute),
                     LessThanMatcher(attribute), GreaterThanMatcher(attribute), EqualsMatcher(attribute),
