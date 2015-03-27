@@ -36,3 +36,5 @@ class DrawingLabel(QLabel):
         painter.drawImage(cube_position, cube_image)
         painter.drawPath(path)
         painter.end()
+
+        self.update()
