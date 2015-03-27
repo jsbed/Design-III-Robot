@@ -166,6 +166,10 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationUncertainty"))
 
+    def get_orientation_max(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "OrientationMax"))
+
     def get_push_cube_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "PushCubeDistance"))

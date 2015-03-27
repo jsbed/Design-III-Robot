@@ -41,6 +41,8 @@ class RobotControllerTest(unittest.TestCase):
         a_mock.get_orientation_uncertainty = Mock(return_value=5)
         a_mock.get_red_led_wait_time = Mock(return_value=2)
         a_mock.get_display_country_wait_time = Mock(return_value=5)
+        a_mock.get_orientation_max = Mock(return_value=90)
+        a_mock.get_localize_cube_position = Mock(return_value=Point(55, 40))
 
         mock.return_value = a_mock
 
@@ -318,6 +320,9 @@ class RobotControllerTest(unittest.TestCase):
         robot_mock.get_localization_position.return_value = Point(50, 50)
         robot_mock.get_localization_orientation.return_value = 0
         RobotMock.return_value = robot_mock
+        point_adjustor_mock = MagicMock()
+        point_adjustor_mock.find_robot_orientation.return_value = 0
+        PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().move_robot_to_localize_cube()
         self.assertEqual(robot_mock.append_instruction.call_count, 3)

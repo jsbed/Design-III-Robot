@@ -89,7 +89,15 @@ class RobotController():
 
         self._move_robot_towards_target_point(config.Config().
                                               get_localize_cube_position())
-        self._robot.append_instruction(Rotate(FACE_NORTH))
+        rotation = FACE_NORTH - self._robot_orientation
+        if (abs(rotation) > config.Config().get_orientation_max()):
+            self._robot.append_instruction(
+                Rotate(config.Config().get_orientation_max()))
+            self._robot.append_instruction(
+                Rotate(rotation -
+                       config.Config().get_orientation_max()))
+        else:
+            self._robot.append_instruction(Rotate(rotation))
         self._send_new_path(config.Config().get_localize_cube_position())
 
     def push_cube(self):
@@ -134,7 +142,15 @@ class RobotController():
         if (self._robot_is_facing_correct_angle(target_orientation)):
             return True
         else:
-            self._robot.append_instruction(Rotate(target_orientation))
+            if (abs(target_orientation) >
+                    config.Config().get_orientation_max()):
+                self._robot.append_instruction(
+                    Rotate(config.Config().get_orientation_max()))
+                self._robot.append_instruction(
+                    Rotate(target_orientation -
+                           config.Config().get_orientation_max()))
+            else:
+                self._robot.append_instruction(Rotate(target_orientation))
             self._robot.execute_instructions()
             return False
 
@@ -144,7 +160,14 @@ class RobotController():
             self._robot_position,
             destination)
 
-        self._robot.append_instruction(Rotate(target_orientation))
+        if (abs(target_orientation) > config.Config().get_orientation_max()):
+            self._robot.append_instruction(
+                Rotate(config.Config().get_orientation_max()))
+            self._robot.append_instruction(
+                Rotate(target_orientation -
+                       config.Config().get_orientation_max()))
+        else:
+            self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
 
