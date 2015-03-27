@@ -22,6 +22,9 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
     def send_question_and_country(self, question, country):
         self.send_data(json.dumps({'question': question, 'country': country}))
 
+    def send_path(self, target_point):
+        self.send_data(json.dumps({'path': target_point}))
+
     def log(self, message):
         if message:
             self.send_data(json.dumps({'message': message}))
