@@ -14,6 +14,7 @@ SECTION_CUBE_SEGMENTATION = "CUBESEGMENTATION"
 SECTION_ROBOT_SEGMENTATION = "ROBOTSEGMENTATION"
 SECTION_PATHFINDING = "PATHFINDING"
 SECTION_FLAGCREATION = "FLAGCREATION"
+SECTION_LEDS = "LEDS"
 SECTION_GRIPPER = "GRIPPERDATA"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
 SECTION_SERIAL_PORT = "SERIALPORT"
@@ -32,16 +33,19 @@ class Config(metaclass=Singleton):
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
-    def get_base_station_communication_port(self):
-        return int(self._parser.get(SECTION_DEFAULT,
-                                    "BaseStationCommunicationPort"))
+    def get_base_station_port(self):
+        return int(self._parser.get(SECTION_DEFAULT, "BaseStationPort"))
 
-    def get_base_station_communication_ip(self):
-        return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
+    def get_base_station_ip(self):
+        return self._parser.get(SECTION_DEFAULT, "BaseStationIP")
 
     def get_kinect_mask_img_path(self):
         return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,
                                              "KinectMask"))
+
+    def get_perspective_matrix_path(self):
+        return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,
+                                             "PerspectiveArray"))
 
     def get_cube_low_blue_hsv_values(self):
         return json.loads(self._parser.get(SECTION_CUBE_SEGMENTATION,
@@ -120,7 +124,7 @@ class Config(metaclass=Singleton):
 
     def get_release_cube_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
-                                           "TakeCube"))
+                                           "ReleaseCube"))
 
     def get_widest_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
@@ -157,9 +161,21 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationUncertainty"))
 
+    def get_orientation_max(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "OrientationMax"))
+
+    def get_push_cube_distance(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "PushCubeDistance"))
+
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
                                                        "AtlasZonePosition")))
+
+    def get_localize_cube_position(self):
+        return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
+                                                       "LocalizeCubePosition")))
 
     def get_target_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_FLAGCREATION,
@@ -172,6 +188,12 @@ class Config(metaclass=Singleton):
     def get_cube_center_distance(self):
         return float(self._parser.get(SECTION_FLAGCREATION,
                                       "CubeCenterDistance"))
+
+    def get_red_led_wait_time(self):
+        return float(self._parser.get(SECTION_LEDS, "RedLedWaitTime"))
+
+    def get_display_country_wait_time(self):
+        return float(self._parser.get(SECTION_LEDS, "DisplayCountryWaitTime"))
 
     def get_pololu_serial_port_path(self):
         return self._parser.get(SECTION_SERIAL_PORT, "PololuSerialPort")

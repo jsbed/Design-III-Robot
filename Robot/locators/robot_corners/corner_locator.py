@@ -1,3 +1,4 @@
+import cv2
 import numpy
 
 from Robot.configuration.config import Config
@@ -49,15 +50,30 @@ def _extract_robot_corner_position(img_bgr, img_cloud, color):
         color)
 
     robot_corner = extractor.extract(img_bgr)
-    corner_contour = contours_finder.find_contours(robot_corner)
+    corner_contours = contours_finder.find_contours(robot_corner)
 
-    if corner_contour:
-        new_contour = numpy.squeeze(numpy.concatenate(corner_contour))
-        mean_point = numpy.around(numpy.mean(new_contour, axis=0))
-        new_point = perspective_transformation.transform(
-            img_cloud[mean_point[1], mean_point[0]])
+    if len(corner_contours) == 1:
+        return _find_corner_position_from_contour(corner_contours, img_cloud)
+    elif len(corner_contours) == 2:
+        point_a = _find_corner_position_from_contour(corner_contours[0],
+                                                     img_cloud)
+        point_b = _find_corner_position_from_contour(corner_contours[1],
+                                                     img_cloud)
 
-        return Point(new_point[0] * 100, new_point[1] * 100 + Config().
-                     get_robot_corner_size())
+        # Returns the closest point
+        return point_a if point_a.y < point_b.y else point_b
+
     else:
         raise Exception("Corner not found")
+
+
+def _find_corner_position_from_contour(contour, img_cloud):
+    new_contour = numpy.squeeze(numpy.concatenate(contour))
+    moments = cv2.moments(new_contour)
+    centroid_x = int(moments['m10'] / moments['m00'])
+    centroid_y = int(moments['m01'] / moments['m00'])
+    new_point = perspective_transformation.transform(img_cloud[centroid_y,
+                                                               centroid_x])
+
+    return Point(new_point[0] * 100, new_point[1] * 100 + Config().
+                 get_robot_corner_size())

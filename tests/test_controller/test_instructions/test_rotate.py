@@ -1,37 +1,39 @@
+from unittest.mock import MagicMock, Mock
 import unittest
-from unittest.mock import MagicMock, Mock, patch
+
 from Robot.controller.instructions.rotate import Rotate
 
 
-A_SERIAL_PORT = "SerialPortPath"
-ROTATE_120_DEGREES_CLOCKWISE_ENCODED_STRING = "RO000000120".encode()
-ROTATE_50_DEGREES_ANTICLOCKWISE_ENCODED_STRING = "RO000000050".encode()  # ****Need command for negative angle****
+CLOCKWISE_ANGLE = 120
+ANTICLOCKWISE_ANGLE = -50
+ROTATE_CLOCKWISE_ANGLE_STRING = "ROL00000120"
+ROTATE_ANTICLOCKWISE_ANGLE_STRING = "ROR00000050"
 
 
 class RotateTest(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.serial_mock = RotateTest.create_serial_mock()
+    def setUp(self):
+        self.serial_mock = RotateTest.create_serial_mock()
 
     @staticmethod
     def create_serial_mock():
         serial_mock = MagicMock()
-        serial_mock.write = Mock()
+        serial_mock.send_string = Mock()
         return serial_mock
 
-    @patch("Robot.controller.instructions.rotate.serial.Serial")
-    def test_rotate_should_call_serial_with_clockwise_angle_encoded_string(self, serial_mock):
-        serial_mock.return_value = self.serial_mock
-        self._rotate = Rotate()
-        self._rotate.rotate(120)
-        self._rotate.execute(A_SERIAL_PORT)
-        self.serial_mock.write.assert_called_with(ROTATE_120_DEGREES_CLOCKWISE_ENCODED_STRING)
+    def test_rotate_when_clockwise_execute_should_call_serial_with_clockwise_angle_string(self):
+        rotate_command = Rotate(120)
+        rotate_command.execute(self.serial_mock)
+        self.serial_mock.send_string.assert_called_with(
+            ROTATE_CLOCKWISE_ANGLE_STRING)
 
-    @patch("Robot.controller.instructions.rotate.serial.Serial")
-    def test_rotate_should_call_serial_with_anticlockwise_angle_encoded_string(self, serial_mock):
-        serial_mock.return_value = self.serial_mock
-        self._rotate = Rotate()
-        self._rotate.rotate(-50)
-        self._rotate.execute(A_SERIAL_PORT)
-        self.serial_mock.write.assert_called_with(ROTATE_50_DEGREES_ANTICLOCKWISE_ENCODED_STRING)
+    def test_rotate_when_anticlockwise_should_call_serial_with_anticlockwise_angle_string(self):
+        rotate_command = Rotate(-50)
+        rotate_command.execute(self.serial_mock)
+        self.serial_mock.send_string.assert_called_with(
+            ROTATE_ANTICLOCKWISE_ANGLE_STRING)
+
+    def test_rotate_without_angle_should_not_call_serial(self):
+        rotate_command = Rotate(0)
+        rotate_command.execute(self.serial_mock)
+        assert not self.serial_mock.send_string.called

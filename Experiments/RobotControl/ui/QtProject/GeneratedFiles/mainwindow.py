@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mainwindow.ui'
+# Form implementation generated from reading ui file '.\mainwindow.ui'
 #
-# Created: Sat Mar 21 11:48:27 2015
-#      by: pyside-uic 0.2.15 running on PySide 1.2.1
+# Created: Sun Mar 22 21:05:14 2015
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -260,12 +260,9 @@ class Ui_MainWindow(object):
         self.open_gripper_max_button.setFont(font)
         self.open_gripper_max_button.setObjectName("open_gripper_max_button")
         self.tabWidget.addTab(self.tab_3, "")
-        self.tab_4 = QtGui.QWidget()
-        self.tab_4.setObjectName("tab_4")
-        self.tabWidget.addTab(self.tab_4, "")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 420, 25))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 420, 21))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
 
@@ -360,7 +357,5 @@ class Ui_MainWindow(object):
             "MainWindow", "Ouvrir pince max", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate(
             "MainWindow", "Préhenseur", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate(
-            "MainWindow", "Caméra", None, QtGui.QApplication.UnicodeUTF8))
 
 import Experiments.RobotControl.ui.QtProject.GeneratedFiles.resource_rc

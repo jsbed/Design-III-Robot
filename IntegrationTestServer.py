@@ -4,6 +4,9 @@ import zmq
 
 from Robot.communication.serial_port import SerialPort
 from Robot.configuration.config import Config
+from Robot.controller.instructions.move import Move
+from Robot.controller.instructions.rotate import Rotate
+from Robot.controller.robot import Robot
 from Robot.country.country_repository import CountryRepository
 from Robot.cycle.objects.color import Color
 from Robot.cycle.objects.cube import Cube
@@ -18,8 +21,9 @@ ADDRESS = "127.0.0.1"
 DEPLACEMENT_ENABLE = False
 LEDS_ENABLE = False
 QUESTION_ENABLE = False
-GRIPPER_ENABLED = False
+GRIPPER_ENABLED = True
 
+robot = None
 led_manager = None
 gripper_manager = None
 stm_serial = None
@@ -35,17 +39,22 @@ if LEDS_ENABLE:
     country_repository_filler.fill_repository_from_file(flags_file_path)
     led_manager = LedManager(stm_serial)
 
+if DEPLACEMENT_ENABLE:
+    robot = Robot(stm_serial)
+
 if GRIPPER_ENABLED:
     pololu_serial = SerialPort(Config().get_pololu_serial_port_path())
     gripper_manager = GripperManager(pololu_serial)
 
 
 def up():
-    print("up command")
+    robot.append_instruction(Move(5))
+    robot.execute_instructions()
 
 
 def down():
-    print("down command")
+    robot.append_instruction(Move(-5))
+    robot.execute_instructions()
 
 
 def left():
@@ -57,11 +66,13 @@ def right():
 
 
 def rotate_right():
-    print("rotate-right command")
+    robot.append_instruction(Rotate(-5))
+    robot.execute_instructions()
 
 
 def rotate_left():
-    print("rotate-left command")
+    robot.append_instruction(Rotate(5))
+    robot.execute_instructions()
 
 
 def ask_question():
@@ -128,7 +139,7 @@ while True:
         gripper_manager.widest_gripper()
     elif message == "lift gripper" and GRIPPER_ENABLED:
         gripper_manager.lift_gripper()
-    elif message == "lower cube" and GRIPPER_ENABLED:
+    elif message == "lower gripper" and GRIPPER_ENABLED:
         gripper_manager.lower_gripper()
     else:
         print("Message filtered:", message)

@@ -1,48 +1,41 @@
+from unittest.mock import MagicMock, Mock
 import unittest
+
 from Robot.controller.robot import Robot
-from unittest.mock import patch, MagicMock, Mock
-
-
-A_SERIAL_PORT = "SerialPortPath"
 
 
 class RobotTest(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.rotate_mock = RobotTest.create_mock()
-        cls.move_mock = RobotTest.create_mock()
 
-    @staticmethod
-    def create_mock():
+    def setUp(self):
+        self._robot = Robot(self._create_serial_port_mock())
+
+    def _create_instruction_mock(self):
         a_mock = MagicMock()
         a_mock.execute = Mock()
         return a_mock
 
-    def setUp(self):
-        self._robot = Robot(A_SERIAL_PORT)
+    def _create_serial_port_mock(self):
+        a_mock = MagicMock()
+        a_mock.wait_for_read_line = Mock()
+        return a_mock
 
-    @patch('Robot.controller.instructions.move.Move')
-    @patch('Robot.controller.instructions.rotate.Rotate')
-    def test_execute_multiple_instructions(self, RotateMock, MoveMock):
-        RotateMock.return_value = self.rotate_mock
-        MoveMock.return_value = self.move_mock
-        self._robot.append_instruction(self.rotate_mock.execute)
-        self._robot.append_instruction(self.move_mock.execute)
-        self._robot.execute_instructions()
-        self._robot.execute_instructions()
-        self.rotate_mock.execute.assert_called_with(A_SERIAL_PORT)
-        self.move_mock.execute.assert_called_with(A_SERIAL_PORT)
+    def test_given_an_instruction_when_execute_instruction_should_execute_given_instruction(self):
+        an_instruction = self._create_instruction_mock()
+        self._robot.append_instruction(an_instruction)
 
-    @patch('Robot.controller.instructions.rotate.Rotate')
-    def test_execute_a_rotation(self, RotateMock):
-        RotateMock.return_value = self.rotate_mock
-        self._robot.append_instruction(self.rotate_mock.execute)
         self._robot.execute_instructions()
-        self.rotate_mock.execute.assert_called_with(A_SERIAL_PORT)
 
-    @patch('Robot.controller.instructions.move.Move')
-    def test_execute_a_movement(self, MoveMock):
-        MoveMock.return_value = self.move_mock
-        self._robot.append_instruction(self.move_mock.execute)
+        assert an_instruction.execute.called
+
+    def test_given_two_instructions_when_execute_instruction_twice_should_execute_both_instruction(self):
+        first_instruction = self._create_instruction_mock()
+        second_instruction = self._create_instruction_mock()
+        self._robot.append_instruction(first_instruction)
+        self._robot.append_instruction(second_instruction)
+
         self._robot.execute_instructions()
-        self.move_mock.execute.assert_called_with(A_SERIAL_PORT)
+        assert first_instruction.execute.called
+        assert not second_instruction.execute.called
+
+        self._robot.execute_instructions()
+        assert second_instruction.execute.called

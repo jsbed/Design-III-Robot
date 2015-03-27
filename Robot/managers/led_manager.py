@@ -1,3 +1,6 @@
+RED_LED_INDEX = 10
+
+
 class LedManager():
 
     '''
@@ -57,6 +60,6 @@ class LedManager():
         for color in country.flag:
             formated_string += str(color.value)
 
-        formated_string += "0"
+        formated_string += self._led_status[RED_LED_INDEX]
 
         return formated_string

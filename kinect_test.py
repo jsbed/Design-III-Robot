@@ -15,12 +15,14 @@ while(1):
     cv2.imshow("img", bgr)
     #cv2.imshow("cloud", depth)
 
-    try:
-        localization = robot_locator.localize()
-    except Exception as e:
-        print(str(e))
+    localization = robot_locator.localize()
+
+    if (localization.unknown):
+        print("robot location unknown")
     else:
-        print(localization.position, localization.orientation)
+        print(localization.position,
+              localization.orientation,
+              localization.orientation % 45)
 
     if cc == 10:  # Enter to stop
         Kinect().stop()

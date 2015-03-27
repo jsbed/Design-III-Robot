@@ -1,11 +1,17 @@
+from Robot.communication.base_station_client import BaseStationClient
 from Robot.locators.localization import Localization
-from Robot.path_finding.point import Point
+from Robot.utilities.observable import Observable
 
 
-class Robot():
+FIRST_INSTRUCTION = 0
+INSTRUCTION_FINISHED = "finished instruction"
+
+
+class Robot(Observable):
 
     def __init__(self, serial_port):
-        self._localization = Localization(Point(0, 0), 0)
+        Observable.__init__(self)
+        self._localization = Localization(None, None, unknown=True)
         self._serial_port = serial_port
         self._instructions = []
 
@@ -13,11 +19,13 @@ class Robot():
         self._instructions.append(instruction)
 
     def execute_instructions(self):
-        command = self._instructions.pop(0)
-        command(self._serial_port)
+        command = self._instructions.pop(FIRST_INSTRUCTION)
+        command.execute(self._serial_port)
+        self._serial_port.wait_for_read_line()
+        self.notify(INSTRUCTION_FINISHED, None)
 
     def update_localization(self):
-        pass
+        self._localization = BaseStationClient().request_robot_localization()
 
     def set_localization_position(self, value):
         self._localization.position = value
@@ -30,3 +38,6 @@ class Robot():
 
     def get_localization(self):
         return self._localization
+
+    def get_instructions(self):
+        return self._instructions

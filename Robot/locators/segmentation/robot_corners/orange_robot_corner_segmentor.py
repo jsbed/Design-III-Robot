@@ -8,7 +8,7 @@ from Robot.locators.segmentation.robot_corners.robot_corner_segmentation import 
 class OrangeRobotCornerSegmentor(RobotCornerSegmentor):
 
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
 
         self.set_lower_hsv_values(Config().get_robot_low_orange_hsv_values())
         self.set_upper_hsv_values(Config().get_robot_high_orange_hsv_values())
@@ -35,6 +35,6 @@ class OrangeRobotCornerSegmentor(RobotCornerSegmentor):
         mask = cv2.dilate(cv2.erode(mask, kernel), kernel)
 
         # Bitwise-AND mask and original image
-        extracted_cube = cv2.bitwise_and(img, img, mask=mask)
+        extracted_corner = cv2.bitwise_and(img, img, mask=mask)
 
-        return extracted_cube
+        return extracted_corner
