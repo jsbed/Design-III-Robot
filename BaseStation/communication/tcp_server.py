@@ -45,10 +45,10 @@ class RequestTcpServer(QThread):
         if "request" in received_data:
             self._handle_robot_request(received_data)
         else:
-            self.signal.customSignal.emit(received_data)
+            self.signal.custom_signal.emit(received_data)
 
     def _send_message(self, message):
-        self.signal.customSignal.emit(json.dumps({"message": message}))
+        self.signal.custom_signal.emit(json.dumps({"message": message}))
 
     def _handle_robot_request(self, received_data):
         received_data = json.loads(received_data)
