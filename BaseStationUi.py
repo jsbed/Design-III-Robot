@@ -1,7 +1,6 @@
+from PySide import QtGui
 import os
 import sys
-
-from PySide import QtGui
 
 from BaseStation.ui.widgets.main_window import Main
 from Robot.configuration.config import Config
@@ -24,5 +23,5 @@ def init_ui():
 if __name__ == '__main__':
     Config().load_config()
     fill_country_repository()
-    Kinect().start()
+    # Kinect().start()
     init_ui()

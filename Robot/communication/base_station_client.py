@@ -11,7 +11,7 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
 
     def __init__(self):
         TCPClient.__init__(self, Config().get_base_station_ip(),
-                           Config().get_base_station_request_server_port())
+                           Config().get_base_station_port())
 
     def request_robot_localization(self):
         robot_localization_request = create_robot_localization_request()
@@ -21,6 +21,7 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
 
     def send_question_and_country(self, question, country):
         self.send_data(json.dumps({'question': question, 'country': country}))
+        return self.get_data()
 
     def send_path(self, target_point):
         self.send_data(json.dumps({'path': target_point}))

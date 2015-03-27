@@ -33,13 +33,8 @@ class Config(metaclass=Singleton):
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
-    def get_base_station_request_server_port(self):
-        return int(self._parser.get(SECTION_DEFAULT,
-                                    "BaseStationRequestServerPort"))
-
-    def get_base_station_signal_server_port(self):
-        return int(self._parser.get(SECTION_DEFAULT,
-                                    "BaseStationSignalServerPort"))
+    def get_base_station_port(self):
+        return int(self._parser.get(SECTION_DEFAULT, "BaseStationPort"))
 
     def get_base_station_ip(self):
         return self._parser.get(SECTION_DEFAULT, "BaseStationIP")

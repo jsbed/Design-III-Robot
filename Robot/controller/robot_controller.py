@@ -1,5 +1,6 @@
 import time
 
+from Robot.communication.base_station_client import BaseStationClient
 from Robot.configuration import config
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
@@ -7,7 +8,7 @@ from Robot.controller.robot import Robot
 from Robot.cycle import atlas
 from Robot.managers import led_manager
 from Robot.path_finding.point_adjustor import PointAdjustor
-from Robot.communication.base_station_client import BaseStationClient
+
 
 FULL_ROTATION = 360
 ANGLE_DIFFERENCE_NULL = 0
@@ -54,6 +55,7 @@ class RobotController():
     def display_country_leds(self, country):
         self._led_manager.display_country(country)
         time.sleep(config.Config().get_display_country_wait_time())
+        self._led_manager.close_leds()
 
     def ask_for_cube(self, cube):
         self._led_manager.next_flag_led(cube)

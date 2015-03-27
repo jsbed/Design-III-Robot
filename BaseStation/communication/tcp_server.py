@@ -1,6 +1,5 @@
-import json
-
 from PySide.QtCore import QThread
+import json
 import zmq
 
 from BaseStation.ui.utilities.Signal import Signal
@@ -16,15 +15,24 @@ ASK_NEW_QUESTION_SIGNAL = "ask new question"
 START_CYCLE_SIGNAL = "start cycle"
 
 
-class RequestTcpServer(QThread):
+class TcpServer(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        self._port = Config().get_base_station_request_server_port()
+        self._port = Config().get_base_station_port()
         self._ip = Config().get_base_station_ip()
         self._context = zmq.Context()
         self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
         self.signal = Signal()
+
+    def send_question_ok_signal(self):
+        self._socket.send(bytes(QUESTION_OK_SIGNAL, "utf-8"))
+
+    def send_new_question_signal(self):
+        self._socket.send(bytes(ASK_NEW_QUESTION_SIGNAL, "utf-8"))
+
+    def send_start_cycle_signal(self):
+        self._socket.send(bytes(START_CYCLE_SIGNAL, "utf-8"))
 
     def run(self):
         url = "tcp://{}:{}".format(self._ip, self._port)
@@ -74,25 +82,3 @@ class RequestTcpServer(QThread):
     def _send_localization(self, localization):
         localization_dto = create_localization_dto(localization)
         self._socket.send(bytes(localization_dto, "utf-8"))
-
-
-class SignalTcpServer():
-
-    def __init__(self):
-        self._port = Config().get_base_station_signal_server_port()
-        self._ip = Config().get_base_station_ip()
-        self._context = zmq.Context()
-        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
-
-    def start(self):
-        url = "tcp://{}:{}".format(self._ip, self._port)
-        self._socket.bind(url)
-
-    def send_question_ok_signal(self):
-        self._socket.send(bytes(QUESTION_OK_SIGNAL, "utf-8"))
-
-    def send_new_question_signal(self):
-        self._socket.send(bytes(ASK_NEW_QUESTION_SIGNAL, "utf-8"))
-
-    def send_start_cycle_signal(self):
-        self._socket.send(bytes(START_CYCLE_SIGNAL, "utf-8"))

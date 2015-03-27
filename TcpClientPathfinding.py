@@ -10,7 +10,7 @@ from Robot.path_finding.point import Point
 # Example for pathfinding
 Config().load_config()
 client = TCPClient(Config().get_base_station_ip(),
-                   Config().get_base_station_request_server_port())
+                   Config().get_base_station_port())
 client.connect_socket()
 
 robot_position = Point(randint(15, 95), randint(15, 50))
