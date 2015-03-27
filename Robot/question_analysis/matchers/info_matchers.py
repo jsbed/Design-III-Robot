@@ -15,6 +15,33 @@ class InfoMatcher(object):
         return self._regex.search(info_data) is not None
 
 
+class NumericApproximationInfoMatcher(InfoMatcher):
+
+    def __init__(self, info_key, expected_info):
+        pattern = r'([\d,.\s]+)'
+        self._expected_info = self._cast_to_float(expected_info)
+        super(NumericApproximationInfoMatcher, self).__init__(info_key, pattern)
+
+    def _cast_to_float(self, number):
+        number = number.replace(',', '').replace(' ', '')
+        if number[-1] == '.':
+            number = number[:-1]
+        try:
+            number = float(number)
+        except:
+            number = None
+        return number
+
+    def match(self, info_data):
+        self._info_data = info_data
+        match = self._regex.search(info_data)
+        if match and any(char.isdigit() for char in info_data):
+            actual_info = self._cast_to_float(match.group(1))
+            if actual_info:
+                return self._expected_info - 0.5 < actual_info < self._expected_info + 0.5
+        return None
+
+
 class NumericInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, expected_info, op):
@@ -113,14 +140,14 @@ class UnemploymentRateGreaterThanMatcher(NumericInfoMatcher):
 
 class LengthMatcher(InfoMatcher):
     def __init__(self, info_key, length):
-        self._length = length
+        self._length = int(length)
         pattern = r'([\s\w]+)'
         super(LengthMatcher, self).__init__(info_key, pattern)
 
     def match(self, info_data):
         match = self._regex.search(info_data)
         if match:
-            return len(match.group(1)) == self._length
+            return len(match.group(1).split()) == self._length
         return None
 
 

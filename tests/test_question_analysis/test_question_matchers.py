@@ -1,7 +1,7 @@
 from nose.tools import assert_true
 
 from Robot.question_analysis.attributes import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
-    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher
+    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher, ContainsMatcher, ApproximationMatcher
 
 
 class TestQuestionMatchers(object):
@@ -46,6 +46,12 @@ class TestQuestionMatchers(object):
 
     def test_text_question_matcher(self):
         question = 'My birth rate is approximately 16 births/1000'
-        text_question_matcher = EqualsMatcher('birth rate')
+        text_question_matcher = ApproximationMatcher('birth rate')
         info_matcher = text_question_matcher.find_info(question)
-        assert_true(info_matcher.match('16'))
+        assert_true(info_matcher.match('16.15 deaths/1,000 population (2014 est.)'))
+
+    def test_contains_matcher(self):
+        question = 'capital contains 2 words'
+        contains_matcher = ContainsMatcher('capital')
+        info_matcher = contains_matcher.find_info(question)
+        assert_true(info_matcher.match('washington dc'))

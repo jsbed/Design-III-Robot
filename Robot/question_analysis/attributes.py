@@ -1,6 +1,6 @@
 import re
 from Robot.question_analysis.matchers.info_matchers import InfoMatcher, NumericInfoMatcher, InfoListMatcher, \
-    LengthMatcher, IllicitDrugsActivitiesMatcher, ClimateMatcher, BetweenMatcher
+    LengthMatcher, IllicitDrugsActivitiesMatcher, ClimateMatcher, BetweenMatcher, NumericApproximationInfoMatcher
 
 """
 class NationalAnthemComposedBy(QuestionWithListMatcher):
@@ -146,12 +146,12 @@ class TextQuestionMatcher(QuestionMatcher):
         super(TextQuestionMatcher, self).__init__(pattern, info_matcher, attribute)
 
 
-class Contains(QuestionMatcher):
+class ContainsMatcher(QuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'contains (\d) words.'
+        pattern = r'contains (\d) words(?: as| and| is|\?|\.)?'
         info_matcher = LengthMatcher
-        super(Contains, self).__init__(pattern, info_matcher, attribute)
+        super(ContainsMatcher, self).__init__(pattern, info_matcher, attribute)
 
 
 class NumericQuestionMatcher(QuestionMatcher):
@@ -203,7 +203,7 @@ class GreaterThanMatcher(NumericQuestionMatcher):
 class EqualsMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'is (?:approximately )?([\d\.\s,]+)(?: and| is|\?|\.)?'
+        pattern = r'is ([\d\.\s,]+)(?: and| is|\?|\.)?'
         super(EqualsMatcher, self).__init__(attribute, pattern, '=')
 
 
@@ -277,6 +277,14 @@ class IllicitDrugsActivities(QuestionMatcher):
         super(IllicitDrugsActivities, self).__init__(pattern, info_matcher, attribute)
 
 
+class ApproximationMatcher(QuestionMatcher):
+
+    def __init__(self, attribute):
+        pattern = r'is (?:approximately )?([\d\.\s,]+)(?: and| is|\?|\.)?'
+        info_matcher = NumericApproximationInfoMatcher
+        super(ApproximationMatcher, self).__init__(pattern, info_matcher, attribute)
+
+
 class QuestionMatcherGenerator(object):
 
     def __init__(self):
@@ -288,5 +296,6 @@ class QuestionMatcherGenerator(object):
 
         if attribute not in self._attributes_with_exception:
             return [QuestionWithListMatcher(attribute), StartsWithMatcher(attribute), EndsWithMatcher(attribute),
-                    TextQuestionMatcher(attribute), Contains(attribute), QuestionWithIntervalMatcher(attribute),
-                    LessThanMatcher(attribute), GreaterThanMatcher(attribute), EqualsMatcher(attribute)]
+                    TextQuestionMatcher(attribute), ContainsMatcher(attribute), QuestionWithIntervalMatcher(attribute),
+                    LessThanMatcher(attribute), GreaterThanMatcher(attribute), EqualsMatcher(attribute),
+                    ApproximationMatcher(attribute)]
