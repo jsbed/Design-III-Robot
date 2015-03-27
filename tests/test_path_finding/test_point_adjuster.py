@@ -64,7 +64,7 @@ class TestPointAdjuster(unittest.TestCase):
         self._find_target_point_and_robot_orientation()
 
     def test_when_cube_is_top_right_of_robot(self):
-        self._point_test = Point(51, 70)
+        self._point_test = Point(70, 51)
         self._orientation_test = 45
         self._cube.set_localization_position(Point(70, 70))
         self._find_target_point_and_robot_orientation()
@@ -82,7 +82,7 @@ class TestPointAdjuster(unittest.TestCase):
         self._find_target_point_and_robot_orientation()
 
     def test_when_cube_is_bottom_right_of_robot(self):
-        self._point_test = Point(51, 15)
+        self._point_test = Point(70, 34)
         self._orientation_test = -60
         self._cube.set_localization_position(Point(70, 15))
         self._find_target_point_and_robot_orientation()
