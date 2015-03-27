@@ -18,13 +18,6 @@ if not os.path.exists(DATA_DIRECTORY):
 
 DATA_COUNT = len(os.listdir(DATA_DIRECTORY))
 
-parser = argparse.ArgumentParser()
-parser.add_argument('img')
-parser.add_argument('-d', "--data", dest="data")
-args = parser.parse_args()
-
-img_bgr = cv2.imread(args.img, cv2.IMREAD_COLOR)
-
 def nothing(x):
     pass
 
@@ -43,23 +36,10 @@ cv2.createTrackbar('High-V','mask',0,255,nothing)
 cv2.createTrackbar('lower-thresh','dst',0,255,nothing)
 cv2.createTrackbar('higher-thresh','dst',0,255,nothing)
 
-if (args.data):
-    # Load data
-    with open(args.data) as file:
-        data = file.readline().split(", ")
-        for i in range(len(data)):
-            data[i] = int(data[i])
-    
-    cv2.setTrackbarPos('Low-H','mask', data[LOW_H])
-    cv2.setTrackbarPos('High-H','mask', data[HIGH_H])
-    cv2.setTrackbarPos('Low-S','mask', data[LOW_S])
-    cv2.setTrackbarPos('High-S','mask', data[HIGH_S])
-    cv2.setTrackbarPos('Low-V','mask', data[LOW_V])
-    cv2.setTrackbarPos('High-V','mask', data[HIGH_V])
-
-#cv2.imshow("real", img_bgr);
+cap = cv2.VideoCapture(1)
 
 while True:
+    ret, img_bgr = cap.read()
     img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
     
     # get current positions of trackers
