@@ -1,14 +1,13 @@
 import json
 
+from BaseStation.communication.tcp_server import QUESTION_OK_SIGNAL,\
+    START_CYCLE_SIGNAL
 from Robot.communication.localization.localization_dto import create_localization_from_localization_dto
 from Robot.communication.localization.localization_request import create_robot_localization_request
 from Robot.communication.tcp_client import TCPClient
 from Robot.configuration.config import Config
 from Robot.utilities.singleton import Singleton
 
-QUESTION_OK_SIGNAL = "question ok signal"
-ASK_NEW_QUESTION_SIGNAL = "ask new question"
-START_CYCLE_SIGNAL = "start cycle"
 
 class BaseStationClient(TCPClient, metaclass=Singleton):
 
