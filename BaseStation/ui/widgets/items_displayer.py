@@ -13,7 +13,7 @@ class ItemsDisplayer():
         self._robot_orientation = 0
         self._destination = QtCore.QPoint(0, 0)
         self._cube_position = QtCore.QPoint(0, 0)
-        self._robot_image = QImage()
+        self._robot_image = QImage(":/resources/robot.png")
         self._cube_image = QImage()
         self._config = Config()
 
@@ -21,9 +21,15 @@ class ItemsDisplayer():
         real_x, real_y = position
         virtual_x, virtual_y = self._convert_real_to_virtual(real_x, real_y)
 
-        self._robot_position = QtCore.QPoint(virtual_x, virtual_y)
-        self._robot_orientation = orientation
-        self._robot_image = QImage(":/resources/robot.png")
+        new_position = None
+
+        try:
+            new_position = QtCore.QPoint(virtual_x, virtual_y)
+        except OverflowError as e:
+            print(str(e))
+        else:
+            self._robot_position = new_position
+            self._robot_orientation = orientation
 
     def display_path(self, destination):
         virtual_x, virtual_y = self._convert_real_to_virtual(destination[0],
