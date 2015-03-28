@@ -1,7 +1,7 @@
 import time
 
-from Robot.communication.tcp_client import TCPClient
-from Robot.configuration import config
+from Robot.communication.base_station_client import BaseStationClient
+from Robot.controller.robot import INSTRUCTION_FINISHED
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.country_repository import CountryRepository
@@ -10,13 +10,14 @@ from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
 from Robot.managers.gripper_manager import GripperManager
 from Robot.question_analysis.question_analyser import QuestionAnalyser
+from Robot.utilities.observer import Observer
 
 
 CHECK_FOR_CUBE_DELAY = 2
 WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 2
 
 
-class Cycle:
+class Cycle(Observer):
 
     def __init__(self):
         self._country = Country("", [])
@@ -24,10 +25,11 @@ class Cycle:
         self._question = ""
         self._cube = Cube(None, None)
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
-        self._client = TCPClient(config.Config().
-                                 get_base_station_communication_ip(),
-                                 config.Config().
-                                 get_base_station_communication_port())
+        self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
+
+    def observer_update(self, event, value):
+        if (event == INSTRUCTION_FINISHED):
+            self.continue_cycle()
 
     def start_cycle(self):
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
@@ -78,20 +80,25 @@ class Cycle:
             self._robot_controller.move_to_atlas()
 
     def _display_country_state(self):
-        self._question = self._robot_controller.get_question_from_atlas()
-        country_name = QuestionAnalyser().answer_question(self._question)
-        self._country = CountryRepository().get(country_name)
-        self._flag = FlagCreator(self._country)
-        self._state = CycleState.ASK_FOR_CUBE
+        country_is_correct = False
 
-        self._display_country()
+        while not country_is_correct:
+            self._question = self._robot_controller.get_question_from_atlas()
+            country_name = QuestionAnalyser().answer_question(self._question)
+            self._country = CountryRepository().get(country_name)
+            country_is_correct = BaseStationClient().send_question_and_country(
+                self._question, self._country)
+
+        self._robot_controller.display_country_leds(self._country)
+        self._flag_creator = FlagCreator(self._country)
+        self._state = CycleState.ASK_FOR_CUBE
         self._next_state()
 
     def _ask_for_cube_state(self):
         cycle_done = False
 
-        if (self._flag.has_next_cubes()):
-            self._cube = self._flag.next_cube()
+        if (self._flag_creator.has_next_cubes()):
+            self._cube = self._flag_creator.next_cube()
 
         else:
             cycle_done = True
@@ -148,16 +155,8 @@ class Cycle:
         self._next_state()
 
     def _localize_cube(self):
+        self._robot_controller.move_robot_to_localize_cube()
+        self._state = CycleState.MOVE_TO_CUBE
         while (self._cube.get_localization().position is None):
             time.sleep(CHECK_FOR_CUBE_DELAY)
-
-        self._state = CycleState.MOVE_TO_CUBE
         self._next_state()
-
-    def _display_country(self):
-        self._client.connect_socket()
-        self._client.send_data({'question': self._question,
-                                'country': self._country})
-        self._client.disconnect_socket()
-
-        self._robot_controller.display_country_leds(self._country)

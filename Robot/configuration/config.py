@@ -33,12 +33,11 @@ class Config(metaclass=Singleton):
     def get_atlas_url(self):
         return self._parser.get(SECTION_DEFAULT, "AtlasUrl")
 
-    def get_base_station_communication_port(self):
-        return int(self._parser.get(SECTION_DEFAULT,
-                                    "BaseStationCommunicationPort"))
+    def get_base_station_port(self):
+        return int(self._parser.get(SECTION_DEFAULT, "BaseStationPort"))
 
-    def get_base_station_communication_ip(self):
-        return self._parser.get(SECTION_DEFAULT, "BaseStationCommunicationIP")
+    def get_base_station_ip(self):
+        return self._parser.get(SECTION_DEFAULT, "BaseStationIP")
 
     def get_kinect_mask_img_path(self):
         return os.path.join(self._parser.get(SECTION_TABLE_CONFIGURATION,
@@ -125,7 +124,7 @@ class Config(metaclass=Singleton):
 
     def get_release_cube_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
-                                           "TakeCube"))
+                                           "ReleaseCube"))
 
     def get_widest_gripper_values(self):
         return json.loads(self._parser.get(SECTION_GRIPPER,
@@ -162,6 +161,10 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationUncertainty"))
 
+    def get_orientation_max(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "OrientationMax"))
+
     def get_push_cube_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "PushCubeDistance"))
@@ -169,6 +172,10 @@ class Config(metaclass=Singleton):
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
                                                        "AtlasZonePosition")))
+
+    def get_localize_cube_position(self):
+        return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
+                                                       "LocalizeCubePosition")))
 
     def get_target_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_FLAGCREATION,
@@ -196,3 +203,6 @@ class Config(metaclass=Singleton):
 
     def get_stm_serial_port_baudrate(self):
         return int(self._parser.get(SECTION_SERIAL_PORT, "STMBaudRate"))
+
+    def get_stm_serial_port_timeout(self):
+        return float(self._parser.get(SECTION_SERIAL_PORT, "STMTimeout"))

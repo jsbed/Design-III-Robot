@@ -39,9 +39,17 @@ class PointAdjustor():
             return Point(start.x + int(x), start.y + int(y))
 
     def find_robot_orientation(self, robot_orientation, robot_position, point):
-        angle = self._calculate_angle_between_points(robot_position, point)
-
-        return int(angle - robot_orientation)
+        start_x = config.Config().get_table_width() - robot_position.x
+        end_x = config.Config().get_table_width() - point.x
+        start = Point(start_x, robot_position.y)
+        end = Point(end_x, point.y)
+        angle = self._calculate_angle_between_points(start, end)
+        rotation_angle = int(angle - robot_orientation - 90)
+        if (rotation_angle > 180):
+            rotation_angle = 360 - rotation_angle
+        if (rotation_angle < -180):
+            rotation_angle = 360 + rotation_angle
+        return rotation_angle
 
     '''
     Description: Verify if the cube is too close or next to a wall
@@ -95,9 +103,22 @@ class PointAdjustor():
                                       self._target_point.y)
 
         else:
-            self._target_point = Point(self._target_point.x -
-                                       self._distance_between_points,
-                                       self._target_point.y)
+            if (self._cube_center.y <= (self._robot_position.y -
+                                        self._distance_between_points)):
+                self._target_point = Point(self._target_point.x,
+                                           self._target_point.y +
+                                           self._distance_between_points)
+
+            elif (self._cube_center.y >= (self._robot_position.y +
+                                          self._distance_between_points)):
+                self._target_point = Point(self._target_point.x,
+                                           self._target_point.y -
+                                           self._distance_between_points)
+
+            else:
+                self._target_point = Point(self._target_point.x -
+                                           self._distance_between_points,
+                                           self._target_point.y)
 
     @staticmethod
     def _calculate_angle_between_points(start, end):

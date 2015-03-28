@@ -37,7 +37,7 @@ class FlagDisplayer():
         self._widget.flag_structure_label.raise_()
 
     def remove_country(self):
-        self._widget.countryLabel.setText("")
+        self._widget.countryLabel.setText("-")
 
         for label in self._flag_labels:
             label.setPixmap("")

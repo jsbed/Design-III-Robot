@@ -32,7 +32,8 @@ Config().load_config()
 
 if DEPLACEMENT_ENABLE or LEDS_ENABLE:
     stm_serial = SerialPort(Config().get_stm_serial_port_path(
-    ), baudrate=Config().get_stm_serial_port_baudrate())
+    ), baudrate=Config().get_stm_serial_port_baudrate(),
+        timeout=Config().get_stm_serial_port_timeout())
 
 if LEDS_ENABLE:
     flags_file_path = os.path.join("Robot", "resources", "flags.csv")
@@ -47,31 +48,35 @@ if GRIPPER_ENABLED:
     gripper_manager = GripperManager(pololu_serial)
 
 
-def up():
-    robot.append_instruction(Move(5))
+def up(message):
+    value = int(message.split("-")[2])
+    robot.append_instruction(Move(value))
     robot.execute_instructions()
 
 
-def down():
-    robot.append_instruction(Move(-5))
+def down(message):
+    value = -int(message.split("-")[2])
+    robot.append_instruction(Move(value))
     robot.execute_instructions()
 
 
-def left():
+def left(message):
     print("left command")
 
 
-def right():
+def right(message):
     print("right command")
 
 
-def rotate_right():
-    robot.append_instruction(Rotate(-5))
+def rotate_right(message):
+    value = -int(message.split("-")[2])
+    robot.append_instruction(Rotate(value))
     robot.execute_instructions()
 
 
-def rotate_left():
-    robot.append_instruction(Rotate(5))
+def rotate_left(message):
+    value = int(message.split("-")[2])
+    robot.append_instruction(Rotate(value))
     robot.execute_instructions()
 
 
@@ -98,7 +103,7 @@ def display_specific_led(message):
 
 
 context = zmq.Context()
-socket = context.socket(zmq.DEALER)
+socket = context.socket(zmq.DEALER)  # @UndefinedVariable
 url = "tcp://{}:{}".format(ADDRESS, PORT)
 socket.bind(url)
 print("Listening on", url)
@@ -107,17 +112,17 @@ while True:
     #  Wait for next request from client
     message = socket.recv().decode("utf-8")
 
-    if message == "up" and DEPLACEMENT_ENABLE:
-        up()
-    elif message == "down" and DEPLACEMENT_ENABLE:
-        down()
-    elif message == "left" and DEPLACEMENT_ENABLE:
+    if message.startswith("move-up") and DEPLACEMENT_ENABLE:
+        up(message)
+    elif message.startswith("move-down") and DEPLACEMENT_ENABLE:
+        down(message)
+    elif message.startswith("move-left") and DEPLACEMENT_ENABLE:
         left()
-    elif message == "right" and DEPLACEMENT_ENABLE:
+    elif message.startswith("move-right") and DEPLACEMENT_ENABLE:
         right()
-    elif message == "rotate-right" and DEPLACEMENT_ENABLE:
+    elif message.startswith("rotate-right") and DEPLACEMENT_ENABLE:
         rotate_right()
-    elif message == "rotate-left" and DEPLACEMENT_ENABLE:
+    elif message.startswith("rotate-left") and DEPLACEMENT_ENABLE:
         rotate_left()
     elif message == "ask-question" and QUESTION_ENABLE:
         ask_question()
@@ -139,7 +144,7 @@ while True:
         gripper_manager.widest_gripper()
     elif message == "lift gripper" and GRIPPER_ENABLED:
         gripper_manager.lift_gripper()
-    elif message == "lower cube" and GRIPPER_ENABLED:
+    elif message == "lower gripper" and GRIPPER_ENABLED:
         gripper_manager.lower_gripper()
     else:
         print("Message filtered:", message)

@@ -6,6 +6,7 @@ from Robot.cycle.objects.color import Color
 from Robot.managers.led_manager import LedManager
 
 FULL_COUNTRY_LED_STRING = "F1203645030"
+FULL_COUNTRY_WITH_RED_LED_STRING = "F1203645031"
 DISPLAY_RED_LED_STRING = "F1203645031"
 CLOSE_RED_LED_STRING = "F1203645030"
 CLOSE_ALL_LEDS_STRING = "F0000000000"
@@ -42,6 +43,15 @@ class LedManagerTest(unittest.TestCase):
         self._new_led_manager.display_country(self._a_country)
         self.serial_mock.send_string.assert_called_with(
             FULL_COUNTRY_LED_STRING)
+
+    def test_led_manager_with_red_led_when_display_country_with_a_country_should_call_serial_with_full_country_with_red_led_string(self):
+        led_manager_with_red_led = LedManager(self.serial_mock)
+        led_manager_with_red_led.display_red_led()
+
+        led_manager_with_red_led.display_country(self._a_country)
+
+        self.serial_mock.send_string.assert_called_with(
+            FULL_COUNTRY_WITH_RED_LED_STRING)
 
     def test_led_manager_with_open_leds_when_display_red_led_should_call_serial_with_display_red_led_string(self):
         self._led_manager_with_open_leds.display_red_led()

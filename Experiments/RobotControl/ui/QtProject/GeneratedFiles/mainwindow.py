@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '.\mainwindow.ui'
 #
-# Created: Sun Mar 22 21:05:14 2015
+# Created: Sat Mar 28 12:22:47 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -123,6 +123,18 @@ class Ui_MainWindow(object):
         self.rotate_left_button.setIcon(icon5)
         self.rotate_left_button.setIconSize(QtCore.QSize(45, 45))
         self.rotate_left_button.setObjectName("rotate_left_button")
+        self.rotate_line_edit = QtGui.QLineEdit(self.tab)
+        self.rotate_line_edit.setGeometry(QtCore.QRect(157, 32, 41, 31))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.rotate_line_edit.setFont(font)
+        self.rotate_line_edit.setObjectName("rotate_line_edit")
+        self.move_line_edit = QtGui.QLineEdit(self.tab)
+        self.move_line_edit.setGeometry(QtCore.QRect(157, 167, 41, 31))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.move_line_edit.setFont(font)
+        self.move_line_edit.setObjectName("move_line_edit")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -289,6 +301,10 @@ class Ui_MainWindow(object):
             "MainWindow", "No connection", None, QtGui.QApplication.UnicodeUTF8))
         self.connect_button.setText(QtGui.QApplication.translate(
             "MainWindow", "Connect", None, QtGui.QApplication.UnicodeUTF8))
+        self.rotate_line_edit.setText(QtGui.QApplication.translate(
+            "MainWindow", "15", None, QtGui.QApplication.UnicodeUTF8))
+        self.move_line_edit.setText(QtGui.QApplication.translate(
+            "MainWindow", "10", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate(
             "MainWindow", "Déplacement", None, QtGui.QApplication.UnicodeUTF8))
         self.question_request_button.setText(QtGui.QApplication.translate("MainWindow", "Requête + analyse \n"

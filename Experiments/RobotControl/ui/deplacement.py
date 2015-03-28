@@ -14,19 +14,31 @@ class Deplacement():
         self._ui.rotate_left_button.clicked.connect(self._rotate_left_arrow)
 
     def _up_arrow(self):
-        self._tcp_client.send_data("up")
+        if self._ui.move_line_edit.text():
+            self._tcp_client.send_data("move-up-" +
+                                       self._ui.move_line_edit.text())
 
     def _down_arrow(self):
-        self._tcp_client.send_data("down")
+        if self._ui.move_line_edit.text():
+            self._tcp_client.send_data("move-down-" +
+                                       self._ui.move_line_edit.text())
 
     def _left_arrow(self):
-        self._tcp_client.send_data("left")
+        if self._ui.move_line_edit.text():
+            self._tcp_client.send_data("move-left-" +
+                                       self._ui.move_line_edit.text())
 
     def _right_arrow(self):
-        self._tcp_client.send_data("right")
+        if self._ui.move_line_edit.text():
+            self._tcp_client.send_data("move-right-" +
+                                       self._ui.move_line_edit.text())
 
     def _rotate_right_arrow(self):
-        self._tcp_client.send_data("rotate-right")
+        if self._ui.rotate_line_edit.text():
+            self._tcp_client.send_data("rotate-right-" +
+                                       self._ui.rotate_line_edit.text())
 
     def _rotate_left_arrow(self):
-        self._tcp_client.send_data("rotate-left")
+        if self._ui.rotate_line_edit.text():
+            self._tcp_client.send_data("rotate-left-" +
+                                       self._ui.rotate_line_edit.text())
