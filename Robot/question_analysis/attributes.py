@@ -68,7 +68,7 @@ class CapitalIs(QuestionMatcher):
 #value matcher for date ((?:\w*\s\d*){1,3})
 #value matcher national symbol ([\w'\s]+)(?:.|\?| and| is the), shouyld be for all
 
-END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$']
+END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ']
 BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ', r'(?:\s|^)the ', r'^']
 
 
@@ -204,7 +204,7 @@ class LongitudeMatcher(TextQuestionMatcher):
 class IndependenceMatcher(TextQuestionMatcher):
 
     def __init__(self):
-        value_matcher = r'(\d*\s(?:January|February|March|April|May|June|July|August|September|October|November|December)?\s\d*)'
+        value_matcher = r'((?:[\d]+\s)?(?:January |February |March |April |May |June |July |August |September |October |November |December )?[\d]+)'
         attribute = 'independence'
         super(IndependenceMatcher, self).__init__(attribute, value_matcher)
 
@@ -331,10 +331,11 @@ class QuestionMatcherGenerator(object):
 
     def __init__(self):
 
-        self._specific_matchers = {'latitude': LatitudeMatcher(), 'longitude': LongitudeMatcher(),
-                                   'climate': Climate(), 'independence': IndependenceMatcher(),
-                                   'illicit drugs': IllicitDrugsActivities(), 'ethnic groups': EthnicGroups(),
-                                   'national anthem': NationalAnthemComposedBy()}
+        self._specific_matchers = {'latitude': [LatitudeMatcher()], 'longitude': [LongitudeMatcher()],
+                                   'climate': [Climate()], 'independence': [IndependenceMatcher()],
+                                   'illicit drugs': [IllicitDrugsActivities()], 'ethnic groups': [EthnicGroups()],
+                                   'national anthem': [NationalAnthemComposedBy(),
+                                                       TextQuestionMatcher('national anthem')]}
 
     def get_question_matchers(self, attribute):
 
@@ -344,4 +345,4 @@ class QuestionMatcherGenerator(object):
                     LessThanMatcher(attribute), GreaterThanMatcher(attribute), EqualsMatcher(attribute),
                     ApproximationMatcher(attribute)]
         else:
-            return [self._specific_matchers[attribute]]
+            return self._specific_matchers[attribute]
