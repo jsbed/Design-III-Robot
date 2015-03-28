@@ -21,7 +21,7 @@ ADDRESS = "127.0.0.1"
 DEPLACEMENT_ENABLE = False
 LEDS_ENABLE = False
 QUESTION_ENABLE = False
-GRIPPER_ENABLED = True
+GRIPPER_ENABLED = False
 
 robot = None
 led_manager = None
@@ -99,7 +99,7 @@ def display_specific_led(message):
 
 
 context = zmq.Context()
-socket = context.socket(zmq.DEALER)
+socket = context.socket(zmq.DEALER)  # @UndefinedVariable
 url = "tcp://{}:{}".format(ADDRESS, PORT)
 socket.bind(url)
 print("Listening on", url)
