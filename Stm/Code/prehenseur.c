@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 /*
  *Fonction d'initialisation de pins en source d'interruptions externes
  */
@@ -32,7 +33,7 @@ void Exti_init(void){
     GPIO_Init(GPIOC, &GPIO_InitStruct);
     
     /* Tell system that you will use PC4 for EXTI_Line4 */
-    SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOD, EXTI_PinSource0);
+    SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource4);
     
     /* PD4 is connected to EXTI_Line4 */
     EXTI_InitStruct.EXTI_Line = EXTI_Line4;
@@ -57,3 +58,22 @@ void Exti_init(void){
     /* Add to NVIC */
     NVIC_Init(&NVIC_InitStruct);
 }
+
+////Fonction de debounce
+//void debounce(int bouton_state, int state)
+//{
+//    if(state == ON)
+//    {
+//      states[bouton_state] = ON;
+//      return;
+//    }
+//    if(states[bouton_state] == ON)
+//    {
+//      states[bouton_state] = DEBOUNCE;
+//      return;
+//    }
+//    if(states[bouton_state] == DEBOUNCE)
+//    {
+//      states[bouton_state] = OFF;
+//    }         
+//}
