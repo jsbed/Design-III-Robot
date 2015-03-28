@@ -36,9 +36,10 @@ class Cycle(Observer):
         self._next_state()
 
     def continue_cycle(self):
-        if not(self._robot_controller.instruction_remaining()):
+        if not self._robot_controller.instruction_remaining():
             self._next_state()
         else:
+            print("next instruction")
             self._robot_controller.next_instruction()
 
     def set_state(self, state):
@@ -46,9 +47,11 @@ class Cycle(Observer):
 
     def _next_state(self):
         if (self._state == CycleState.MOVE_TO_ATLAS_ZONE):
+            print("move to atlas state")
             self._atlas_zone_state()
 
         elif (self._state == CycleState.DISPLAY_COUNTRY):
+            print("display country state")
             self._display_country_state()
 
         elif (self._state == CycleState.ASK_FOR_CUBE):
@@ -74,9 +77,11 @@ class Cycle(Observer):
 
     def _atlas_zone_state(self):
         if(self._robot_controller.arrived_at_zone_atlas()):
+            print("arrived")
             self._state = CycleState.DISPLAY_COUNTRY
             self._next_state()
         else:
+            print("moving to atlas")
             self._robot_controller.move_to_atlas()
 
     def _display_country_state(self):

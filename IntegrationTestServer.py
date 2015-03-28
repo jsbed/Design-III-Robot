@@ -16,9 +16,9 @@ from Robot.managers.led_manager import LedManager
 
 
 PORT = 5000
-ADDRESS = "127.0.0.1"
+ADDRESS = "192.168.0.28"
 
-DEPLACEMENT_ENABLE = False
+DEPLACEMENT_ENABLE = True
 LEDS_ENABLE = False
 QUESTION_ENABLE = False
 GRIPPER_ENABLED = False
@@ -50,7 +50,9 @@ if GRIPPER_ENABLED:
 
 def up(message):
     value = int(message.split("-")[2])
+    print(str(value))
     robot.append_instruction(Move(value))
+    print("execute")
     robot.execute_instructions()
 
 

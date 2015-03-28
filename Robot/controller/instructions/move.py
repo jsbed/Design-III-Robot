@@ -11,12 +11,13 @@ MOVE_FOWARD = "GO"
 class Move(RobotInstruction):
 
     def __init__(self, distance_cm):
-        self._distance_mm = (distance_cm * CM_TO_MM_MULTIPLIER)
+        self._distance_mm = int(distance_cm * CM_TO_MM_MULTIPLIER)
 
     def execute(self, serial_port):
         if (self._distance_mm != 0):
             command_to_send = self._format_distance_to_string()
             serial_port.send_string(command_to_send)
+            serial_port.wait_for_read_line()
 
     def _format_distance_to_string(self):
         if (self._distance_mm < 0):
@@ -34,3 +35,6 @@ class Move(RobotInstruction):
         formated_string += distance_string
 
         return formated_string
+
+    def __str__(self):
+        return "move: " + str(self._distance_mm / CM_TO_MM_MULTIPLIER)
