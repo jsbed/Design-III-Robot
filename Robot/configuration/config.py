@@ -203,3 +203,6 @@ class Config(metaclass=Singleton):
 
     def get_stm_serial_port_baudrate(self):
         return int(self._parser.get(SECTION_SERIAL_PORT, "STMBaudRate"))
+
+    def get_stm_serial_port_timeout(self):
+        return float(self._parser.get(SECTION_SERIAL_PORT, "STMTimeout"))

@@ -32,7 +32,8 @@ Config().load_config()
 
 if DEPLACEMENT_ENABLE or LEDS_ENABLE:
     stm_serial = SerialPort(Config().get_stm_serial_port_path(
-    ), baudrate=Config().get_stm_serial_port_baudrate())
+    ), baudrate=Config().get_stm_serial_port_baudrate(),
+        timeout=Config().get_stm_serial_port_timeout())
 
 if LEDS_ENABLE:
     flags_file_path = os.path.join("Robot", "resources", "flags.csv")

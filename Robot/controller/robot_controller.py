@@ -1,12 +1,13 @@
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
+from Robot.communication.serial_port import SerialPort
 from Robot.configuration import config
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.cycle import atlas
-from Robot.managers import led_manager
+from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
@@ -18,11 +19,14 @@ FACE_NORTH = 0
 class RobotController():
 
     def __init__(self):
-        self._robot = Robot(
-            config.Config().get_stm_serial_port_path())
+        self._serial_port = SerialPort(
+            config.Config().get_stm_serial_port_path(),
+            baudrate=config.Config().get_stm_serial_port_baudrate(),
+            timeout=config.Config().get_stm_serial_port_timeout())
+
+        self._robot = Robot(self._serial_port)
         self._point_adjustor = PointAdjustor()
-        self._led_manager = led_manager.LedManager(
-            config.Config().get_stm_serial_port_path())
+        self._led_manager = LedManager(self._serial_port)
 
     def get_question_from_atlas(self):
         self._led_manager.display_red_led()
