@@ -20,12 +20,14 @@ class Robot(Observable):
 
     def execute_instructions(self):
         command = self._instructions.pop(FIRST_INSTRUCTION)
+        print("execute:", command)
         command.execute(self._serial_port)
-        self._serial_port.wait_for_read_line()
+        print("instruction finished")
         self.notify(INSTRUCTION_FINISHED, None)
 
     def update_localization(self):
         self._localization = BaseStationClient().request_robot_localization()
+        print(self._localization.position, self._localization.orientation)
 
     def set_localization_position(self, value):
         self._localization.position = value

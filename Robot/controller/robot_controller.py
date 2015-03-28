@@ -27,6 +27,9 @@ class RobotController():
         self._robot = Robot(self._serial_port)
         self._point_adjustor = PointAdjustor()
         self._led_manager = LedManager(self._serial_port)
+        
+    def get_robot(self):
+        return self._robot
 
     def get_question_from_atlas(self):
         self._led_manager.display_red_led()
@@ -81,7 +84,7 @@ class RobotController():
             self._point_adjustor. \
             _calculate_distance_between_points(self._robot_position,
                                                next_point)
-
+        print(next_point)
         self._move_robot_towards_target_point(next_point)
         self._send_new_path(next_point)
 
@@ -188,6 +191,7 @@ class RobotController():
             self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
+        
 
     def _send_new_path(self, target_point):
         path = [target_point.x, target_point.y]
