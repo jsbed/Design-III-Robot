@@ -27,7 +27,7 @@ class RobotController():
         self._robot = Robot(self._serial_port)
         self._point_adjustor = PointAdjustor()
         self._led_manager = LedManager(self._serial_port)
-        
+
     def get_robot(self):
         return self._robot
 
@@ -191,7 +191,6 @@ class RobotController():
             self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
-        
 
     def _send_new_path(self, target_point):
         path = [target_point.x, target_point.y]
