@@ -123,7 +123,12 @@ void PendSV_Handler(void)
 
 
 void EXTI4_IRQHandler(void){
-  
+   /* Make sure that interrupt flag is set */
+  if (EXTI_GetITStatus(EXTI_Line4) != RESET) {
+    USART_puts(USART1, "Switch");
+    GPIO_ResetBits(GPIOC, GPIO_Pin_4);
+    EXTI_ClearITPendingBit(EXTI_Line4);
+  }
 }
 
 /**
