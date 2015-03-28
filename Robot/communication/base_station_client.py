@@ -1,5 +1,7 @@
 import json
 
+from BaseStation.communication.tcp_server import QUESTION_OK_SIGNAL,\
+    START_CYCLE_SIGNAL
 from Robot.communication.localization.localization_dto import create_localization_from_localization_dto
 from Robot.communication.localization.localization_request import create_robot_localization_request
 from Robot.communication.tcp_client import TCPClient
@@ -20,8 +22,20 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
         return self._wait_for_robot_localization_response()
 
     def send_question_and_country(self, question, country):
-        self.send_data(json.dumps({'question': question, 'country': country}))
-        return self.get_data()
+        self.send_data(json.dumps({'question': question,
+                                   'country': country.name}))
+
+        # Wait for user response
+        response = self.get_data()
+
+        if response == QUESTION_OK_SIGNAL:
+            return True
+        else:
+            return False
+
+    def wait_for_start_cycle_signal(self):
+        while self.get_data() != START_CYCLE_SIGNAL:
+            pass
 
     def send_path(self, target_point):
         self.send_data(json.dumps({'path': target_point}))
