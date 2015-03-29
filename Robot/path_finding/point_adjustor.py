@@ -38,7 +38,7 @@ class PointAdjustor():
             y = current_distance * math.sin(angle)
             return Point(start.x + int(x), start.y + int(y))
 
-    def find_robot_orientation(self, robot_orientation, robot_position, point):
+    def find_robot_rotation(self, robot_orientation, robot_position, point):
         start_x = config.Config().get_table_width() - robot_position.x
         end_x = config.Config().get_table_width() - point.x
         start = Point(start_x, robot_position.y)
@@ -46,7 +46,7 @@ class PointAdjustor():
         angle = self.calculate_angle_between_points(start, end)
         rotation_angle = int(angle - robot_orientation - 90)
         if (rotation_angle > 180):
-            rotation_angle = 360 - rotation_angle
+            rotation_angle = rotation_angle - 360
         if (rotation_angle < -180):
             rotation_angle = 360 + rotation_angle
         return rotation_angle
