@@ -93,7 +93,7 @@ class TextQuestionMatcher(QuestionMatcher):
         super(TextQuestionMatcher, self).__init__(value_matcher, info_matcher, attribute)
 
     def find_info(self, question):
-        info_matchers = []
+        info_matchers = set()
         for begin_delimiter in BEGIN_DELIMITERS:
             begin_positions = [position.end() for position in re.finditer(begin_delimiter, question, re.IGNORECASE)]
             substrings = [question[position:] for position in begin_positions]
@@ -106,7 +106,7 @@ class TextQuestionMatcher(QuestionMatcher):
                         info_matcher = self.get_info_matcher(value)
                         if info_matcher:
                             print(begin_delimiter, end_delimiter)
-                            info_matchers.append(info_matcher)
+                            info_matchers.add(info_matcher)
         return info_matchers
 
 
