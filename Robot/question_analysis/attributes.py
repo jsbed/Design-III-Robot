@@ -1,75 +1,12 @@
 import re
-from Robot.question_analysis.matchers.info_matchers import InfoMatcher, NumericInfoMatcher, InfoListMatcher, \
+
+from Robot.question_analysis.question_matchers import InfoMatcher, NumericInfoMatcher, InfoListMatcher, \
     LengthMatcher, IllicitDrugsActivitiesMatcher, ClimateMatcher, BetweenMatcher, NumericApproximationInfoMatcher
 
-"""
-class NationalAnthemComposedBy(QuestionWithListMatcher):
-
-    def __init__(self):
-        descriptors = ['composed by']
-        attribute = 'national anthem'
-        info_key = 'national anthem compositors'
-        super(NationalAnthemComposedBy, self).__init__(attribute, descriptors, info_key)
-
-
-class EthnicGroups(QuestionWithListMatcher):
-
-    def __init__(self):
-        descriptors = ['including']
-        attribute = 'ethnic groups'
-        info_key = 'religions'
-        super(EthnicGroups, self).__init__(attribute, descriptors, info_key)
-
-    def find_info(self, question):
-        info_matcher = None
-        match = self._regex.search(question)
-        if match:
-            info_list = match.group(1)
-            print(self._regex)
-            info_list = info_list.replace(' of ', ' ').replace('%', '')
-            info_list = re.split(', and\s|, |\sand\s', info_list)
-            info_list = [info.split()[1] + ' ' + info.split()[0] for info in info_list]
-            info_matcher = self._info_matcher(self._info_key, info_list)
-        return info_matcher
-
-
-class Climate(QuestionMatcher):
-
-    def __init__(self):
-        pattern = r'\s?([\w]+) climate'
-        info_matcher = ClimateMatcher
-        super(Climate, self).__init__(pattern, info_matcher)
-
-
-class IllicitDrugsActivities(QuestionMatcher):
-
-    def __init__(self):
-        pattern = r'illicit drugs activities including a ([\w\s]+)(?: and ).*?'
-        info_matcher = IllicitDrugsActivitiesMatcher
-        super(IllicitDrugsActivities, self).__init__(pattern, info_matcher)
-
-
-class ShortCountryNameLength(QuestionMatcher):
-
-    def __init__(self):
-        pattern = r'local short country name contains (\d) words.'
-        info_matcher = ShortCountryNameLengthMatcher
-        super(ShortCountryNameLength, self).__init__(pattern, info_matcher)
-
-
-class CapitalIs(QuestionMatcher):
-
-    def __init__(self):
-        pattern = r'.*country.*has ([\s\w]*) as its capital'
-        info_matcher = CapitalFullNameMatcher
-        super(CapitalIs, self).__init__(pattern, info_matcher)
-"""
-##value_matcher for latitude/longitude
-#value matcher for date ((?:\w*\s\d*){1,3})
-#value matcher national symbol ([\w'\s]+)(?:.|\?| and| is the), shouyld be for all
 
 END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ']
-BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ', r'(?:\s|^)the ', r'^']
+BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ',
+                    r'(?:\s|^)the ', r'^']
 
 
 class QuestionMatcher(object):
@@ -101,8 +38,9 @@ class QuestionWithListMatcher(QuestionMatcher):
     Matcher class for questions with multiple information joined by conjunctions.
     """
 
-    def __init__(self, attribute, info_key=None):
-        descriptors = [r'including(?:.*? of)?', 'include', 'including', 'are', 'of', 'composed by']
+    def __init__(self, attribute, info_key=None, descriptors=None):
+        if not descriptors:
+            descriptors = [r'including(?:.*? of)?', 'include', 'including', 'are', 'of', 'composed by']
         descriptors = '|'.join(descriptors)
         info_key = attribute if not info_key else info_key
         pattern = attribute + r'.* (?:' + descriptors + r') ((?:[\.\w\d\s%]+,\s)*[.\w\d\s%]+,? and [\.\w\d\s%]+)[\?|\.]'
@@ -295,7 +233,7 @@ class EthnicGroups(QuestionWithListMatcher):
     def __init__(self):
         attribute = 'ethnic groups'
         info_key = 'religions'
-        super(EthnicGroups, self).__init__(attribute, info_key)
+        super(EthnicGroups, self).__init__(attribute, info_key, descriptors=['including'])
 
     def find_info(self, question):
         info_matcher = None

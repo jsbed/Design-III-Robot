@@ -113,32 +113,6 @@ class InfoListMatcher(InfoMatcher):
         return pattern
 
 
-class UnemploymentRateMatcher(InfoMatcher):
-
-    def __init__(self, rate):
-        info_key = 'unemployment rate'
-        regex = re.compile('{0}%'.format(rate))
-        super(UnemploymentRateMatcher, self).__init__(info_key, regex)
-
-
-class InternetUsersMatcher(NumericInfoMatcher):
-
-    def __init__(self, internet_users_amount):
-        info_key = 'internet users'
-        regex = re.compile('([\d,.]+(?:\smillion)?)')
-        op = '='
-        super(InternetUsersMatcher, self).__init__(info_key, regex, internet_users_amount, op)
-
-
-class UnemploymentRateGreaterThanMatcher(NumericInfoMatcher):
-
-    def __init__(self, rate):
-        info_key = 'unemployment rate'
-        regex = re.compile(r'([\d.]+)%')
-        op = '>'
-        super(UnemploymentRateGreaterThanMatcher, self).__init__(info_key, regex, rate, op)
-
-
 class LengthMatcher(InfoMatcher):
     def __init__(self, info_key, length):
         self._length = int(length)
@@ -152,29 +126,12 @@ class LengthMatcher(InfoMatcher):
         return None
 
 
-class TotalAreaMatcher(NumericInfoMatcher):
-
-    def __init__(self, total_area):
-        info_key = 'total area'
-        regex = re.compile('([\d,]+) sq km')
-        op = '='
-        super(TotalAreaMatcher, self).__init__(info_key, regex, total_area, op)
-
-
 class NationalAnthemMatcher(InfoMatcher):
 
     def __init__(self, national_anthem):
         info_key = 'national anthem'
         regex = re.compile(national_anthem, re.IGNORECASE)
         super(NationalAnthemMatcher, self).__init__(info_key, regex)
-
-
-class PublicDebtMatcher(InfoMatcher):
-
-    def __init__(self, public_debt):
-        info_key = 'public debt'
-        regex = re.compile(public_debt, re.IGNORECASE)
-        super(PublicDebtMatcher, self).__init__(info_key, regex)
 
 
 class ClimateMatcher(InfoMatcher):

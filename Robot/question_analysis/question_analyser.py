@@ -20,7 +20,6 @@ class QuestionAnalyser(object):
         self._attributes = INFO_KEY_ALIAS
         for question in questions:
             info_matchers = []
-            #find attribute, get question matchers
             question_attribute = None
             for attribute in self._attributes:
                 if attribute in question:
@@ -43,7 +42,6 @@ class QuestionAnalyser(object):
             if not country_matches:
                 raise Exception("No country found")
 
-        print(country_matches)
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
             country_answer = country_answer.intersection(country_match)
