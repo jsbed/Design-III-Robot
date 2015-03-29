@@ -13,6 +13,10 @@ def get_rotation_matrix(angle):
 
 
 def transform(point):
+    # All Zeros
+    if (not point.any()):
+        raise Exception("Point not found")
+
     perspective_matrix = numpy.load(os.path.join(
         "Robot", "resources", Config().get_perspective_matrix_path()))
 
@@ -31,8 +35,10 @@ def transform(point):
     after_rotation = numpy.dot(rotation_matrix, after_invert)
     after_translation = numpy.squeeze(after_rotation + translation_matrix)
 
-    after_transform = cv2.perspectiveTransform(
+    after_transform = numpy.squeeze(cv2.perspectiveTransform(
         numpy.float32([[[after_translation[0], after_translation[2]]]]),
-        perspective_matrix)
+        perspective_matrix))
 
-    return numpy.squeeze(after_transform)
+    return numpy.float32([after_transform[0],
+                          after_transform[1],
+                          after_translation[1]])
