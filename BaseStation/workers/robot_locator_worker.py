@@ -37,4 +37,4 @@ class RobotLocatorWorker(Observer, QThread):
         self._running = False
 
     def get_localization(self):
-        self._robot_localization_filter.get_localization()
+        return self._robot_localization_filter.get_localization()

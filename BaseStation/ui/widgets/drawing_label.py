@@ -26,13 +26,15 @@ class DrawingLabel(QLabel):
             self._items_displayer.draw_robot()
         cube_position, cube_image = self._items_displayer.draw_cube()
 
-        painter.translate(robot_position.x() + robot_image.width() / 2,
-                          robot_position.y() + robot_image.height() / 2)
-        painter.rotate(robot_rotation)
+        if (self._items_displayer.robot_is_visible()):
+            painter.translate(robot_position.x() + robot_image.width() / 2,
+                              robot_position.y() + robot_image.height() / 2)
+            painter.rotate(robot_rotation)
 
-        painter.drawImage(QPoint(-robot_image.width() / 2,
-                                 -robot_image.height() / 2), robot_image)
-        painter.resetTransform()
+            painter.drawImage(QPoint(-robot_image.width() / 2,
+                                     -robot_image.height() / 2), robot_image)
+            painter.resetTransform()
+
         painter.drawImage(cube_position, cube_image)
         painter.drawPath(path)
         painter.end()
