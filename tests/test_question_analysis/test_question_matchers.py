@@ -1,6 +1,6 @@
 from nose.tools import assert_true
 
-from Robot.question_analysis.attributes import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
+from Robot.question_analysis.question_matchers import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
     EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher, ContainsMatcher, ApproximationMatcher, \
     LatitudeMatcher
 

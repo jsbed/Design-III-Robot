@@ -1,6 +1,6 @@
 import collections
 from Robot.configuration.config import Config
-from Robot.question_analysis.attributes import QuestionMatcherGenerator
+from Robot.question_analysis.question_matchers import QuestionMatcherGenerator
 from Robot.question_analysis.factbook_parsing.country_info import Factbook, INFO_KEY_ALIAS
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
 
