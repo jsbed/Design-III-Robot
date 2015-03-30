@@ -1,4 +1,4 @@
-from math import floor, copysign
+import math
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
@@ -12,9 +12,7 @@ from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
-FULL_ROTATION = 360
-ANGLE_DIFFERENCE_NULL = 0
-FACE_NORTH = 0
+LOCALIZE_CUBE_ANGLE = 0
 
 
 class RobotController():
@@ -41,24 +39,22 @@ class RobotController():
 
     def arrived_at_zone_atlas(self):
         self._update_robot_localization()
-        target_point = config.Config().get_atlas_zone_position()
-        self._distance = \
-            self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
-                                               target_point)
+        self._distance = self._point_adjustor. \
+            calculate_distance_between_points(self._robot_position,
+                                              config.Config().
+                                              get_atlas_zone_position())
 
         return self._robot_is_next_to_target_point()
 
     def move_to_atlas(self):
         self._update_robot_localization()
-        target_point = config.Config().get_atlas_zone_position()
-        self._distance = \
-            self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
-                                               target_point)
+        atlas_zone_position = config.Config().get_atlas_zone_position()
+        self._distance = self._point_adjustor. \
+            calculate_distance_between_points(self._robot_position,
+                                              atlas_zone_position)
 
-        self._move_robot_towards_target_point(target_point)
-        self._send_new_path(config.Config().get_atlas_zone_position())
+        self._move_robot_towards_target_point(atlas_zone_position)
+        self._send_new_path(atlas_zone_position)
 
     def display_country_leds(self, country):
         self._led_manager.display_country(country)
@@ -66,61 +62,47 @@ class RobotController():
         self._led_manager.close_leds()
 
     def ask_for_cube(self, cube):
-        self._led_manager.display_flag_led_for_next_cube(cube)
+        self._led_manager.next_flag_led(cube)
 
     def robot_is_next_to_target_with_correct_orientation(self, target):
         self._update_robot_localization()
-        next_point = self._find_next_destination_point(target)
+        target_point = self._find_next_destination_point(target)
         self._distance = self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
-                                               next_point)
+            calculate_distance_between_points(self._robot_position,
+                                              target_point)
 
         return (self._robot_is_next_to_target_point() and
                 self._robot_has_correct_orientation(target))
 
     def move_robot_to(self, destination):
         self._update_robot_localization()
-        next_point = self._find_next_destination_point(destination)
-        self._distance = \
-            self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
-                                               next_point)
-        print(next_point)
-        self._move_robot_towards_target_point(next_point)
-        self._send_new_path(next_point)
+        destination_point = self._find_next_destination_point(destination)
+        self._distance = self._point_adjustor. \
+            calculate_distance_between_points(self._robot_position,
+                                              destination_point)
+        print(destination_point)
+        self._move_robot_towards_target_point(destination_point)
+        self._send_new_path(destination_point)
 
     def move_robot_to_localize_cube(self):
         self._update_robot_localization()
-        self._distance = \
-            self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
-                                               config.Config().
-                                               get_localize_cube_position())
-        target_orientation = self._point_adjustor.find_robot_orientation(
-            self._robot_orientation,
-            self._robot_position,
-            config.Config().get_localize_cube_position())
+        localization_position = config.Config().get_localize_cube_position()
+        self._distance = self._point_adjustor. \
+            calculate_distance_between_points(self._robot_position,
+                                              localization_position)
+        rotation = self._point_adjustor.find_robot_rotation(
+            self._robot_orientation, self._robot_position,
+            localization_position)
+        localize_cube_rotation = LOCALIZE_CUBE_ANGLE - \
+            self._point_adjustor.find_robot_rotation(LOCALIZE_CUBE_ANGLE,
+                                                     self._robot_position,
+                                                     localization_position)
 
-        if (abs(target_orientation) > config.Config().get_orientation_max()):
-            self._robot.append_instruction(
-                Rotate(config.Config().get_orientation_max()))
-            self._robot.append_instruction(
-                Rotate(target_orientation -
-                       config.Config().get_orientation_max()))
-        else:
-            self._robot.append_instruction(Rotate(target_orientation))
+        self._append_rotations(rotation)
         self._robot.append_instruction(Move(self._distance))
-        rotation = FACE_NORTH - target_orientation - self._robot_orientation
-        if (abs(rotation) > config.Config().get_orientation_max()):
-            self._robot.append_instruction(
-                Rotate(config.Config().get_orientation_max()))
-            self._robot.append_instruction(
-                Rotate(rotation -
-                       config.Config().get_orientation_max()))
-        else:
-            self._robot.append_instruction(Rotate(rotation))
+        self._append_rotations(localize_cube_rotation)
         self._robot.execute_instructions()
-        self._send_new_path(config.Config().get_localize_cube_position())
+        self._send_new_path(localization_position)
 
     def push_cube(self):
         self._robot.append_instruction(Move(config.Config().
@@ -146,57 +128,29 @@ class RobotController():
     def _update_robot_localization(self):
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
-        self._robot_orientation = \
-            self._robot.get_localization_orientation()
+        self._robot_orientation = self._robot.get_localization_orientation()
 
     def _find_next_destination_point(self, destination):
-        target_point = \
-            self._point_adjustor.find_target_position(destination,
-                                                      self._robot_position)
+        target_point = self._point_adjustor.find_target_position(
+            destination, self._robot_position)
         next_point = self._point_adjustor.find_next_point(self._robot_position,
                                                           target_point)
         return next_point
 
     def _robot_has_correct_orientation(self, destination):
-        target_orientation = self._point_adjustor.find_robot_orientation(
+        rotation = self._point_adjustor.find_robot_rotation(
             self._robot_orientation, self._robot_position, destination)
 
-        if (self._robot_is_facing_correct_angle(target_orientation)):
-            return True
-        else:
-            if (abs(target_orientation) >
-                    config.Config().get_orientation_max()):
-                self._robot.append_instruction(
-                    Rotate(config.Config().get_orientation_max()))
-                self._robot.append_instruction(
-                    Rotate(target_orientation -
-                           config.Config().get_orientation_max()))
-            else:
-                self._robot.append_instruction(Rotate(target_orientation))
+        if not(self._robot_is_facing_correct_angle(rotation)):
+            self._append_rotations(rotation)
             self._robot.execute_instructions()
-            return False
+        return self._robot_is_facing_correct_angle(rotation)
 
     def _move_robot_towards_target_point(self, destination):
-        target_orientation = self._point_adjustor.find_robot_orientation(
-            self._robot_orientation,
-            self._robot_position,
-            destination)
+        rotation = self._point_adjustor.find_robot_rotation(
+            self._robot_orientation, self._robot_position, destination)
 
-        orientation_max = config.Config().get_orientation_max()
-
-        if (abs(target_orientation) > orientation_max):
-            nb_of_max_rotation = floor(abs(target_orientation) /
-                                       orientation_max)
-            orientation_side = copysign(1, target_orientation)
-
-            for _ in range(nb_of_max_rotation):
-                self._robot.append_instruction(Rotate(orientation_side *
-                                                      orientation_max))
-            self._robot.append_instruction(Rotate(orientation_side *
-                                                  (abs(target_orientation) %
-                                                   orientation_max)))
-        else:
-            self._robot.append_instruction(Rotate(target_orientation))
+        self._append_rotations(rotation)
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
 
@@ -207,15 +161,20 @@ class RobotController():
     def _robot_is_next_to_target_point(self):
         return self._distance <= config.Config().get_distance_uncertainty()
 
-    def _robot_is_facing_correct_angle(self, angle_difference):
-        angle_uncertainty = (FULL_ROTATION -
-                             config.Config().get_orientation_uncertainty())
-
-        if ((angle_difference >= angle_uncertainty)
-                or (angle_difference <= -angle_uncertainty)):
-            angle_difference = ANGLE_DIFFERENCE_NULL
-
+    def _robot_is_facing_correct_angle(self, rotation):
         angle_uncertainty = config.Config().get_orientation_uncertainty()
 
-        return (angle_difference <= angle_uncertainty and
-                angle_difference >= -angle_uncertainty)
+        return (rotation <= angle_uncertainty and
+                rotation >= -angle_uncertainty)
+
+    def _append_rotations(self, rotation):
+        orientation_max = config.Config().get_orientation_max()
+        number_sign = math.copysign(1, rotation)
+        number_of_rotation = math.floor(abs(rotation /
+                                        orientation_max))
+        final_rotation = abs(rotation) % orientation_max
+
+        for _ in range(number_of_rotation):
+            self._robot.append_instruction(Rotate(number_sign *
+                                                  orientation_max))
+        self._robot.append_instruction(Rotate(number_sign * final_rotation))

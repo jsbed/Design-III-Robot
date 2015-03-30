@@ -166,11 +166,16 @@ class TestQuestionAnalyser(object):
 
     def test_short_form_length(self):
         question = 'My birth rate is approximately 16 births/1000 and my local short country name contains 2 words.'
-        assert_true(self._question_analyser.answer_question(question) in ['Suriname', 'Grenada', 'Turkey', 'Tunisia',
-                                                                          'Vietnam', 'Argentina', 'El Salvador',
-                                                                          'Sri Lanka', 'Colombia', 'Paraguay',
-                                                                          'Costa Rica', 'Azerbaijan'])
+        assert_true(self._question_analyser.answer_question(question) in ['Maldives', 'Vietnam', 'Sri Lanka', 'Costa Rica'])
 
     def test_illicit_drugs(self):
         question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
+        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
+
+    def test_telephone_lines(self):
+        question = 'My telephone lines in use are 1.217 million.'
+        assert_equal(self._question_analyser.answer_question(question), 'Cuba')
+
+    def test_inflation_rate(self):
+        question = 'What country has an inflation rate between 0.3% and 0.5%?'
         assert_equal(self._question_analyser.answer_question(question), 'Jamaica')

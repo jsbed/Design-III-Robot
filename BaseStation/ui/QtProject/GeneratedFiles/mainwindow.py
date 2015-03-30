@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../QtProject\mainwindow.ui'
+# Form implementation generated from reading ui file '../QtProject/mainwindow.ui'
 #
-# Created: Thu Mar 26 15:27:47 2015
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+# Created: Sat Mar 28 21:45:12 2015
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -202,7 +202,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.label_5 = QtGui.QLabel(self.centralWidget)
-        self.label_5.setGeometry(QtCore.QRect(127, 690, 41, 21))
+        self.label_5.setGeometry(QtCore.QRect(127, 690, 51, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(50)
@@ -288,7 +288,7 @@ class Ui_MainWindow(object):
         self.new_question_button.setObjectName("new_question_button")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 25))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
 
@@ -313,8 +313,8 @@ class Ui_MainWindow(object):
         self.consoleBrowser.setHtml(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                                                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                                                  "p, li { white-space: pre-wrap; }\n"
-                                                                 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-                                                                 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+                                                                 "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+                                                                 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.clearConsole.setText(QtGui.QApplication.translate(
             "MainWindow", "Clear", None, QtGui.QApplication.UnicodeUTF8))
         self.restartChrono.setText(QtGui.QApplication.translate(

@@ -1,6 +1,7 @@
+import json
+
 from PySide import QtGui
 from PySide.QtCore import Qt
-import json
 
 from BaseStation.communication.tcp_server import TcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -11,6 +12,7 @@ from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
 from BaseStation.ui.widgets.items_displayer import ItemsDisplayer
 from BaseStation.workers.robot_locator_worker import RobotLocatorWorker
 from Robot.communication.localization.localization_dto import create_localization_from_localization_dto
+from Robot.communication.localization.localization_request import ROBOT_LOCALIZATION_REQUEST
 from Robot.utilities.observer import Observer
 
 
@@ -74,6 +76,10 @@ class Main(QtGui.QMainWindow, Observer):
             self.ui.questionLabel.setText(signal_data["question"])
             self._flag_displayer.display_country(signal_data["country"])
             self._set_question_buttons_enabled(True)
+        if ("request" in signal_data):
+            if signal_data["request"] == ROBOT_LOCALIZATION_REQUEST:
+                localization = self._robot_locator_worker.get_localization()
+                self._tcp_server.send_localization_response(localization)
 
     def _start_cycle(self):
         self._tcp_server.send_start_cycle_signal()

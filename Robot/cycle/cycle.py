@@ -57,6 +57,9 @@ class Cycle(Observer):
         elif (self._state == CycleState.ASK_FOR_CUBE):
             self._ask_for_cube_state()
 
+        elif (self._state == CycleState.LOCALIZE_CUBE):
+            self._localize_cube_state()
+
         elif (self._state == CycleState.MOVE_TO_CUBE):
             self._move_to_cube_state()
 
@@ -111,7 +114,16 @@ class Cycle(Observer):
 
         if not(cycle_done):
             self._robot_controller.ask_for_cube(self._cube)
-            self._localize_cube()
+            self._robot_controller.move_robot_to_localize_cube()
+            self._state = CycleState.LOCALIZE_CUBE
+
+    def _localize_cube_state(self):
+        GripperManager().widest_gripper()
+        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        while (self._cube.get_localization().position is None):
+            time.sleep(CHECK_FOR_CUBE_DELAY)
+        self._state = CycleState.MOVE_TO_CUBE
+        self._next_state()
 
     def _move_to_cube_state(self):
         cube_position = self._cube.get_localization().position
@@ -158,11 +170,4 @@ class Cycle(Observer):
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.move_backward_from_target_zone()
         self._state = CycleState.ASK_FOR_CUBE
-        self._next_state()
-
-    def _localize_cube(self):
-        self._robot_controller.move_robot_to_localize_cube()
-        self._state = CycleState.MOVE_TO_CUBE
-        while (self._cube.get_localization().position is None):
-            time.sleep(CHECK_FOR_CUBE_DELAY)
         self._next_state()

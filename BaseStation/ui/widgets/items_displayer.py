@@ -13,17 +13,25 @@ class ItemsDisplayer():
         self._robot_orientation = 0
         self._destination = QtCore.QPoint(0, 0)
         self._cube_position = QtCore.QPoint(0, 0)
-        self._robot_image = QImage()
+        self._robot_image = QImage(":/resources/robot.png")
         self._cube_image = QImage()
         self._config = Config()
+        self._robot_displayed = False
 
     def display_robot(self, position, orientation):
         real_x, real_y = position
         virtual_x, virtual_y = self._convert_real_to_virtual(real_x, real_y)
 
-        self._robot_position = QtCore.QPoint(virtual_x, virtual_y)
-        self._robot_orientation = orientation
-        self._robot_image = QImage(":/resources/robot.png")
+        new_position = None
+
+        try:
+            new_position = QtCore.QPoint(virtual_x, virtual_y)
+        except OverflowError as e:
+            print(str(e))
+        else:
+            self._robot_position = new_position
+            self._robot_orientation = orientation
+            self._robot_displayed = True
 
     def display_path(self, destination):
         virtual_x, virtual_y = self._convert_real_to_virtual(destination[0],
@@ -69,6 +77,12 @@ class ItemsDisplayer():
                               self._cube_position.y() -
                               (self._cube_image.height() / 2))
         return position, self._cube_image
+
+    def hide_robot(self):
+        self._robot_displayed = False
+
+    def robot_is_visible(self):
+        return self._robot_displayed
 
     def _convert_real_to_virtual(self, real_x, real_y):
         virtual_x = self._table_area.width() - real_x * self._table_area.width() / \

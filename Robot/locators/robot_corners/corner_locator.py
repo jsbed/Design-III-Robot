@@ -7,7 +7,7 @@ from Robot.locators.contour import contours_finder
 from Robot.locators.extractors.robot_corner import robot_corner_extractor_factory
 from Robot.locators.perspective import perspective_transformation
 from Robot.locators.robot_corners.robot_corner import RobotCorner
-from Robot.path_finding.point import Point
+from Robot.path_finding.point import Point, Point3D
 
 
 def locate(img_bgr, img_cloud):
@@ -60,8 +60,15 @@ def _extract_robot_corner_position(img_bgr, img_cloud, color):
         point_b = _find_corner_position_from_contour(corner_contours[1],
                                                      img_cloud)
 
+        if color == Color.BLUE:
+            # Returns the highest point
+            point_to_return = point_a if point_a.z > point_b.z else point_b
+        else:
+            # Returns the closest point
+            point_to_return = point_a if point_a.y < point_b.y else point_b
+
         # Returns the closest point
-        return point_a if point_a.y < point_b.y else point_b
+        return Point(point_to_return.x, point_to_return.y)
 
     else:
         raise Exception("Corner not found")
@@ -75,5 +82,5 @@ def _find_corner_position_from_contour(contour, img_cloud):
     new_point = perspective_transformation.transform(img_cloud[centroid_y,
                                                                centroid_x])
 
-    return Point(new_point[0] * 100, new_point[1] * 100 + Config().
-                 get_robot_corner_size())
+    return Point3D(new_point[0] * 100, new_point[1] * 100 +
+                   Config().get_robot_corner_size(), new_point[2])

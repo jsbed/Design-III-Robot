@@ -14,6 +14,9 @@ class OrangeRobotCornerSegmentor(RobotCornerSegmentor):
         self.set_upper_hsv_values(Config().get_robot_high_orange_hsv_values())
 
     def segment_robot_corner(self, img):
+        # Apply median blur to extend colors
+        img = cv2.medianBlur(img, 11)
+
         # Convert BGR image to HSV
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -30,9 +33,11 @@ class OrangeRobotCornerSegmentor(RobotCornerSegmentor):
         mask_upper = cv2.inRange(img_hsv, upper, upper_limit)
         mask = mask_lower + mask_upper
 
-        # Apply erosion + opening
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
-        mask = cv2.dilate(cv2.erode(mask, kernel), kernel)
+        # Apply closing and opening
+        closing_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+        mask = cv2.erode(cv2.dilate(mask, closing_kernel), closing_kernel)
+        opening_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+        mask = cv2.dilate(cv2.erode(mask, opening_kernel), opening_kernel)
 
         # Bitwise-AND mask and original image
         extracted_corner = cv2.bitwise_and(img, img, mask=mask)

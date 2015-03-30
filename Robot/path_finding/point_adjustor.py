@@ -26,7 +26,7 @@ class PointAdjustor():
         return self._target_point
 
     def find_next_point(self, start, end):
-        distance = self._calculate_distance_between_points(start, end)
+        distance = self.calculate_distance_between_points(start, end)
         current_distance = config.Config().get_check_points_distance()
 
         if (distance <= current_distance +
@@ -34,20 +34,20 @@ class PointAdjustor():
             return Point(end.x, end.y)
 
         else:
-            angle = self._calculate_angle_between_points(start, end)
+            angle = self.calculate_angle_between_points(start, end)
             x = current_distance * math.cos(angle)
             y = current_distance * math.sin(angle)
             return Point(start.x + int(x), start.y + int(y))
 
-    def find_robot_orientation(self, robot_orientation, robot_position, point):
+    def find_robot_rotation(self, robot_orientation, robot_position, point):
         start_x = config.Config().get_table_width() - robot_position.x
         end_x = config.Config().get_table_width() - point.x
         start = Point(start_x, robot_position.y)
         end = Point(end_x, point.y)
-        angle = self._calculate_angle_between_points(start, end)
+        angle = self.calculate_angle_between_points(start, end)
         rotation_angle = int(angle - robot_orientation - 90)
         if (rotation_angle > 180):
-            rotation_angle = 360 - rotation_angle
+            rotation_angle = rotation_angle - 360
         if (rotation_angle < -180):
             rotation_angle = 360 + rotation_angle
 
@@ -125,13 +125,13 @@ class PointAdjustor():
                                            self._target_point.y)
 
     @staticmethod
-    def _calculate_angle_between_points(start, end):
+    def calculate_angle_between_points(start, end):
         xDiff = end.x - start.x
         yDiff = end.y - start.y
 
         return degrees(atan2(yDiff, xDiff))
 
     @staticmethod
-    def _calculate_distance_between_points(start, end):
+    def calculate_distance_between_points(start, end):
         return math.sqrt(math.pow(end.x - start.x, 2) +
                          math.pow(end.y - start.y, 2))
