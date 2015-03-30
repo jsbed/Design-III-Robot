@@ -43,7 +43,7 @@ class RobotController():
         target_point = config.Config().get_atlas_zone_position()
         self._distance = \
             self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
+            calculate_distance_between_points(self._robot_position,
                                                target_point)
 
         return self._robot_is_next_to_target_point()
@@ -53,7 +53,7 @@ class RobotController():
         target_point = config.Config().get_atlas_zone_position()
         self._distance = \
             self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
+            calculate_distance_between_points(self._robot_position,
                                                target_point)
 
         self._move_robot_towards_target_point(target_point)
@@ -71,7 +71,7 @@ class RobotController():
         self._update_robot_localization()
         next_point = self._find_next_destination_point(target)
         self._distance = self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
+            calculate_distance_between_points(self._robot_position,
                                                next_point)
 
         return (self._robot_is_next_to_target_point() and
@@ -82,7 +82,7 @@ class RobotController():
         next_point = self._find_next_destination_point(destination)
         self._distance = \
             self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
+            calculate_distance_between_points(self._robot_position,
                                                next_point)
         print(next_point)
         self._move_robot_towards_target_point(next_point)
@@ -92,7 +92,7 @@ class RobotController():
         self._update_robot_localization()
         self._distance = \
             self._point_adjustor. \
-            _calculate_distance_between_points(self._robot_position,
+            calculate_distance_between_points(self._robot_position,
                                                config.Config().
                                                get_localize_cube_position())
         target_orientation = self._point_adjustor.find_robot_orientation(
