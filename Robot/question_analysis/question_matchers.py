@@ -105,7 +105,6 @@ class TextQuestionMatcher(QuestionMatcher):
                     for value in values:
                         info_matcher = self.get_info_matcher(value)
                         if info_matcher:
-                            print(begin_delimiter, end_delimiter)
                             info_matchers.add(info_matcher)
         return info_matchers
 
