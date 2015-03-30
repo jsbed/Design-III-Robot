@@ -5,7 +5,7 @@ from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, 
 
 END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ']
 BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ',
-                    r'(?:\s|^)the ', r'are ', r'^']
+                    r'(?:\s|^)the ', r'(?:\s|^)are ', r'(?:\s|^)as a ', r'^']
 
 
 class QuestionMatcher(object):
@@ -156,7 +156,7 @@ class ContainsMatcher(QuestionMatcher):
 class QuestionWithIntervalMatcher(TextQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'between ([\d\.\s,]+)%? and ([\d\.\s,]+)%?'
+        pattern = r'between ([\d\.\s,-]+)%? and ([\d\.\s,-]+)%?'
         info_matcher = BetweenMatcher
         super(QuestionWithIntervalMatcher, self).__init__(attribute, pattern, info_matcher)
 
@@ -191,21 +191,21 @@ class NumericQuestionMatcher(TextQuestionMatcher):
 class LessThanMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'less than ([\d\.\s,]+)%?'
+        pattern = r'less than ([\d\.\s,-]+)%?'
         super(LessThanMatcher, self).__init__(attribute, pattern, '<')
 
 
 class GreaterThanMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'greater than ([\d\.\s,]+)%?'
+        pattern = r'greater than ([\d\.\s,-]+)%?'
         super(GreaterThanMatcher, self).__init__(attribute, pattern, '>')
 
 
 class EqualsMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'([\d\.\s,]+)%?'
+        pattern = r'([\d\.\s,-]+)%?'
         super(EqualsMatcher, self).__init__(attribute, pattern, '=')
 
 

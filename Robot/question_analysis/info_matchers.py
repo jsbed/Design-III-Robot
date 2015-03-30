@@ -12,13 +12,20 @@ class InfoMatcher(object):
         return self._info_key
 
     def match(self, info_data):
+        info_data = self.get_most_recent_info(info_data)
         return self._regex.search(info_data) is not None
+
+    def get_most_recent_info(self, info_data):
+        if isinstance(info_data, list):
+            info_data = list(filter(lambda el: 'NA' not in el, info_data))
+            info_data = info_data[0]
+        return info_data
 
 
 class NumericApproximationInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, expected_info):
-        pattern = r'([\d,.\s]+)'
+        pattern = r'([\d,.\s-]+)'
         self._expected_info = self._cast_to_float(expected_info)
         super(NumericApproximationInfoMatcher, self).__init__(info_key, pattern)
 
@@ -45,7 +52,7 @@ class NumericApproximationInfoMatcher(InfoMatcher):
 class NumericInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, expected_info, op):
-        pattern = r'([\d,.\s]+)'
+        pattern = r'([\d,.\s-]+)'
         self._expected_info = self._cast_to_float(expected_info)
         self._ops = {'=': operator.eq, '>': operator.gt, '<': operator.lt}
         self._op = self._ops[op]
@@ -63,7 +70,7 @@ class NumericInfoMatcher(InfoMatcher):
         return number
 
     def match(self, info_data):
-        self._info_data = info_data
+        info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match and any(char.isdigit() for char in info_data):
             actual_info = self._cast_to_float(match.group(1))
@@ -86,10 +93,12 @@ class BetweenMatcher(InfoMatcher):
     def __init__(self, info_key, lower_bound, upper_bound):
         self._lower_bound = self._cast_to_float(lower_bound)
         self._upper_bound = self._cast_to_float(upper_bound)
-        pattern = r"([\d.,]+)"
+        self._sort_bounds()
+        pattern = r"([\d.,-]+)"
         super(BetweenMatcher, self).__init__(info_key, pattern)
 
     def match(self, info_data):
+        info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match:
             actual_value = match.group(1)
@@ -103,6 +112,10 @@ class BetweenMatcher(InfoMatcher):
         if number[-1] == '.':
             number = number[:-1]
         return float(number)
+
+    def _sort_bounds(self):
+        if self._lower_bound > self._upper_bound:
+            self._lower_bound, self._upper_bound = self._upper_bound, self._lower_bound
 
     def __eq__(self, other):
         return self._lower_bound == other._lower_bound and self._upper_bound == other._upper_bound
