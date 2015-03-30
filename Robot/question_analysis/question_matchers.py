@@ -239,7 +239,6 @@ class EthnicGroups(QuestionWithListMatcher):
         match = self._regex.search(question)
         if match:
             info_list = match.group(1)
-            print(self._regex)
             info_list = info_list.replace(' of ', ' ').replace('%', '')
             info_list = re.split(', and\s|, |\sand\s', info_list)
             info_list = [info.split()[1] + ' ' + info.split()[0] for info in info_list]

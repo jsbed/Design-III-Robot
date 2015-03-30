@@ -1,5 +1,5 @@
-import re
 import operator
+import re
 
 
 class InfoMatcher(object):
@@ -120,7 +120,6 @@ class InfoListMatcher(InfoMatcher):
         self._info_list = info_list
         pattern = self._build_pattern()
         super(InfoListMatcher, self).__init__(info_key, pattern)
-        print(self._regex)
 
     def _build_pattern(self):
         base_pattern = r'(?=.*\b{0}\b)'
@@ -132,6 +131,7 @@ class InfoListMatcher(InfoMatcher):
 
 
 class LengthMatcher(InfoMatcher):
+
     def __init__(self, info_key, length):
         self._length = int(length)
         pattern = r'([\s\w]+)'
@@ -164,4 +164,3 @@ class IllicitDrugsActivitiesMatcher(InfoMatcher):
     def __init__(self, info_key, activities):
         pattern = activities
         super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, pattern)
-        print(self._regex)

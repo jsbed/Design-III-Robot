@@ -1,7 +1,8 @@
 import collections
+
 from Robot.configuration.config import Config
-from Robot.question_analysis.question_matchers import QuestionMatcherGenerator
 from Robot.question_analysis.factbook_parsing.country_info import Factbook, INFO_KEY_ALIAS
+from Robot.question_analysis.question_matchers import QuestionMatcherGenerator
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
 
 
@@ -45,7 +46,5 @@ class QuestionAnalyser(object):
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
             country_answer = country_answer.intersection(country_match)
-        if(len(country_answer) > 1):
-            print(country_answer)
         country_answer = country_answer.pop()
         return country_answer
