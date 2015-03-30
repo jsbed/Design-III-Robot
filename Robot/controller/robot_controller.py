@@ -12,8 +12,6 @@ from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
-FULL_ROTATION = 360
-ANGLE_DIFFERENCE_NULL = 0
 LOCALIZE_CUBE_ANGLE = 0
 
 
