@@ -1,6 +1,7 @@
+import json
+
 from PySide import QtGui
 from PySide.QtCore import Qt
-import json
 
 from BaseStation.communication.tcp_server import TcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow

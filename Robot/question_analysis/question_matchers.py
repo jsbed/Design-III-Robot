@@ -93,7 +93,7 @@ class TextQuestionMatcher(QuestionMatcher):
         super(TextQuestionMatcher, self).__init__(value_matcher, info_matcher, attribute)
 
     def find_info(self, question):
-        info_matchers = []
+        info_matchers = set()
         for begin_delimiter in BEGIN_DELIMITERS:
             begin_positions = [position.end() for position in re.finditer(begin_delimiter, question, re.IGNORECASE)]
             substrings = [question[position:] for position in begin_positions]
@@ -105,8 +105,7 @@ class TextQuestionMatcher(QuestionMatcher):
                     for value in values:
                         info_matcher = self.get_info_matcher(value)
                         if info_matcher:
-                            print(begin_delimiter, end_delimiter)
-                            info_matchers.append(info_matcher)
+                            info_matchers.add(info_matcher)
         return info_matchers
 
 
@@ -239,7 +238,6 @@ class EthnicGroups(QuestionWithListMatcher):
         match = self._regex.search(question)
         if match:
             info_list = match.group(1)
-            print(self._regex)
             info_list = info_list.replace(' of ', ' ').replace('%', '')
             info_list = re.split(', and\s|, |\sand\s', info_list)
             info_list = [info.split()[1] + ' ' + info.split()[0] for info in info_list]

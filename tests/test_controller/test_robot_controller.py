@@ -67,7 +67,7 @@ class RobotControllerTest(unittest.TestCase):
     def test_get_and_move_cube_with_long_distance_and_wrong_orientation(self, RobotMock, PointAdjustorMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=10)
         point_adjustor_mock.find_next_point = Mock()
@@ -86,7 +86,7 @@ class RobotControllerTest(unittest.TestCase):
     def test_get_and_move_cube_with_long_distance_and_right_orientation(self, RobotMock, PointAdjustorMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()
@@ -105,7 +105,7 @@ class RobotControllerTest(unittest.TestCase):
     def test_get_and_move_cube_when_arrived_to_cube_with_wrong_orientation(self, RobotMock, PointAdjustorMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=0)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=25)
         point_adjustor_mock.find_next_point = Mock()
@@ -124,7 +124,7 @@ class RobotControllerTest(unittest.TestCase):
     def test_get_and_move_cube_when_arrived_to_cube_with_right_orientation(self, RobotMock, PointAdjustorMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=0)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()
@@ -143,13 +143,13 @@ class RobotControllerTest(unittest.TestCase):
     def test_move_to_atlas_with_short_and_long_distance(self, RobotMock, PointAdjustorMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=0)
         PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(95, 20), 90)
         self.assertTrue(self._robot_controller.arrived_at_zone_atlas())
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(20, 30), 90)
@@ -163,7 +163,7 @@ class RobotControllerTest(unittest.TestCase):
         self._setup_config_mock(ConfigMock)
         self._setup_base_station_client_mock(BaseStationClientMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()
@@ -180,7 +180,7 @@ class RobotControllerTest(unittest.TestCase):
         self._setup_config_mock(ConfigMock)
         self._setup_base_station_client_mock(BaseStationClientMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()
@@ -196,7 +196,7 @@ class RobotControllerTest(unittest.TestCase):
         self._setup_config_mock(ConfigMock)
         self._setup_base_station_client_mock(BaseStationClientMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()
@@ -217,7 +217,7 @@ class RobotControllerTest(unittest.TestCase):
         self._setup_config_mock(ConfigMock)
         self._setup_base_station_client_mock(BaseStationClientMock)
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock._calculate_distance_between_points = Mock(
+        point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
         point_adjustor_mock.find_robot_orientation = Mock(return_value=0)
         point_adjustor_mock.find_next_point = Mock()

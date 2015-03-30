@@ -1,5 +1,5 @@
-import re
 import operator
+import re
 
 
 class InfoMatcher(object):
@@ -71,6 +71,15 @@ class NumericInfoMatcher(InfoMatcher):
                 return self._op(actual_info, self._expected_info)
         return None
 
+    def __eq__(self, other):
+        return self._op == other._op and self._expected_info == other._expected_info
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return hash(self._op) + hash(self._expected_info)
+
 
 class BetweenMatcher(InfoMatcher):
 
@@ -95,6 +104,15 @@ class BetweenMatcher(InfoMatcher):
             number = number[:-1]
         return float(number)
 
+    def __eq__(self, other):
+        return self._lower_bound == other._lower_bound and self._upper_bound == other._upper_bound
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return hash(self._lower_bound + self._upper_bound)
+
 
 class InfoListMatcher(InfoMatcher):
 
@@ -102,7 +120,6 @@ class InfoListMatcher(InfoMatcher):
         self._info_list = info_list
         pattern = self._build_pattern()
         super(InfoListMatcher, self).__init__(info_key, pattern)
-        print(self._regex)
 
     def _build_pattern(self):
         base_pattern = r'(?=.*\b{0}\b)'
@@ -114,6 +131,7 @@ class InfoListMatcher(InfoMatcher):
 
 
 class LengthMatcher(InfoMatcher):
+
     def __init__(self, info_key, length):
         self._length = int(length)
         pattern = r'([\s\w]+)'
@@ -146,4 +164,3 @@ class IllicitDrugsActivitiesMatcher(InfoMatcher):
     def __init__(self, info_key, activities):
         pattern = activities
         super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, pattern)
-        print(self._regex)
