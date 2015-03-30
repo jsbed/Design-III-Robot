@@ -1,46 +1,46 @@
-from unittest.mock import patch, MagicMock, Mock
-import unittest
-
-from Robot.cycle.cycle import Cycle
-from Robot.cycle.cycle_state import CycleState
-from Robot.path_finding.point import Point
-
-
-@patch('Robot.cycle.cycle.RobotController')
-class CycleTest(unittest.TestCase):
-
-    @staticmethod
-    def _setup_country_repository_mock(mock):
-        country_repo_mock = MagicMock()
-        country_repo_mock.get = Mock()
-        mock.return_value = country_repo_mock
-
-    @staticmethod
-    def _setup_question_mock(mock):
-        question_mock = MagicMock()
-        question_mock.answer_question = Mock(return_value="Canada")
-        mock.return_value = question_mock
-
-    @staticmethod
-    def _setup_flag_mock(has_next_cube):
-        flag_mock = MagicMock()
-        flag_mock.has_next_cubes = Mock(return_value=has_next_cube)
-        flag_mock.next_cube = Mock()
-        return flag_mock
-
-    @staticmethod
-    def _setup_cube_mock(mock, position, target_zone_position):
-        cube_mock = MagicMock()
-        cube_mock.get_localization.position = Mock(return_value=position)
-        cube_mock.get_target_zone_position = Mock(
-            return_value=target_zone_position)
-        mock.return_value = cube_mock
-
-    @staticmethod
-    def _setup_base_station_client_mock():
-        client_mock = MagicMock()
-        client_mock.send_question_and_country = Mock()
-        return client_mock
+# from unittest.mock import patch, MagicMock, Mock
+# import unittest
+# 
+# from Robot.cycle.cycle import Cycle
+# from Robot.cycle.cycle_state import CycleState
+# from Robot.path_finding.point import Point
+# 
+# 
+# @patch('Robot.cycle.cycle.RobotController')
+# class CycleTest(unittest.TestCase):
+# 
+#     @staticmethod
+#     def _setup_country_repository_mock(mock):
+#         country_repo_mock = MagicMock()
+#         country_repo_mock.get = Mock()
+#         mock.return_value = country_repo_mock
+# 
+#     @staticmethod
+#     def _setup_question_mock(mock):
+#         question_mock = MagicMock()
+#         question_mock.answer_question = Mock(return_value="Canada")
+#         mock.return_value = question_mock
+# 
+#     @staticmethod
+#     def _setup_flag_mock(has_next_cube):
+#         flag_mock = MagicMock()
+#         flag_mock.has_next_cubes = Mock(return_value=has_next_cube)
+#         flag_mock.next_cube = Mock()
+#         return flag_mock
+# 
+#     @staticmethod
+#     def _setup_cube_mock(mock, position, target_zone_position):
+#         cube_mock = MagicMock()
+#         cube_mock.get_localization.position = Mock(return_value=position)
+#         cube_mock.get_target_zone_position = Mock(
+#             return_value=target_zone_position)
+#         mock.return_value = cube_mock
+# 
+#     @staticmethod
+#     def _setup_base_station_client_mock():
+#         client_mock = MagicMock()
+#         client_mock.send_question_and_country = Mock()
+#         return client_mock
 
 #    @patch('Robot.cycle.cycle.config.Config')
 #    def test_when_start_cycle_then_move_to_atlas_is_called(self, ConfigMock, RobotControllerMock):
