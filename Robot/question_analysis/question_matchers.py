@@ -5,7 +5,7 @@ from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, 
 
 END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ']
 BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ',
-                    r'(?:\s|^)the ', r'are', r'^']
+                    r'(?:\s|^)the ', r'are ', r'^']
 
 
 class QuestionMatcher(object):

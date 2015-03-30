@@ -174,6 +174,8 @@ class TestQuestionAnalyser(object):
 
     def test_telephone_lines(self):
         question = 'My telephone lines in use are 1.217 million.'
-        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
+        assert_equal(self._question_analyser.answer_question(question), 'Cuba')
 
-from statistics import mean
+    def test_inflation_rate(self):
+        question = 'What country has an inflation rate between 0.3% and 0.5%?'
+        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
