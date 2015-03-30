@@ -1,3 +1,4 @@
+from math import floor, copysign
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
@@ -27,7 +28,7 @@ class RobotController():
         self._robot = Robot(self._serial_port)
         self._point_adjustor = PointAdjustor()
         self._led_manager = LedManager(self._serial_port)
-        
+
     def get_robot(self):
         return self._robot
 
@@ -65,7 +66,7 @@ class RobotController():
         self._led_manager.close_leds()
 
     def ask_for_cube(self, cube):
-        self._led_manager.next_flag_led(cube)
+        self._led_manager.display_flag_led_for_next_cube(cube)
 
     def robot_is_next_to_target_with_correct_orientation(self, target):
         self._update_robot_localization()
@@ -181,17 +182,23 @@ class RobotController():
             self._robot_position,
             destination)
 
-        if (abs(target_orientation) > config.Config().get_orientation_max()):
-            self._robot.append_instruction(
-                Rotate(config.Config().get_orientation_max()))
-            self._robot.append_instruction(
-                Rotate(target_orientation -
-                       config.Config().get_orientation_max()))
+        orientation_max = config.Config().get_orientation_max()
+
+        if (abs(target_orientation) > orientation_max):
+            nb_of_max_rotation = floor(abs(target_orientation) /
+                                       orientation_max)
+            orientation_side = copysign(1, target_orientation)
+
+            for _ in range(nb_of_max_rotation):
+                self._robot.append_instruction(Rotate(orientation_side *
+                                                      orientation_max))
+            self._robot.append_instruction(Rotate(orientation_side *
+                                                  (abs(target_orientation) %
+                                                   orientation_max)))
         else:
             self._robot.append_instruction(Rotate(target_orientation))
         self._robot.append_instruction(Move(self._distance))
         self._robot.execute_instructions()
-        
 
     def _send_new_path(self, target_point):
         path = [target_point.x, target_point.y]
