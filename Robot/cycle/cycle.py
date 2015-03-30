@@ -79,6 +79,7 @@ class Cycle(Observer):
             self._put_down_cube_state()
 
     def _atlas_zone_state(self):
+        print("atlas zone state")
         if(self._robot_controller.arrived_at_zone_atlas()):
             print("arrived")
             self._state = CycleState.DISPLAY_COUNTRY

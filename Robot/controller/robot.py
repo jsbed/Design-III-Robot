@@ -26,6 +26,7 @@ class Robot(Observable):
         self.notify(INSTRUCTION_FINISHED, None)
 
     def update_localization(self):
+        print("requesting position")
         self._localization = BaseStationClient().request_robot_localization()
         print(self._localization.position, self._localization.orientation)
 
