@@ -1,3 +1,4 @@
+import math
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
@@ -9,7 +10,6 @@ from Robot.controller.robot import Robot
 from Robot.cycle import atlas
 from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
-import math
 
 
 FULL_ROTATION = 360
