@@ -39,7 +39,7 @@ class TestPointAdjuster(unittest.TestCase):
                                                  position,
                                                  self._robot_position)
         orientation = \
-            PointAdjustor().find_robot_orientation(0, self._robot_position,
+            PointAdjustor().find_robot_rotation(0, self._robot_position,
                                                    self._cube.
                                                    get_localization().
                                                    position)

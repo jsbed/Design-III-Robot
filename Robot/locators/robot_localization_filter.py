@@ -28,12 +28,18 @@ class RobotLocalizationFilter(Observable):
             else:
                 self._filter_new_data_point(localization)
 
-    def _filter_first_data_points(self):
-        # TODO: algo filter first points
+    def get_localization(self):
+        return self._robot_localization
+
+    def _filter_new_position(self, localization):
+        if (len(self._last_data_points) < self.MAX_NUMBER_OF_DATA_POINTS):
+            self._last_data_points.append(localization)
+
         if (len(self._last_data_points) == self.MAX_NUMBER_OF_DATA_POINTS):
-            self._filtering_new_position = False
-            localization = self._compute_mean_localization()
-            self._update_localization(localization)
+            if (self._remove_bad_points()):
+                self._filtering_new_position = False
+                localization = self._compute_mean_localization()
+                self._update_localization(localization)
 
     def _filter_new_data_point(self, localization):
         distance_difference = PointAdjustor.calculate_distance_between_points(
@@ -45,6 +51,9 @@ class RobotLocalizationFilter(Observable):
         if (distance_difference > self.DISTANCE_THRESHOLD or
                 angle_difference > self.ANGLE_THRESHOLD):
             pass
+
+    def _remove_bad_points(self):
+        return True
 
     def _compute_mean_localization(self):
         x = mean([loc.position.x for loc in self._last_data_points])
