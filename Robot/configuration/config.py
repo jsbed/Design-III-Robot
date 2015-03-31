@@ -153,6 +153,10 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "CheckPointsDistance"))
 
+    def get_atlas_distance_uncertainty(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "AtlasDistanceUncertainty"))
+
     def get_distance_uncertainty(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "DistanceUncertainty"))

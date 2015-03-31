@@ -1,7 +1,8 @@
+from math import degrees, atan2
+import math
+
 from Robot.configuration import config
 from Robot.path_finding.point import Point
-import math
-from math import degrees, atan2
 
 
 class PointAdjustor():
@@ -49,6 +50,8 @@ class PointAdjustor():
             rotation_angle = rotation_angle - 360
         if (rotation_angle < -180):
             rotation_angle = 360 + rotation_angle
+
+        print(rotation_angle)
         return rotation_angle
 
     '''
@@ -57,6 +60,7 @@ class PointAdjustor():
                  call adjut_target_point to find the target position
                  closest to the robot.
     '''
+
     def _check_if_cube_too_close_to_wall(self):
         if (self._cube_center.x < config.Config().get_robot_radius()):
             self._target_point = Point(self._target_point.x +

@@ -8,7 +8,6 @@ from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
-from Robot.managers.gripper_manager import GripperManager
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
 
@@ -55,12 +54,15 @@ class Cycle(Observer):
             self._display_country_state()
 
         elif (self._state == CycleState.ASK_FOR_CUBE):
+            print("ask for cube")
             self._ask_for_cube_state()
 
         elif (self._state == CycleState.LOCALIZE_CUBE):
+            print("localize cube")
             self._localize_cube_state()
 
         elif (self._state == CycleState.MOVE_TO_CUBE):
+            print("move to cube")
             self._move_to_cube_state()
 
         elif (self._state == CycleState.PUSH_CUBE):
@@ -79,6 +81,7 @@ class Cycle(Observer):
             self._put_down_cube_state()
 
     def _atlas_zone_state(self):
+        print("atlas zone state")
         if(self._robot_controller.arrived_at_zone_atlas()):
             print("arrived")
             self._state = CycleState.DISPLAY_COUNTRY
@@ -111,13 +114,13 @@ class Cycle(Observer):
         else:
             cycle_done = True
 
-        if not(cycle_done):
+        if not cycle_done:
             self._robot_controller.ask_for_cube(self._cube)
-            self._robot_controller.move_robot_to_localize_cube()
             self._state = CycleState.LOCALIZE_CUBE
+            self._robot_controller.move_robot_to_localize_cube()
 
     def _localize_cube_state(self):
-        GripperManager().widest_gripper()
+        self._robot_controller.get_gripper().widest_gripper()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         while (self._cube.get_localization().position is None):
             time.sleep(CHECK_FOR_CUBE_DELAY)
@@ -140,9 +143,9 @@ class Cycle(Observer):
         self._state = CycleState.PICK_UP_CUBE
 
     def _pick_up_cube_state(self):
-        GripperManager().take_cube()
+        self._robot_controller.get_gripper().take_cube()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        GripperManager().lift_gripper()
+        self._robot_controller.get_gripper().lift_gripper()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.MOVE_TO_TARGET_ZONE
         self._next_state()
@@ -163,9 +166,9 @@ class Cycle(Observer):
         self._state = CycleState.PUT_DOWN_CUBE
 
     def _put_down_cube_state(self):
-        GripperManager().lower_gripper()
+        self._robot_controller.get_gripper().lower_gripper()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        GripperManager().release_cube()
+        self._robot_controller.get_gripper().release_cube()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.move_backward_from_target_zone()
         self._state = CycleState.ASK_FOR_CUBE

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '.\mainwindow.ui'
 #
-# Created: Sat Mar 28 12:22:47 2015
+# Created: Tue Mar 31 03:53:57 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.connect_button.setFont(font)
         self.connect_button.setObjectName("connect_button")
         self.tabWidget = QtGui.QTabWidget(self.centralWidget)
-        self.tabWidget.setGeometry(QtCore.QRect(30, 240, 361, 321))
+        self.tabWidget.setGeometry(QtCore.QRect(30, 238, 361, 321))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtGui.QWidget()
         self.tab.setObjectName("tab")
@@ -163,7 +163,7 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.square_color_combo_box = QtGui.QComboBox(self.tab_5)
-        self.square_color_combo_box.setGeometry(QtCore.QRect(190, 100, 71, 22))
+        self.square_color_combo_box.setGeometry(QtCore.QRect(159, 102, 67, 22))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.square_color_combo_box.setFont(font)
@@ -176,20 +176,20 @@ class Ui_MainWindow(object):
         self.square_color_combo_box.addItem("")
         self.square_color_combo_box.addItem("")
         self.label_5 = QtGui.QLabel(self.tab_5)
-        self.label_5.setGeometry(QtCore.QRect(57, 100, 121, 21))
+        self.label_5.setGeometry(QtCore.QRect(26, 102, 117, 21))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtGui.QLabel(self.tab_5)
-        self.label_6.setGeometry(QtCore.QRect(85, 130, 91, 21))
+        self.label_6.setGeometry(QtCore.QRect(54, 132, 87, 21))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.square_number_combo_box = QtGui.QComboBox(self.tab_5)
         self.square_number_combo_box.setGeometry(
-            QtCore.QRect(190, 130, 41, 22))
+            QtCore.QRect(159, 132, 37, 22))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.square_number_combo_box.setFont(font)
@@ -204,7 +204,7 @@ class Ui_MainWindow(object):
         self.square_number_combo_box.addItem("")
         self.square_number_combo_box.addItem("")
         self.update_square_button = QtGui.QPushButton(self.tab_5)
-        self.update_square_button.setGeometry(QtCore.QRect(140, 162, 81, 31))
+        self.update_square_button.setGeometry(QtCore.QRect(86, 164, 83, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.update_square_button.setFont(font)
@@ -237,6 +237,24 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.close_all_leds_button.setFont(font)
         self.close_all_leds_button.setObjectName("close_all_leds_button")
+        self.all_red_button = QtGui.QPushButton(self.tab_5)
+        self.all_red_button.setGeometry(QtCore.QRect(250, 99, 83, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.all_red_button.setFont(font)
+        self.all_red_button.setObjectName("all_red_button")
+        self.all_green_button = QtGui.QPushButton(self.tab_5)
+        self.all_green_button.setGeometry(QtCore.QRect(250, 134, 83, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.all_green_button.setFont(font)
+        self.all_green_button.setObjectName("all_green_button")
+        self.all_blue_button = QtGui.QPushButton(self.tab_5)
+        self.all_blue_button.setGeometry(QtCore.QRect(250, 168, 83, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.all_blue_button.setFont(font)
+        self.all_blue_button.setObjectName("all_blue_button")
         self.tabWidget.addTab(self.tab_5, "")
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -359,6 +377,12 @@ class Ui_MainWindow(object):
             "MainWindow", "Close Red LED", None, QtGui.QApplication.UnicodeUTF8))
         self.close_all_leds_button.setText(QtGui.QApplication.translate(
             "MainWindow", "Close All LEDs", None, QtGui.QApplication.UnicodeUTF8))
+        self.all_red_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "All Red", None, QtGui.QApplication.UnicodeUTF8))
+        self.all_green_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "All Green", None, QtGui.QApplication.UnicodeUTF8))
+        self.all_blue_button.setText(QtGui.QApplication.translate(
+            "MainWindow", "All Blue", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QtGui.QApplication.translate(
             "MainWindow", "LEDs", None, QtGui.QApplication.UnicodeUTF8))
         self.take_cube_button.setText(QtGui.QApplication.translate(

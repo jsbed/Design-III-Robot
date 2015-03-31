@@ -40,4 +40,4 @@ class FlagDisplayer():
         self._widget.countryLabel.setText("-")
 
         for label in self._flag_labels:
-            label.setPixmap("")
+            label.setPixmap(COLOR_LABELS[Color.NONE])
