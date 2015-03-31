@@ -8,6 +8,7 @@ class SerialPort():
                                      timeout=timeout)
 
     def send_string(self, data):
+        print(data)
         self._serial.write(data.encode())
 
     def send_array_of_ints(self, array):

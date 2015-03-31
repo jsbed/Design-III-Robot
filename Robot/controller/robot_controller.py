@@ -8,6 +8,7 @@ from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.cycle import atlas
+from Robot.managers.gripper_manager import GripperManager
 from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point_adjustor import PointAdjustor
 
@@ -18,17 +19,24 @@ LOCALIZE_CUBE_ANGLE = 0
 class RobotController():
 
     def __init__(self):
-        self._serial_port = SerialPort(
+        self._stm_serial_port = SerialPort(
             config.Config().get_stm_serial_port_path(),
             baudrate=config.Config().get_stm_serial_port_baudrate(),
             timeout=config.Config().get_stm_serial_port_timeout())
 
-        self._robot = Robot(self._serial_port)
+        self._pololu_serial_port = SerialPort(
+            config.Config().get_pololu_serial_port_path())
+
+        self._robot = Robot(self._stm_serial_port)
         self._point_adjustor = PointAdjustor()
-        self._led_manager = LedManager(self._serial_port)
+        self._led_manager = LedManager(self._stm_serial_port)
+        self._gripper_manager = GripperManager(self._pololu_serial_port)
 
     def get_robot(self):
         return self._robot
+
+    def get_gripper(self):
+        return self._gripper_manager
 
     def get_question_from_atlas(self):
         self._led_manager.display_red_led()
@@ -44,7 +52,7 @@ class RobotController():
                                               config.Config().
                                               get_atlas_zone_position())
 
-        return self._robot_is_next_to_target_point()
+        return self._robot_is_next_to_atlas()
 
     def move_to_atlas(self):
         self._update_robot_localization()
@@ -62,7 +70,7 @@ class RobotController():
         self._led_manager.close_leds()
 
     def ask_for_cube(self, cube):
-        self._led_manager.next_flag_led(cube)
+        self._led_manager.display_flag_led_for_next_cube(cube)
 
     def robot_is_next_to_target_with_correct_orientation(self, target):
         self._update_robot_localization()
@@ -126,6 +134,7 @@ class RobotController():
         self._robot.execute_instructions()
 
     def _update_robot_localization(self):
+        time.sleep(1)
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
         self._robot_orientation = self._robot.get_localization_orientation()
@@ -158,6 +167,9 @@ class RobotController():
         path = [target_point.x, target_point.y]
         BaseStationClient().send_path(path)
 
+    def _robot_is_next_to_atlas(self):
+        return self._distance <= config.Config().get_atlas_distance_uncertainty()
+
     def _robot_is_next_to_target_point(self):
         return self._distance <= config.Config().get_distance_uncertainty()
 
@@ -171,7 +183,7 @@ class RobotController():
         orientation_max = config.Config().get_orientation_max()
         number_sign = math.copysign(1, rotation)
         number_of_rotation = math.floor(abs(rotation /
-                                        orientation_max))
+                                            orientation_max))
         final_rotation = abs(rotation) % orientation_max
 
         for _ in range(number_of_rotation):
