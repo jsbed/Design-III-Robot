@@ -104,6 +104,12 @@ def display_specific_led(message):
     led_manager.display_flag_led_for_next_cube(cube)
 
 
+def set_all_led(color):
+    val = str(color.value)
+    led_manager._led_status = "F" + "".join(val for _ in range(9)) + "0"
+    led_manager._display_new_led_status()
+
+
 context = zmq.Context()
 socket = context.socket(zmq.DEALER)  # @UndefinedVariable
 url = "tcp://{}:{}".format(ADDRESS, PORT)
@@ -138,6 +144,12 @@ while True:
         led_manager.close_red_led()
     elif message == "close all leds" and LEDS_ENABLE:
         led_manager.close_leds()
+    elif message == "all led blue" and LEDS_ENABLE:
+        set_all_led(Color.BLUE)
+    elif message == "all led green" and LEDS_ENABLE:
+        set_all_led(Color.GREEN)
+    elif message == "all led red" and LEDS_ENABLE:
+        set_all_led(Color.RED)
     elif message == "take cube" and GRIPPER_ENABLED:
         gripper_manager.take_cube()
     elif message == "drop cube" and GRIPPER_ENABLED:

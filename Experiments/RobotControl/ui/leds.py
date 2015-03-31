@@ -11,6 +11,9 @@ class Leds():
         self._ui.open_red_led_button.clicked.connect(self._open_red_led)
         self._ui.close_red_led_button.clicked.connect(self._close_red_led)
         self._ui.close_all_leds_button.clicked.connect(self._close_all_leds)
+        self._ui.all_blue_button.clicked.connect(self._set_all_blue)
+        self._ui.all_green_button.clicked.connect(self._set_all_green)
+        self._ui.all_red_button.clicked.connect(self._set_all_red)
 
     def _display_country(self):
         country = self._ui.led_country_line_edit.text()
@@ -31,3 +34,12 @@ class Leds():
 
     def _close_all_leds(self):
         self._tcp_client.send_data("close all leds")
+
+    def _set_all_blue(self):
+        self._tcp_client.send_data("all led blue")
+
+    def _set_all_green(self):
+        self._tcp_client.send_data("all led green")
+
+    def _set_all_red(self):
+        self._tcp_client.send_data("all led red")
