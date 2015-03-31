@@ -11,8 +11,8 @@ ROBOT_LOCALIZATION_UPDATED = "Robot localization updated"
 
 
 class RobotLocalizationFilter(Observable):
-    MAX_NUMBER_OF_DATA_POINTS = 6
-    DISTANCE_THRESHOLD = 4
+    MAX_NUMBER_OF_DATA_POINTS = 5
+    DISTANCE_THRESHOLD = 3
     ANGLE_THRESHOLD = 3
     MIN_NUMBER_OF_DATA_POINTS = 5
 
@@ -38,46 +38,38 @@ class RobotLocalizationFilter(Observable):
             localization = self._find_mean_localization()
             self._last_data_points.clear()
 
-            if (self._robot_localization.unknown):
-                if (not localization.unknown):
+            if (not localization.unknown):
+                if (self._robot_localization.unknown):
                     self._update_localization(localization)
-            else:
-                new_distance = PointAdjustor.calculate_distance_between_points(
-                    localization.position, self._robot_localization.position)
-                new_orientation = localization.orientation
+                else:
+                    new_distance = PointAdjustor.calculate_distance_between_points(
+                        localization.position, self._robot_localization.position)
+                    new_orientation = localization.orientation
 
-                if (self._can_update_new_localization(localization,
-                                                      new_distance,
-                                                      new_orientation)):
-                    self._update_localization(localization)
+                    if (self._can_update_new_localization(localization,
+                                                          new_distance,
+                                                          new_orientation)):
+                        self._update_localization(localization)
 
     def _find_mean_localization(self):
-        mean_localization = self._compute_mean_localization()
-        mean_point = mean_localization.position
+        good_points, wrong_points = self._find_good_and_wrong_points(
+            self._last_data_points)
 
-        print(mean_point)
+        if len(wrong_points) <= 1:
+            return self._compute_mean_localization(good_points)
+        elif len(wrong_points) == 4:
+            good_points, wrong_points = self._find_good_and_wrong_points(
+                wrong_points)
 
-        self._last_data_points = list(filter(
-            lambda x: PointAdjustor.
-            calculate_distance_between_points(
-                x, mean_point) <= self.DISTANCE_THRESHOLD,
-            self._last_data_points))
-        print(self._last_data_points)
+            if len(good_points) == 4:
+                return self._compute_mean_localization(good_points)
 
-        if (len(self._last_data_points) == self.MAX_NUMBER_OF_DATA_POINTS):
-            return mean_localization
-        elif (len(self._last_data_points) < self.MAX_NUMBER_OF_DATA_POINTS and
-                len(self._last_data_points) >= self.MIN_NUMBER_OF_DATA_POINTS):
-            return self._compute_mean_localization()
-        else:
-            return Localization(None, None, unknown=True)
+        return Localization(None, None, unknown=True)
 
-    def _compute_mean_localization(self):
-        x = mean([loc.position.x for loc in self._last_data_points])
-        y = mean([loc.position.y for loc in self._last_data_points])
-        orientation = mean([loc.orientation for loc in self._last_data_points])
-
-        self._last_data_points.clear()
+    def _compute_mean_localization(self, localization):
+        x = mean([loc.position.x for loc in localization])
+        y = mean([loc.position.y for loc in localization])
+        orientation = mean([loc.orientation for loc in localization])
 
         return Localization(Point(x, y), orientation)
 
@@ -104,10 +96,21 @@ class RobotLocalizationFilter(Observable):
 
         return valid
 
-    def _can_update_localization(self, localization, new_distance, new_orientation):
-        if (not localization.unknown):
-            if (new_distance > self.DISTANCE_THRESHOLD or
-                    new_orientation > self.ANGLE_THRESHOLD):
-                return True
+    def _can_update_new_localization(self, localization, new_distance, new_orientation):
+        return (new_distance > self.DISTANCE_THRESHOLD or
+                new_orientation > self.ANGLE_THRESHOLD)
 
-        return False
+    def _find_good_and_wrong_points(self, localizations):
+        first_point = localizations[0]
+
+        distances = [(PointAdjustor.calculate_distance_between_points(
+            loc.position, first_point.position), loc) for loc in
+            localizations[1:]]
+
+        wrong_loc = [distance[1] for distance in list(
+            filter(lambda x: x[0] > 2 * self.DISTANCE_THRESHOLD, distances))]
+
+        good_loc = [distance[1] for distance in list(
+            filter(lambda x: x[0] <= 2 * self.DISTANCE_THRESHOLD, distances))]
+
+        return good_loc, wrong_loc
