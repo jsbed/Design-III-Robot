@@ -139,8 +139,12 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
-        self._robot_controller.push_cube()
-        self._state = CycleState.PICK_UP_CUBE
+        if (self._robot_controller.switch_on()):
+            self._state = CycleState.PICK_UP_CUBE
+            self._next_state()
+        else:
+            self._robot_controller.push_cube(
+                self._cube.get_localization().position)
 
     def _pick_up_cube_state(self):
         self._robot_controller.get_gripper().take_cube()
@@ -170,6 +174,6 @@ class Cycle(Observer):
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().release_cube()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        self._robot_controller.move_backward_from_target_zone()
+        self._robot_controller.move_backward()
         self._state = CycleState.ASK_FOR_CUBE
         self._next_state()

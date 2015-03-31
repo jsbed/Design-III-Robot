@@ -62,7 +62,6 @@ class RobotController():
                                               atlas_zone_position)
 
         self._move_robot_towards_target_point(atlas_zone_position)
-        self._send_new_path(atlas_zone_position)
 
     def display_country_leds(self, country):
         self._led_manager.display_country(country)
@@ -90,7 +89,6 @@ class RobotController():
                                               destination_point)
         print(destination_point)
         self._move_robot_towards_target_point(destination_point)
-        self._send_new_path(destination_point)
 
     def move_robot_to_localize_cube(self):
         self._update_robot_localization()
@@ -98,33 +96,45 @@ class RobotController():
         self._distance = self._point_adjustor. \
             calculate_distance_between_points(self._robot_position,
                                               localization_position)
-        rotation = self._point_adjustor.find_robot_rotation(
-            self._robot_orientation, self._robot_position,
-            localization_position)
-        localize_cube_rotation = LOCALIZE_CUBE_ANGLE - \
+        rotation = LOCALIZE_CUBE_ANGLE - \
             self._point_adjustor.find_robot_rotation(LOCALIZE_CUBE_ANGLE,
                                                      self._robot_position,
                                                      localization_position)
-
+        self._move_robot_towards_target_point(localization_position)
         self._append_rotations(rotation)
-        self._robot.append_instruction(Move(self._distance))
-        self._append_rotations(localize_cube_rotation)
-        self._robot.execute_instructions()
-        self._send_new_path(localization_position)
 
-    def push_cube(self):
-        self._robot.append_instruction(Move(config.Config().
-                                            get_push_cube_distance()))
-        self._robot.execute_instructions()
+    def switch_on(self):
+        return False
+
+    def push_cube(self, cube_position):
+        self._update_robot_localization()
+        self._distance = self._point_adjustor. \
+            calculate_distance_between_points(self._robot_position,
+                                              cube_position)
+        if self._robot_is_next_to_target_point:
+            self.move_backward()
+        else:
+            rotation = self._point_adjustor.find_robot_rotation(
+                self._robot_orientation, self._robot_position,
+                cube_position)
+            wall_distance = \
+                self._point_adjustor.\
+                calculate_distance_between_cube_and_closest_wall(cube_position)
+            push_distance = config.Config().get_push_cube_distance()
+            self._append_rotations(rotation)
+            if (push_distance > self._distance + wall_distance):
+                push_distance = self._distance + wall_distance
+            self._robot.append_instruction(Move(push_distance))
+            self._robot.execute_instructions()
 
     def move_forward_to_target_zone(self):
         self._robot.append_instruction(Move(config.Config().
                                             get_distance_between_objects()))
         self._robot.execute_instructions()
 
-    def move_backward_from_target_zone(self):
-        self._robot.append_instruction(Move(-(config.Config().
-                                              get_distance_between_objects())))
+    def move_backward(self):
+        self._robot.append_instruction(Move((config.Config().
+                                             get_move_backward_distance())))
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
@@ -158,9 +168,10 @@ class RobotController():
     def _move_robot_towards_target_point(self, destination):
         rotation = self._point_adjustor.find_robot_rotation(
             self._robot_orientation, self._robot_position, destination)
-
         self._append_rotations(rotation)
-        self._robot.append_instruction(Move(self._distance))
+        if (self._distance >= config.Config().get_distance_min()):
+            self._robot.append_instruction(Move(self._distance))
+        self._send_new_path(destination)
         self._robot.execute_instructions()
 
     def _send_new_path(self, target_point):
@@ -168,7 +179,8 @@ class RobotController():
         BaseStationClient().send_path(path)
 
     def _robot_is_next_to_atlas(self):
-        return self._distance <= config.Config().get_atlas_distance_uncertainty()
+        return self._distance <= \
+            config.Config().get_atlas_distance_uncertainty()
 
     def _robot_is_next_to_target_point(self):
         return self._distance <= config.Config().get_distance_uncertainty()
@@ -189,4 +201,6 @@ class RobotController():
         for _ in range(number_of_rotation):
             self._robot.append_instruction(Rotate(number_sign *
                                                   orientation_max))
-        self._robot.append_instruction(Rotate(number_sign * final_rotation))
+        if (final_rotation >= config.Config().get_rotation_min()):
+            self._robot.append_instruction(Rotate(number_sign *
+                                                  final_rotation))

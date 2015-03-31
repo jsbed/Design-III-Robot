@@ -45,6 +45,8 @@ class RobotControllerTest(unittest.TestCase):
         a_mock.get_stm_serial_port_baudrate = Mock(return_value=19200)
         a_mock.get_stm_serial_port_timeout = Mock(return_value=0.5)
         a_mock.get_atlas_distance_uncertainty = Mock(return_value=12)
+        a_mock.get_distance_min = Mock(return_value=1)
+        a_mock.get_rotation_min = Mock(return_value=3)
 
         mock.return_value = a_mock
 
@@ -172,7 +174,7 @@ class RobotControllerTest(unittest.TestCase):
         point_adjustor_mock = MagicMock()
         point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
-        point_adjustor_mock.find_robot_rotation = Mock(return_value=0)
+        point_adjustor_mock.find_robot_rotation = Mock(return_value=5)
         point_adjustor_mock.find_next_point = Mock()
         PointAdjustorMock.return_value = point_adjustor_mock
         self._setup_robot_mock(RobotMock, Point(50, 50), 0)
@@ -207,7 +209,7 @@ class RobotControllerTest(unittest.TestCase):
         point_adjustor_mock = MagicMock()
         point_adjustor_mock.calculate_distance_between_points = Mock(
             return_value=50)
-        point_adjustor_mock.find_robot_rotation = Mock(return_value=0)
+        point_adjustor_mock.find_robot_rotation = Mock(return_value=5)
         point_adjustor_mock.find_next_point = Mock()
         PointAdjustorMock.return_value = point_adjustor_mock
         robot_mock = MagicMock()
@@ -343,15 +345,16 @@ class RobotControllerTest(unittest.TestCase):
         RobotController().next_instruction()
         assert robot_mock.execute_instructions.called
 
+    @patch("time.sleep")
     @patch('Robot.controller.robot_controller.Robot')
-    def test_when_push_cube_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, SerialPortMock, ConfigMock):
+    def test_when_push_cube_then_append_instruction_and_execute_instructions_are_called(self, RobotMock, TimeMock, SerialPortMock, ConfigMock):
         self._setup_config_mock(ConfigMock)
         robot_mock = MagicMock()
         robot_mock.get_localization_position.return_value = Point(50, 50)
         robot_mock.get_localization_orientation.return_value = 0
         RobotMock.return_value = robot_mock
 
-        RobotController().push_cube()
+        RobotController().push_cube(self._cube.get_localization().position)
         assert robot_mock.append_instruction.called
         assert robot_mock.execute_instructions.called
 
@@ -374,7 +377,7 @@ class RobotControllerTest(unittest.TestCase):
         robot_mock.get_localization_orientation.return_value = 0
         RobotMock.return_value = robot_mock
 
-        RobotController().move_backward_from_target_zone()
+        RobotController().move_backward()
         assert robot_mock.execute_instructions.called
 
     @patch("time.sleep")
@@ -389,7 +392,8 @@ class RobotControllerTest(unittest.TestCase):
         robot_mock.get_localization_orientation.return_value = 0
         RobotMock.return_value = robot_mock
         point_adjustor_mock = MagicMock()
-        point_adjustor_mock.find_robot_rotation.return_value = 0
+        point_adjustor_mock.find_robot_rotation.return_value = 5
+        point_adjustor_mock.calculate_distance_between_points.return_value = 5
         PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().move_robot_to_localize_cube()
