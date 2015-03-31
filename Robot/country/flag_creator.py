@@ -15,6 +15,7 @@ class FlagCreator:
         self._cube_order = []
         self._country = country
         self._fill_cube_order()
+        self._current_cube = 0
 
     # Finds the cubes' location in the target zone using the optimal cube
     # selection order to form a flag
@@ -24,7 +25,7 @@ class FlagCreator:
         creation_zone = config.Config().get_flag_creation_zone_position()
         target_zone_position = config.Config().get_target_zone_position()
 
-        for cube_index in reversed(CUBE_INDEX_ORDER):
+        for cube_index in CUBE_INDEX_ORDER:
             flag_color = self._country.flag[cube_index]
 
             if flag_color != Color.NONE:
@@ -36,10 +37,16 @@ class FlagCreator:
                 self._cube_order.append(cube)
 
     def has_next_cubes(self):
-        return len(self._cube_order) > 0
+        return self._current_cube < len(self._cube_order)
 
     def next_cube(self):
         if (self.has_next_cubes()):
-            return self._cube_order.pop()
+            next_cube = self._cube_order[self._current_cube]
+            self._current_cube += 1
+
+            return next_cube
         else:
             Exception("The cube queue is empty.")
+
+    def get_cube_order(self):
+        return self._cube_order
