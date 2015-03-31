@@ -12,6 +12,7 @@ class InfoMatcher(object):
         return self._info_key
 
     def match(self, info_data):
+        score = 0.0
         info_data = self.get_most_recent_info(info_data)
         if self._regex.search(info_data) is not None:
             score = 1.0
@@ -42,13 +43,15 @@ class NumericApproximationInfoMatcher(InfoMatcher):
         return number
 
     def match(self, info_data):
-        self._info_data = info_data
+        score = 0.0
+        info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match and any(char.isdigit() for char in info_data):
             actual_info = self._cast_to_float(match.group(1))
             if actual_info:
-                return self._expected_info - 0.5 < actual_info < self._expected_info + 0.5
-        return None
+                # opposite of relative difference
+                score = 1.0 - (abs(self._expected_info - actual_info)/((self._expected_info + actual_info)/2))
+        return score
 
 
 class NumericInfoMatcher(InfoMatcher):
@@ -72,13 +75,14 @@ class NumericInfoMatcher(InfoMatcher):
         return number
 
     def match(self, info_data):
+        score = 0.0
         info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match and any(char.isdigit() for char in info_data):
             actual_info = self._cast_to_float(match.group(1))
-            if actual_info:
-                return self._op(actual_info, self._expected_info)
-        return None
+            if actual_info and self._op(actual_info, self._expected_info):
+                score = 1.0
+        return score
 
     def __eq__(self, other):
         return self._op == other._op and self._expected_info == other._expected_info
@@ -100,14 +104,15 @@ class BetweenMatcher(InfoMatcher):
         super(BetweenMatcher, self).__init__(info_key, pattern)
 
     def match(self, info_data):
+        score = 0.0
         info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match:
             actual_value = match.group(1)
             actual_value = self._cast_to_float(actual_value)
-            return self._lower_bound < actual_value < self._upper_bound
-        else:
-            return None
+            if self._lower_bound < actual_value < self._upper_bound:
+                score = 1.0
+        return score
 
     def _cast_to_float(self, number):
         number = number.replace(',', '').replace(' ', '')
@@ -153,10 +158,11 @@ class LengthMatcher(InfoMatcher):
         super(LengthMatcher, self).__init__(info_key, pattern)
 
     def match(self, info_data):
+        score = 0.0
         match = self._regex.search(info_data)
-        if match:
-            return len(match.group(1).split()) == self._length
-        return None
+        if match and len(match.group(1).split()) == self._length:
+            score = 1.0
+        return score
 
 
 class NationalAnthemMatcher(InfoMatcher):

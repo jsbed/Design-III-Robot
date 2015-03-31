@@ -1,3 +1,4 @@
+from Robot.question_analysis.country_result import CountryResult
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from nose.tools import assert_equal, assert_true, nottest
 
@@ -183,3 +184,9 @@ class TestQuestionAnalyser(object):
     def test_inflation_rate(self):
         question = 'What country has an inflation rate between 0.3% and 0.5%?'
         assert_equal(self._question_analyser.answer_question(question), 'Portugal')
+
+    def test_remove_duplicates(self):
+        country_results = [CountryResult('a', 0.5), CountryResult('a', 0.6), CountryResult('a', 0.7)]
+        actual = self._question_analyser._remove_country_duplicates(country_results)
+        expected = [CountryResult('a', 0.5)]
+        assert_equal(actual, expected)
