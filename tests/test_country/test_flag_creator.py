@@ -16,6 +16,11 @@ EXPECTED_FIFTH_CUBE = Cube(Color.YELLOW, Point(52.5, 46.5), index=5)
 EXPECTED_SIXTH_CUBE = Cube(Color.RED, Point(76.5, 58.5), index=0)
 EXPECTED_LAST_CUBE = Cube(Color.GREEN, Point(64.5, 58.5), index=1)
 
+EXPECTED_CUBE_ORDER = [EXPECTED_FIRST_CUBE, EXPECTED_SECOND_CUBE,
+                       EXPECTED_THIRD_CUBE, EXPECTED_FOURTH_CUBE,
+                       EXPECTED_FIFTH_CUBE, EXPECTED_SIXTH_CUBE,
+                       EXPECTED_LAST_CUBE]
+
 
 class FlagCreatorTest(unittest.TestCase):
 
@@ -55,6 +60,11 @@ class FlagCreatorTest(unittest.TestCase):
 
         self.assertFalse(self.flag_creator.has_next_cubes())
 
+    def test_get_cube_order(self):
+        actual_cube_order = self.flag_creator.get_cube_order()
+
+        self.assert_cube_sequence(actual_cube_order, EXPECTED_CUBE_ORDER)
+
     def test_sequence_of_next_cube(self):
         self.assert_equal_cube(self.flag_creator.next_cube(),
                                EXPECTED_FIRST_CUBE)
@@ -70,10 +80,17 @@ class FlagCreatorTest(unittest.TestCase):
                                EXPECTED_SIXTH_CUBE)
         self.assert_equal_cube(self.flag_creator.next_cube(),
                                EXPECTED_LAST_CUBE)
-        self.assertRaises(IndexError, self.flag_creator.next_cube())
+        self.assertRaises(Exception, self.flag_creator.next_cube())
 
     def assert_equal_cube(self, actual_cube, expected_cube):
         self.assertEqual(actual_cube.get_color(), expected_cube.get_color())
         self.assertEqual(actual_cube.get_target_zone_position(),
                          expected_cube.get_target_zone_position())
         self.assertEqual(actual_cube.get_index(), expected_cube.get_index())
+
+    def assert_cube_sequence(self, actual_sequence, expected_sequence):
+        self.assertEqual(len(actual_sequence), len(expected_sequence))
+
+        for actual_cube, expected_cube in zip(actual_sequence,
+                                              expected_sequence):
+            self.assert_equal_cube(actual_cube, expected_cube)
