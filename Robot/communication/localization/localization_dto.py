@@ -5,21 +5,21 @@ from Robot.path_finding.point import Point
 
 
 def create_localization_dto(localization):
-    response = {"unknown": True, "orientation": 0, "position": (0, 0)}
+    dto = {"unknown": True, "orientation": 0, "position": (0, 0)}
 
     if not localization.unknown:
-        response["unknown"] = False
-        response["orientation"] = localization.orientation
-        response["position"] = localization.position
+        dto["unknown"] = False
+        dto["orientation"] = localization.orientation
+        dto["position"] = localization.position
 
-    return json.dumps(response, "utf-8")
+    return json.dumps(dto, "utf-8")
 
 
-def create_localization_from_localization_dto(response):
-    response = json.loads(response)
+def create_localization_from_localization_dto(dto):
+    dto = json.loads(dto)
 
-    if response["unknown"]:
+    if dto["unknown"]:
         return Localization(None, None, unknown=True)
     else:
-        return Localization(Point._make(response["position"]),
-                            response["orientation"])
+        return Localization(Point._make(dto["position"]),
+                            dto["orientation"])
