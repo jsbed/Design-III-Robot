@@ -14,11 +14,11 @@ class QuestionAnalyser(object):
         self._question_segmentator = QuestionSegmentator()
         self._factbook = Factbook()
         self._question_matcher_generator = QuestionMatcherGenerator()
+        self._attributes = INFO_KEY_ALIAS
 
     def answer_question(self, question):
         country_matches = []
         questions = self._question_segmentator.segment_question(question)
-        self._attributes = INFO_KEY_ALIAS
         for question in questions:
             info_matchers = []
             question_attribute = None

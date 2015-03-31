@@ -113,8 +113,7 @@ class TestQuestionAnalyser(object):
 
     def test_unemployement_industries_include(self):
         question = 'My unemployment rate is greater than 25% and my industries include tourism and footwear.'
-        assert_true(self._question_analyser.answer_question(question) in ['Saint Kitts and Nevis', 'Spain',
-                                                                           'Indonesia', 'Malta'])
+        assert_true(self._question_analyser.answer_question(question) in ['Spain'])
 
     def test_industries_include(self):
         question = 'What country has industries including the world’s largest producer of platinum, gold and chromium?'
@@ -172,10 +171,10 @@ class TestQuestionAnalyser(object):
         question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
         assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
 
-    @nottest
+    #@nottest
     def test_illicit_drugs_trafficking(self):
         question = 'What country considers illicit drug trafficking as a serious offense and carry death penalty?'
-        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
+        assert_equal(self._question_analyser.answer_question(question), 'Brunei')
 
     def test_telephone_lines(self):
         question = 'My telephone lines in use are 1.217 million.'
