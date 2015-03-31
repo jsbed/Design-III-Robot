@@ -12,9 +12,8 @@ ROBOT_LOCALIZATION_UPDATED = "Robot localization updated"
 
 class RobotLocalizationFilter(Observable):
     MAX_NUMBER_OF_DATA_POINTS = 5
-    DISTANCE_THRESHOLD = 3
+    DISTANCE_THRESHOLD = 2
     ANGLE_THRESHOLD = 3
-    MIN_NUMBER_OF_DATA_POINTS = 5
 
     def __init__(self):
         Observable.__init__(self)
@@ -30,7 +29,6 @@ class RobotLocalizationFilter(Observable):
         return self._robot_localization
 
     def _filter_new_position(self, localization):
-        print(len(self._last_data_points))
         if (len(self._last_data_points) < self.MAX_NUMBER_OF_DATA_POINTS):
             self._last_data_points.append(localization)
 
@@ -56,12 +54,16 @@ class RobotLocalizationFilter(Observable):
             self._last_data_points)
 
         if len(wrong_points) <= 1:
+            self._last_data_points.pop(0)
+
             return self._compute_mean_localization(good_points)
         elif len(wrong_points) == 4:
             good_points, wrong_points = self._find_good_and_wrong_points(
                 wrong_points)
 
             if len(good_points) == 4:
+                self._last_data_points.pop(0)
+
                 return self._compute_mean_localization(good_points)
 
         return Localization(None, None, unknown=True)

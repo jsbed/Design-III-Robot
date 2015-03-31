@@ -42,6 +42,7 @@ class Main(QtGui.QMainWindow, Observer):
         self.ui.restartChrono.clicked.connect(self._restart_chrono)
         self.ui.question_ok_button.clicked.connect(self._question_is_ok)
         self.ui.new_question_button.clicked.connect(self._ask_new_question)
+        self.ui.restart_cycle.clicked.connect(self._restart_cycle)
         self.ui.chronometerLabel.setText(self._chronometer.get_time())
         self._robot_locator_worker.signal.custom_signal.connect(
             self._new_robot_localization)
@@ -101,6 +102,12 @@ class Main(QtGui.QMainWindow, Observer):
 
     def _restart_chrono(self):
         self._chronometer.restart()
+
+    def _restart_cycle(self):
+        self._chronometer.restart()
+        self._set_question_buttons_enabled(False)
+        self.ui.startCycle.setEnabled(True)
+        self._clear_question_and_country()
 
     def _question_is_ok(self):
         self._tcp_server.send_question_ok_signal()
