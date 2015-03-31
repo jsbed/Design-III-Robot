@@ -172,10 +172,15 @@ class TestQuestionAnalyser(object):
         question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
         assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
 
+    @nottest
+    def test_illicit_drugs_trafficking(self):
+        question = 'What country considers illicit drug trafficking as a serious offense and carry death penalty?'
+        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
+
     def test_telephone_lines(self):
         question = 'My telephone lines in use are 1.217 million.'
         assert_equal(self._question_analyser.answer_question(question), 'Cuba')
 
     def test_inflation_rate(self):
         question = 'What country has an inflation rate between 0.3% and 0.5%?'
-        assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
+        assert_equal(self._question_analyser.answer_question(question), 'Portugal')

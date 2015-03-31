@@ -778,6 +778,24 @@ p, li { white-space: pre-wrap; }
      <string>Nouvelle question</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="restart_cycle">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>680</y>
+      <width>171</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Redémarrer</string>
+    </property>
+   </widget>
    <zorder>table_label</zorder>
    <zorder>square_7_label</zorder>
    <zorder>square_2_label</zorder>
@@ -809,6 +827,7 @@ p, li { white-space: pre-wrap; }
    <zorder>label_9</zorder>
    <zorder>question_ok_button</zorder>
    <zorder>new_question_button</zorder>
+   <zorder>restart_cycle</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

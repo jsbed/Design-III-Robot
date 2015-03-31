@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../QtProject/mainwindow.ui'
 #
-# Created: Sat Mar 28 21:45:12 2015
+# Created: Tue Mar 31 01:48:52 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -286,6 +286,12 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.new_question_button.setFont(font)
         self.new_question_button.setObjectName("new_question_button")
+        self.restart_cycle = QtGui.QPushButton(self.centralWidget)
+        self.restart_cycle.setGeometry(QtCore.QRect(630, 680, 171, 50))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.restart_cycle.setFont(font)
+        self.restart_cycle.setObjectName("restart_cycle")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 1366, 25))
@@ -339,5 +345,7 @@ class Ui_MainWindow(object):
             "MainWindow", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.new_question_button.setText(QtGui.QApplication.translate(
             "MainWindow", "Nouvelle question", None, QtGui.QApplication.UnicodeUTF8))
+        self.restart_cycle.setText(QtGui.QApplication.translate(
+            "MainWindow", "Redémarrer", None, QtGui.QApplication.UnicodeUTF8))
 
 import BaseStation.ui.QtProject.GeneratedFiles.resources_rc

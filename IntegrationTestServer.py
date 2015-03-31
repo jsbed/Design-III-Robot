@@ -119,13 +119,13 @@ while True:
     elif message.startswith("move-down") and DEPLACEMENT_ENABLE:
         down(message)
     elif message.startswith("move-left") and DEPLACEMENT_ENABLE:
-        left()
+        left(message)
     elif message.startswith("move-right") and DEPLACEMENT_ENABLE:
-        right()
+        right(message)
     elif message.startswith("rotate-right") and DEPLACEMENT_ENABLE:
-        rotate_right()
+        rotate_right(message)
     elif message.startswith("rotate-left") and DEPLACEMENT_ENABLE:
-        rotate_left()
+        rotate_left(message)
     elif message == "ask-question" and QUESTION_ENABLE:
         ask_question()
     elif message.startswith("display led country") and LEDS_ENABLE:
