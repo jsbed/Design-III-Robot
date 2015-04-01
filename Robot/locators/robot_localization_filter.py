@@ -1,3 +1,4 @@
+from math import radians, cos, sin, atan2
 from statistics import mean
 
 from Robot.configuration.config import Config
@@ -71,9 +72,19 @@ class RobotLocalizationFilter(Observable):
     def _compute_mean_localization(self, localization):
         x = mean([loc.position.x for loc in localization])
         y = mean([loc.position.y for loc in localization])
-        orientation = mean([loc.orientation for loc in localization])
+        orientation = self._compute_mean_orientation(
+            [loc.orientation for loc in localization])
 
         return Localization(Point(x, y), orientation)
+
+    def _compute_mean_orientation(self, orientations):
+        x, y = 0, 0
+
+        for orientation in orientations:
+            x += cos(radians(orientation))
+            y += sin(radians(orientation))
+
+        return atan2(y, x)
 
     def _update_localization(self, localization):
         self._robot_localization = localization
