@@ -50,7 +50,7 @@ def _extract_robot_corner_position(img_bgr, img_cloud, color):
         color)
 
     robot_corner = extractor.extract(img_bgr)
-    corner_contours = contours_finder.find_contours(robot_corner)
+    corner_contours = contours_finder.find_robot_corners_contours(robot_corner)
 
     if len(corner_contours) == 1:
         return _find_corner_position_from_contour(corner_contours, img_cloud)
