@@ -11,5 +11,11 @@
         <file>resources/table.png</file>
         <file>resources/robot.png</file>
         <file>resources/cube.png</file>
+        <file>resources/cube_black.png</file>
+        <file>resources/cube_blue.png</file>
+        <file>resources/cube_green.png</file>
+        <file>resources/cube_red.png</file>
+        <file>resources/cube_white.png</file>
+        <file>resources/cube_yellow.png</file>
     </qresource>
 </RCC>

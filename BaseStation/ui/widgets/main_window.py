@@ -71,12 +71,11 @@ class Main(QtGui.QMainWindow, Observer):
             self._outputer.output(signal_data["message"])
         if ("path" in signal_data):
             self._items_displayer.display_path(signal_data["path"])
-        if ("cube position" in signal_data):
-            self._items_displayer.display_cube_position(signal_data["cube position"])
-        if ("cube color" in signal_data):
-            self._items_displayer.display_cube_color(signal_data["cube color"])
-        if ("question" in signal_data and "country" in signal_data):
+        if ("cubes" in signal_data):
+            self._items_displayer.display_cubes(signal_data["cubes"])
+        if ("question" in signal_data):
             self.ui.questionLabel.setText(signal_data["question"])
+        if ("country" in signal_data):
             self._flag_displayer.display_country(signal_data["country"])
             self._set_question_buttons_enabled(True)
         if ("request" in signal_data):
@@ -110,6 +109,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._set_question_buttons_enabled(False)
         self.ui.startCycle.setEnabled(True)
         self._items_displayer.remove_path()
+        self._items_displayer.remove_cubes()
         self._clear_question_and_country()
 
     def _question_is_ok(self):
