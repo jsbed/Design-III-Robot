@@ -8,6 +8,7 @@ from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
+from Robot.path_finding.point import Point
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
 
@@ -24,6 +25,7 @@ class Cycle(Observer):
         self._question = ""
         self._cube = Cube(None, None)
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
+        self._flag_creator = None
         self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
 
     def observer_update(self, event, value):
@@ -66,18 +68,23 @@ class Cycle(Observer):
             self._move_to_cube_state()
 
         elif (self._state == CycleState.PUSH_CUBE):
+            print("push cube")
             self._push_cube_state()
 
         elif (self._state == CycleState.PICK_UP_CUBE):
+            print("pick up cube")
             self._pick_up_cube_state()
 
         elif (self._state == CycleState.MOVE_TO_TARGET_ZONE):
+            print("move to target zone")
             self._move_to_target_zone_state()
 
         elif (self._state == CycleState.MOVE_INTO_TARGET_ZONE):
+            print("move into target zone")
             self._move_into_target_zone_state()
 
         elif (self._state == CycleState.PUT_DOWN_CUBE):
+            print("put down cube")
             self._put_down_cube_state()
 
     def _atlas_zone_state(self):
@@ -161,13 +168,13 @@ class Cycle(Observer):
            robot_is_next_to_target_with_correct_orientation(target_zone)):
             self._state = CycleState.MOVE_INTO_TARGET_ZONE
             self._next_state()
-
         else:
             self._robot_controller.move_robot_to(target_zone)
 
     def _move_into_target_zone_state(self):
-        self._robot_controller.move_forward_to_target_zone()
         self._state = CycleState.PUT_DOWN_CUBE
+        self._robot_controller.move_forward_to_target_zone(
+            self._cube.get_target_zone_position())
 
     def _put_down_cube_state(self):
         self._robot_controller.get_gripper().lower_gripper()

@@ -4,6 +4,7 @@ import time
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.communication.serial_port import SerialPort
 from Robot.configuration import config
+from Robot.controller.instructions.lateral import Lateral
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
@@ -14,6 +15,7 @@ from Robot.path_finding.point_adjustor import PointAdjustor
 
 
 LOCALIZE_CUBE_ANGLE = 0
+CUBE_RELEASE_ANGLE = 180
 
 
 class RobotController():
@@ -111,9 +113,10 @@ class RobotController():
         self._distance = self._point_adjustor. \
             calculate_distance_between_points(self._robot_position,
                                               cube_position)
-        if self._robot_is_next_to_target_point:
+        if (self._robot_is_next_to_target_point()):
             self.move_backward()
         else:
+            print("pushing")
             rotation = self._point_adjustor.find_robot_rotation(
                 self._robot_orientation, self._robot_position,
                 cube_position)
@@ -127,9 +130,24 @@ class RobotController():
             self._robot.append_instruction(Move(push_distance))
             self._robot.execute_instructions()
 
-    def move_forward_to_target_zone(self):
-        self._robot.append_instruction(Move(config.Config().
-                                            get_distance_between_objects()))
+    def move_forward_to_target_zone(self, target_zone_position):
+        print("MOVING TORWARD ", target_zone_position)
+
+        self._update_robot_localization()
+
+        rotation = - self._point_adjustor.find_robot_rotation(CUBE_RELEASE_ANGLE,
+                                                              self._robot_position,
+                                                              target_zone_position)
+        print("Rotation ", rotation)
+        # self._append_rotations(rotation)
+        lateral_distance = target_zone_position.x - self._robot_position.x
+        if (lateral_distance > 1):
+            self._robot.append_instruction(Lateral(lateral_distance))
+        self._robot.append_instruction(Move(self._robot_position.y -
+                                            target_zone_position.y -
+                                            config.Config().get_gripper_size() -
+                                            config.Config().get_cube_radius() -
+                                            config.Config().get_robot_radius()))
         self._robot.execute_instructions()
 
     def move_backward(self):
@@ -144,7 +162,7 @@ class RobotController():
         self._robot.execute_instructions()
 
     def _update_robot_localization(self):
-        time.sleep(1)
+        time.sleep(3)
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
         self._robot_orientation = self._robot.get_localization_orientation()
@@ -152,13 +170,16 @@ class RobotController():
     def _find_next_destination_point(self, destination):
         target_point = self._point_adjustor.find_target_position(
             destination, self._robot_position)
+        print("target point", target_point)
         next_point = self._point_adjustor.find_next_point(self._robot_position,
                                                           target_point)
+        print("next pint", next_point)
         return next_point
 
     def _robot_has_correct_orientation(self, destination):
         rotation = self._point_adjustor.find_robot_rotation(
             self._robot_orientation, self._robot_position, destination)
+        print("Adjust rotation", rotation)
 
         if not(self._robot_is_facing_correct_angle(rotation)):
             self._append_rotations(rotation)
@@ -183,6 +204,7 @@ class RobotController():
             config.Config().get_atlas_distance_uncertainty()
 
     def _robot_is_next_to_target_point(self):
+        print("Distance between objects :", self._distance)
         return self._distance <= config.Config().get_distance_uncertainty()
 
     def _robot_is_facing_correct_angle(self, rotation):

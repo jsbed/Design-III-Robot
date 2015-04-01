@@ -139,6 +139,9 @@ class Config(metaclass=Singleton):
     def get_table_height(self):
         return float(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
 
+    def get_gripper_size(self):
+        return float(self._parser.get(SECTION_PATHFINDING, "GripperSize"))
+
     def get_robot_radius(self):
         return float(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
 

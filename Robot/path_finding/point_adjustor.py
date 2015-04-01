@@ -1,4 +1,4 @@
-from math import degrees, atan2
+from math import degrees, atan2, radians
 import math
 
 from Robot.configuration import config
@@ -35,8 +35,11 @@ class PointAdjustor():
 
         else:
             angle = self.calculate_angle_between_points(start, end)
-            x = current_distance * math.cos(angle)
-            y = current_distance * math.sin(angle)
+            x = current_distance * math.cos(radians(angle))
+            y = current_distance * math.sin(radians(angle))
+            print("angle", angle)
+            print("x", x)
+            print("y", y)
             return Point(start.x + int(x), start.y + int(y))
 
     def find_robot_rotation(self, robot_orientation, robot_position, point):
@@ -95,17 +98,17 @@ class PointAdjustor():
 
     def _adjust_target_point(self):
         if (self._cube_center.x <= self._robot_position.x):
-            if (self._cube_center.y <= (self._robot_position.y -
-                                        self._distance_between_points)):
+            if (self._cube_center.y <= self._robot_position.y):
                 self._target_point = Point(self._target_point.x,
                                            self._target_point.y +
-                                           self._distance_between_points)
+                                           self._distance_between_points +
+                                           config.Config().get_gripper_size())
 
-            elif (self._cube_center.y >= (self._robot_position.y +
-                                          self._distance_between_points)):
+            elif (self._cube_center.y >= self._robot_position.y):
                 self._target_point = Point(self._target_point.x,
                                            self._target_point.y -
-                                           self._distance_between_points)
+                                           self._distance_between_points -
+                                           config.Config().get_gripper_size())
 
             else:
                 self._target_point = (self._target_point.x +
@@ -113,17 +116,17 @@ class PointAdjustor():
                                       self._target_point.y)
 
         else:
-            if (self._cube_center.y <= (self._robot_position.y -
-                                        self._distance_between_points)):
+            if (self._cube_center.y <= self._robot_position.y):
                 self._target_point = Point(self._target_point.x,
                                            self._target_point.y +
-                                           self._distance_between_points)
+                                           self._distance_between_points +
+                                           config.Config().get_gripper_size())
 
-            elif (self._cube_center.y >= (self._robot_position.y +
-                                          self._distance_between_points)):
+            elif (self._cube_center.y >= self._robot_position.y):
                 self._target_point = Point(self._target_point.x,
                                            self._target_point.y -
-                                           self._distance_between_points)
+                                           self._distance_between_points -
+                                           config.Config().get_gripper_size())
 
             else:
                 self._target_point = Point(self._target_point.x -
