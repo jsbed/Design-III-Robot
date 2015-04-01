@@ -40,6 +40,12 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
     def send_path(self, target_point):
         self.send_data(json.dumps({'path': target_point}))
 
+    def send_cube_position_and_color(self, position, color):
+        cube_position = [int(position.x), int(position.y)]
+        cube_color = color.value
+        self.send_data(json.dumps({'cube position': cube_position}))
+        self.send_data(json.dumps({'cube color': cube_color}))
+
     def log(self, message):
         if message:
             self.send_data(json.dumps({'message': message}))

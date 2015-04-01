@@ -71,8 +71,10 @@ class Main(QtGui.QMainWindow, Observer):
             self._outputer.output(signal_data["message"])
         if ("path" in signal_data):
             self._items_displayer.display_path(signal_data["path"])
-        if ("cubePosition" in signal_data):
-            self._items_displayer.display_cube(signal_data["cubePosition"])
+        if ("cube position" in signal_data):
+            self._items_displayer.display_cube_position(signal_data["cube position"])
+        if ("cube color" in signal_data):
+            self._items_displayer.display_cube_color(signal_data["cube color"])
         if ("question" in signal_data and "country" in signal_data):
             self.ui.questionLabel.setText(signal_data["question"])
             self._flag_displayer.display_country(signal_data["country"])
