@@ -1,4 +1,4 @@
-from math import degrees, atan2
+from math import degrees, atan2, radians
 import math
 
 from Robot.configuration import config
@@ -14,14 +14,15 @@ class PointAdjustor():
         self._distance_between_points = (config.Config().get_cube_radius() +
                                          config.Config().
                                          get_distance_between_objects() +
-                                         config.Config().get_robot_radius())
+                                         config.Config().get_robot_radius() +
+                                         config.Config().get_gripper_size())
 
     def find_target_position(self, cube_position, robot_position):
         self._target_point = cube_position
         self._cube_center = cube_position
         self._robot_position = robot_position
 
-        self._check_if_cube_too_close_to_wall()
+        self._check_if_cube_is_too_close_to_wall()
 
         return self._target_point
 
@@ -35,8 +36,11 @@ class PointAdjustor():
 
         else:
             angle = self.calculate_angle_between_points(start, end)
-            x = current_distance * math.cos(angle)
-            y = current_distance * math.sin(angle)
+            x = current_distance * math.cos(radians(angle))
+            y = current_distance * math.sin(radians(angle))
+            print("angle", angle)
+            print("x", x)
+            print("y", y)
             return Point(start.x + int(x), start.y + int(y))
 
     def find_robot_rotation(self, robot_orientation, robot_position, point):
@@ -54,6 +58,12 @@ class PointAdjustor():
         print(rotation_angle)
         return rotation_angle
 
+    def calculate_distance_between_cube_and_closest_wall(self, cube_position):
+        return min(min(config.Config().get_table_width() - cube_position.x,
+                       cube_position.x - 0),
+                   min(config.Config().get_table_height() - cube_position.y,
+                       cube_position.y - 0))
+
     '''
     Description: Verify if the cube is too close or next to a wall
                  and adjust the target position accordingly. Otherwise,
@@ -61,19 +71,19 @@ class PointAdjustor():
                  closest to the robot.
     '''
 
-    def _check_if_cube_too_close_to_wall(self):
+    def _check_if_cube_is_too_close_to_wall(self):
         if (self._cube_center.x < config.Config().get_robot_radius()):
             self._target_point = Point(self._target_point.x +
                                        self._distance_between_points,
                                        self._target_point.y)
 
-        elif (self._cube_center.x > (config.Config().get_width() -
+        elif (self._cube_center.x > (config.Config().get_table_width() -
                                      config.Config().get_robot_radius())):
             self._target_point = Point(self._target_point.x -
                                        self._distance_between_points,
                                        self._target_point.y)
 
-        elif (self._cube_center.y > (config.Config().get_height() -
+        elif (self._cube_center.y > (config.Config().get_table_height() -
                                      config.Config().get_robot_radius())):
             self._target_point = Point(self._target_point.x,
                                        self._target_point.y -
@@ -88,41 +98,15 @@ class PointAdjustor():
             self._adjust_target_point()
 
     def _adjust_target_point(self):
-        if (self._cube_center.x <= self._robot_position.x):
-            if (self._cube_center.y <= (self._robot_position.y -
-                                        self._distance_between_points)):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y +
-                                           self._distance_between_points)
-
-            elif (self._cube_center.y >= (self._robot_position.y +
-                                          self._distance_between_points)):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y -
-                                           self._distance_between_points)
-
-            else:
-                self._target_point = (self._target_point.x +
-                                      self._distance_between_points,
-                                      self._target_point.y)
+        if (self._cube_center.y < self._robot_position.y):
+            self._target_point = Point(self._target_point.x,
+                                       self._target_point.y +
+                                       self._distance_between_points)
 
         else:
-            if (self._cube_center.y <= (self._robot_position.y -
-                                        self._distance_between_points)):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y +
-                                           self._distance_between_points)
-
-            elif (self._cube_center.y >= (self._robot_position.y +
-                                          self._distance_between_points)):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y -
-                                           self._distance_between_points)
-
-            else:
-                self._target_point = Point(self._target_point.x -
-                                           self._distance_between_points,
-                                           self._target_point.y)
+            self._target_point = Point(self._target_point.x,
+                                       self._target_point.y -
+                                       self._distance_between_points)
 
     @staticmethod
     def calculate_angle_between_points(start, end):

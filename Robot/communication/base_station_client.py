@@ -21,9 +21,11 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
 
         return self._wait_for_robot_localization_response()
 
-    def send_question_and_country(self, question, country):
-        self.send_data(json.dumps({'question': question,
-                                   'country': country.name}))
+    def send_question(self, question):
+        self.send_data(json.dumps({'question': question}))
+
+    def send_country(self, country):
+        self.send_data(json.dumps({'country': country.name}))
 
         # Wait for user response
         response = self.get_data()
@@ -40,9 +42,24 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
     def send_path(self, target_point):
         self.send_data(json.dumps({'path': target_point}))
 
+    def send_cubes_location(self, cube_order):
+        cubes = []
+
+        for cube in cube_order:
+            cube_position = cube.get_target_zone_position()
+            cube_position = [int(cube_position.x), int(cube_position.y)]
+            cube_color = cube.get_color().value
+            cubes.append({'cube position': cube_position,
+                          'cube color': cube_color})
+
+        self.send_data(json.dumps({"cubes": cubes}))
+
     def log(self, message):
         if message:
             self.send_data(json.dumps({'message': message}))
 
     def _wait_for_robot_localization_response(self):
-        return create_localization_from_localization_dto(self.get_data())
+        print("waiting response")
+        response = self.get_data()
+        print("response received")
+        return create_localization_from_localization_dto(response)

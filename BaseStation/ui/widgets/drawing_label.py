@@ -24,7 +24,6 @@ class DrawingLabel(QLabel):
         path = self._items_displayer.draw_path()
         robot_position, robot_rotation, robot_image = \
             self._items_displayer.draw_robot()
-        cube_position, cube_image = self._items_displayer.draw_cube()
 
         if (self._items_displayer.robot_is_visible()):
             painter.translate(robot_position.x() + robot_image.width() / 2,
@@ -35,7 +34,10 @@ class DrawingLabel(QLabel):
                                      -robot_image.height() / 2), robot_image)
             painter.resetTransform()
 
-        painter.drawImage(cube_position, cube_image)
+        for cube_it in range(0, self._items_displayer.get_number_of_cube()):
+            cube_position, cube_image = \
+                self._items_displayer.draw_cube(cube_it)
+            painter.drawImage(cube_position, cube_image)
         painter.drawPath(path)
         painter.end()
 

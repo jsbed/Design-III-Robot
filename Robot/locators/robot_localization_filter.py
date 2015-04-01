@@ -1,3 +1,4 @@
+from math import radians, cos, sin, atan2, degrees
 from statistics import mean
 
 from Robot.configuration.config import Config
@@ -23,6 +24,7 @@ class RobotLocalizationFilter(Observable):
 
     def update_localization(self, localization):
         if (self._validate_localization(localization)):
+            print(localization.position, localization.orientation)
             self._filter_new_position(localization)
 
     def get_localization(self):
@@ -42,11 +44,10 @@ class RobotLocalizationFilter(Observable):
                 else:
                     new_distance = PointAdjustor.calculate_distance_between_points(
                         localization.position, self._robot_localization.position)
-                    new_orientation = localization.orientation
+                    orientation_diff = localization.orientation
 
-                    if (self._can_update_new_localization(localization,
-                                                          new_distance,
-                                                          new_orientation)):
+                    if (self._can_update_new_localization(new_distance,
+                                                          orientation_diff)):
                         self._update_localization(localization)
 
     def _find_mean_localization(self):
@@ -71,9 +72,20 @@ class RobotLocalizationFilter(Observable):
     def _compute_mean_localization(self, localization):
         x = mean([loc.position.x for loc in localization])
         y = mean([loc.position.y for loc in localization])
-        orientation = mean([loc.orientation for loc in localization])
+        orientation = self._compute_mean_orientation(
+            [loc.orientation for loc in localization])
 
         return Localization(Point(x, y), orientation)
+
+    def _compute_mean_orientation(self, orientations):
+        x, y = 0, 0
+
+        for orientation in orientations:
+            x += cos(radians(orientation))
+            y += sin(radians(orientation))
+
+        return degrees(atan2(y / len(orientations),
+                             x / len(orientations)))
 
     def _update_localization(self, localization):
         self._robot_localization = localization
@@ -98,9 +110,9 @@ class RobotLocalizationFilter(Observable):
 
         return valid
 
-    def _can_update_new_localization(self, localization, new_distance, new_orientation):
+    def _can_update_new_localization(self, new_distance, orientation_diff):
         return (new_distance > self.DISTANCE_THRESHOLD or
-                new_orientation > self.ANGLE_THRESHOLD)
+                orientation_diff > self.ANGLE_THRESHOLD)
 
     def _find_good_and_wrong_points(self, localizations):
         first_point = localizations[0]
@@ -116,3 +128,7 @@ class RobotLocalizationFilter(Observable):
             filter(lambda x: x[0] <= 2 * self.DISTANCE_THRESHOLD, distances))]
 
         return good_loc, wrong_loc
+
+    def _find_angle_difference(self, a, b):
+        distance = abs(a - b) % 360
+        return distance if distance <= 180 else 360 - distance

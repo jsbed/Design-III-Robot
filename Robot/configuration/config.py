@@ -18,6 +18,7 @@ SECTION_LEDS = "LEDS"
 SECTION_GRIPPER = "GRIPPERDATA"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
 SECTION_SERIAL_PORT = "SERIALPORT"
+SECTION_VIDEO_SETTINGS = "VIDEOSETTINGS"
 
 
 class Config(metaclass=Singleton):
@@ -139,6 +140,9 @@ class Config(metaclass=Singleton):
     def get_table_height(self):
         return float(self._parser.get(SECTION_PATHFINDING, "TableHeight"))
 
+    def get_gripper_size(self):
+        return float(self._parser.get(SECTION_PATHFINDING, "GripperSize"))
+
     def get_robot_radius(self):
         return float(self._parser.get(SECTION_PATHFINDING, "RobotRadius"))
 
@@ -161,6 +165,14 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "DistanceUncertainty"))
 
+    def get_distance_uncertainty_with_cube(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceUncertaintyWithCube"))
+
+    def get_move_backward_distance(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "BackwardDistance"))
+
     def get_orientation_uncertainty(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationUncertainty"))
@@ -169,9 +181,21 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationMax"))
 
+    def get_rotation_min(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "RotationMin"))
+
+    def get_distance_min(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceMin"))
+
     def get_push_cube_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "PushCubeDistance"))
+
+    def get_number_of_switches(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "SwitchNumber"))
 
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
@@ -210,3 +234,9 @@ class Config(metaclass=Singleton):
 
     def get_stm_serial_port_timeout(self):
         return float(self._parser.get(SECTION_SERIAL_PORT, "STMTimeout"))
+
+    def get_camera_width(self):
+        return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CamWidth"))
+
+    def get_camera_height(self):
+        return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CamHeight"))

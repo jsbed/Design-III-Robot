@@ -1,7 +1,8 @@
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
-from Robot.controller.robot import INSTRUCTION_FINISHED
+from Robot.controller.robot import INSTRUCTION_FINISHED, SWITCH_ACTIVATED,\
+    SWITCH_DEACTIVATED
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.country_repository import CountryRepository
@@ -24,10 +25,17 @@ class Cycle(Observer):
         self._question = ""
         self._cube = Cube(None, None)
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
+        self._flag_creator = None
         self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
+        self._robot_controller.get_robot().attach(SWITCH_ACTIVATED, self)
+        self._robot_controller.get_robot().attach(SWITCH_DEACTIVATED, self)
 
     def observer_update(self, event, value):
-        if (event == INSTRUCTION_FINISHED):
+        if (event == SWITCH_ACTIVATED):
+            self._robot_controller.turn_switch_on()
+        elif (event == SWITCH_DEACTIVATED):
+            self._robot_controller.turn_switch_off()
+        elif (event == INSTRUCTION_FINISHED):
             self.continue_cycle()
 
     def start_cycle(self):
@@ -66,18 +74,23 @@ class Cycle(Observer):
             self._move_to_cube_state()
 
         elif (self._state == CycleState.PUSH_CUBE):
+            print("push cube")
             self._push_cube_state()
 
         elif (self._state == CycleState.PICK_UP_CUBE):
+            print("pick up cube")
             self._pick_up_cube_state()
 
         elif (self._state == CycleState.MOVE_TO_TARGET_ZONE):
+            print("move to target zone")
             self._move_to_target_zone_state()
 
         elif (self._state == CycleState.MOVE_INTO_TARGET_ZONE):
+            print("move into target zone")
             self._move_into_target_zone_state()
 
         elif (self._state == CycleState.PUT_DOWN_CUBE):
+            print("put down cube")
             self._put_down_cube_state()
 
     def _atlas_zone_state(self):
@@ -94,14 +107,13 @@ class Cycle(Observer):
         country_is_correct = False
 
         while not country_is_correct:
-            self._question = self._robot_controller.get_question_from_atlas()
-            country_name = QuestionAnalyser().answer_question(self._question)
-            self._country = CountryRepository().get(country_name)
-            country_is_correct = BaseStationClient().send_question_and_country(
-                self._question, self._country)
+            self._get_question_from_atlas()
+            country_is_correct = self._analyse_question()
 
         self._robot_controller.display_country_leds(self._country)
         self._flag_creator = FlagCreator(self._country)
+        BaseStationClient().send_cubes_location(
+            self._flag_creator.get_cube_order())
         self._state = CycleState.ASK_FOR_CUBE
         self._next_state()
 
@@ -139,8 +151,12 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
-        self._robot_controller.push_cube()
-        self._state = CycleState.PICK_UP_CUBE
+        if (self._robot_controller.get_switch_status()):
+            self._state = CycleState.PICK_UP_CUBE
+            self._next_state()
+        else:
+            self._robot_controller.push_cube(
+                self._cube.get_localization().position)
 
     def _pick_up_cube_state(self):
         self._robot_controller.get_gripper().take_cube()
@@ -157,19 +173,28 @@ class Cycle(Observer):
            robot_is_next_to_target_with_correct_orientation(target_zone)):
             self._state = CycleState.MOVE_INTO_TARGET_ZONE
             self._next_state()
-
         else:
             self._robot_controller.move_robot_to(target_zone)
 
     def _move_into_target_zone_state(self):
-        self._robot_controller.move_forward_to_target_zone()
         self._state = CycleState.PUT_DOWN_CUBE
+        self._robot_controller.move_forward_to_target_zone(
+            self._cube.get_target_zone_position())
 
     def _put_down_cube_state(self):
         self._robot_controller.get_gripper().lower_gripper()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().release_cube()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        self._robot_controller.move_backward_from_target_zone()
         self._state = CycleState.ASK_FOR_CUBE
-        self._next_state()
+        self._robot_controller.move_backward()
+
+    def _get_question_from_atlas(self):
+        self._question = self._robot_controller.get_question_from_atlas()
+        BaseStationClient().send_question(self._question)
+
+    def _analyse_question(self):
+        country_name = QuestionAnalyser().answer_question(self._question)
+        self._country = CountryRepository().get(country_name)
+
+        return BaseStationClient().send_country(self._country)

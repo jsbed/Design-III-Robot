@@ -3,44 +3,46 @@ import json
 
 from Robot.communication.tcp_client import TCPClient
 from Robot.configuration.config import Config
-from Robot.path_finding.path_finder import PathFinder
 from Robot.path_finding.point import Point
+from Robot.cycle.objects.color import Color
+from Robot.country.country import Country
+from Robot.country.flag_creator import FlagCreator
+from Robot.communication.base_station_client import BaseStationClient
+from Robot.country.country_repository import CountryRepository
 
 
-# Example for pathfinding
 Config().load_config()
 client = TCPClient(Config().get_base_station_ip(),
                    Config().get_base_station_port())
 client.connect_socket()
 
+country = Country("TestCountry", [Color.NONE,
+                                                 Color.NONE,
+                                                 Color.NONE,
+                                                 Color.RED,
+                                                 Color.WHITE,
+                                                 Color.RED,
+                                                 Color.NONE,
+                                                 Color.NONE,
+                                                 Color.NONE])
+flag_creator = FlagCreator(country)
+
+
 robot_position = Point(randint(15, 95), randint(15, 50))
 cube_position = Point(randint(15, 95), randint(150, 240))
-
-# target_point = PointAdjustor().find_target_position(cube_position, robot_position)
-pathing = PathFinder().find_path(robot_position, cube_position)
-
-path = []
-path.append(robot_position)
-path.append(PathFinder().get_point_where_path_change_direction(pathing))
-path.append(cube_position)
-
-# Transform list of points into list of ints before sending
-pathlist = []
-pathlist.append(path[0].x)
-pathlist.append(path[0].y)
-pathlist.append(path[1].x)
-pathlist.append(path[1].y)
-pathlist.append(path[2].x)
-pathlist.append(path[2].y)
-cube_list = []
-cube_list.append(cube_position.x)
-cube_list.append(cube_position.y)
+path = [70, 90]
 
 print("Sending to Base Station...")
 print("path :", path)
-print("cube position :", cube_list)
 
-dictio = {'path': pathlist, 'cubePosition': cube_list}
+#
+#    print(cube)
+
+dictio = {'path': path}
+for cube in flag_creator.get_cube_order():
+    client.send_data(json.dumps({'cube position': [int(cube.get_target_zone_position().x),
+                                                   int(cube.get_target_zone_position().y)]}))
+    client.send_data(json.dumps({'cube color': cube.get_color().value}))
 client.send_data(json.dumps(dictio))
 
 client.disconnect_socket()
