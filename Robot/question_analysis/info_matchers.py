@@ -186,7 +186,6 @@ class IllicitDrugsActivitiesMatcher(InfoMatcher):
     def __init__(self, info_key, activities):
         self._activities = _remove_stop_words(activities)
         self._activities = self._activities.split()
-        print(self._activities)
         super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, activities)
 
     def match(self, info_data):
@@ -200,4 +199,4 @@ class IllicitDrugsActivitiesMatcher(InfoMatcher):
 
 
 def _remove_stop_words(text):
-    return ' '.join([w for w in text.split() if not w in stopwords.words('english')])
+    return ' '.join([w for w in text.split() if w not in stopwords.words('english')])

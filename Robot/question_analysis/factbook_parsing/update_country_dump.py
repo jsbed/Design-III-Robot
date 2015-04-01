@@ -8,5 +8,4 @@ for country_file in country_data_dir.iterdir():
         shutil.rmtree(country_file.as_posix())
 
     elif country_file.suffix != '.html':
-        print(country_file.name)
         os.remove(country_file.as_posix())
