@@ -33,6 +33,7 @@ class RobotController():
         self._point_adjustor = PointAdjustor()
         self._led_manager = LedManager(self._stm_serial_port)
         self._gripper_manager = GripperManager(self._pololu_serial_port)
+        self._switch = 0
 
     def get_robot(self):
         return self._robot
@@ -105,28 +106,40 @@ class RobotController():
         self._move_robot_towards_target_point(localization_position)
         self._append_rotations(rotation)
 
-    def switch_on(self):
-        return False
+    def turn_switch_on(self):
+        self._switch += 1
+
+    def turn_switch_off(self):
+        self._switch -= 1
+
+    def get_switch_status(self):
+        return self._switch >= config.Config().get_number_of_switches()
 
     def push_cube(self, cube_position):
         self._update_robot_localization()
         self._distance = self._point_adjustor. \
             calculate_distance_between_points(self._robot_position,
                                               cube_position)
-        if (self._robot_is_next_to_target_point()):
+        self._distance -= (config.Config().get_gripper_size() +
+                           config.Config().get_cube_radius() +
+                           config.Config().get_robot_radius())
+        if (self._robot_is_next_to_cube()):
             self.move_backward()
         else:
             print("pushing")
             rotation = self._point_adjustor.find_robot_rotation(
                 self._robot_orientation, self._robot_position,
                 cube_position)
+            self._append_rotations(rotation)
             wall_distance = \
                 self._point_adjustor.\
                 calculate_distance_between_cube_and_closest_wall(cube_position)
+            print("Distance from wall :", wall_distance)
             push_distance = config.Config().get_push_cube_distance()
-            self._append_rotations(rotation)
-            if (push_distance > self._distance + wall_distance):
-                push_distance = self._distance + wall_distance
+            if (push_distance > self._distance + wall_distance +
+                    config.Config().get_cube_radius()):
+                push_distance = (self._distance + wall_distance +
+                                 config.Config().get_cube_radius())
             self._robot.append_instruction(Move(push_distance))
             self._robot.execute_instructions()
 
@@ -135,19 +148,18 @@ class RobotController():
 
         self._update_robot_localization()
 
-        rotation = - self._point_adjustor.find_robot_rotation(CUBE_RELEASE_ANGLE,
-                                                              self._robot_position,
-                                                              target_zone_position)
+        rotation = -self._point_adjustor.find_robot_rotation(
+            CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
         print("Rotation ", rotation)
-        # self._append_rotations(rotation)
+        self._append_rotations(rotation)
         lateral_distance = target_zone_position.x - self._robot_position.x
         if (lateral_distance > 1):
             self._robot.append_instruction(Lateral(lateral_distance))
-        self._robot.append_instruction(Move(self._robot_position.y -
-                                            target_zone_position.y -
-                                            config.Config().get_gripper_size() -
-                                            config.Config().get_cube_radius() -
-                                            config.Config().get_robot_radius()))
+        self._robot.append_instruction(
+            Move(self._robot_position.y - target_zone_position.y -
+                 config.Config().get_gripper_size() -
+                 config.Config().get_cube_radius() -
+                 config.Config().get_robot_radius()))
         self._robot.execute_instructions()
 
     def move_backward(self):
@@ -206,6 +218,11 @@ class RobotController():
     def _robot_is_next_to_target_point(self):
         print("Distance between objects :", self._distance)
         return self._distance <= config.Config().get_distance_uncertainty()
+
+    def _robot_is_next_to_cube(self):
+        print("Distance between objects :", self._distance)
+        return self._distance <= config.Config().\
+            get_distance_uncertainty_with_cube()
 
     def _robot_is_facing_correct_angle(self, rotation):
         angle_uncertainty = config.Config().get_orientation_uncertainty()

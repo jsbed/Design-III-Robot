@@ -165,6 +165,10 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "DistanceUncertainty"))
 
+    def get_distance_uncertainty_with_cube(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceUncertaintyWithCube"))
+
     def get_move_backward_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "BackwardDistance"))
@@ -188,6 +192,10 @@ class Config(metaclass=Singleton):
     def get_push_cube_distance(self):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "PushCubeDistance"))
+
+    def get_number_of_switches(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "SwitchNumber"))
 
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,

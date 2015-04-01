@@ -14,14 +14,15 @@ class PointAdjustor():
         self._distance_between_points = (config.Config().get_cube_radius() +
                                          config.Config().
                                          get_distance_between_objects() +
-                                         config.Config().get_robot_radius())
+                                         config.Config().get_robot_radius() +
+                                         config.Config().get_gripper_size())
 
     def find_target_position(self, cube_position, robot_position):
         self._target_point = cube_position
         self._cube_center = cube_position
         self._robot_position = robot_position
 
-        self._check_if_cube_too_close_to_wall()
+        self._check_if_cube_is_too_close_to_wall()
 
         return self._target_point
 
@@ -70,7 +71,7 @@ class PointAdjustor():
                  closest to the robot.
     '''
 
-    def _check_if_cube_too_close_to_wall(self):
+    def _check_if_cube_is_too_close_to_wall(self):
         if (self._cube_center.x < config.Config().get_robot_radius()):
             self._target_point = Point(self._target_point.x +
                                        self._distance_between_points,
@@ -97,41 +98,15 @@ class PointAdjustor():
             self._adjust_target_point()
 
     def _adjust_target_point(self):
-        if (self._cube_center.x <= self._robot_position.x):
-            if (self._cube_center.y <= self._robot_position.y):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y +
-                                           self._distance_between_points +
-                                           config.Config().get_gripper_size())
-
-            elif (self._cube_center.y >= self._robot_position.y):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y -
-                                           self._distance_between_points -
-                                           config.Config().get_gripper_size())
-
-            else:
-                self._target_point = (self._target_point.x +
-                                      self._distance_between_points,
-                                      self._target_point.y)
+        if (self._cube_center.y < self._robot_position.y):
+            self._target_point = Point(self._target_point.x,
+                                       self._target_point.y +
+                                       self._distance_between_points)
 
         else:
-            if (self._cube_center.y <= self._robot_position.y):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y +
-                                           self._distance_between_points +
-                                           config.Config().get_gripper_size())
-
-            elif (self._cube_center.y >= self._robot_position.y):
-                self._target_point = Point(self._target_point.x,
-                                           self._target_point.y -
-                                           self._distance_between_points -
-                                           config.Config().get_gripper_size())
-
-            else:
-                self._target_point = Point(self._target_point.x -
-                                           self._distance_between_points,
-                                           self._target_point.y)
+            self._target_point = Point(self._target_point.x,
+                                       self._target_point.y -
+                                       self._distance_between_points)
 
     @staticmethod
     def calculate_angle_between_points(start, end):

@@ -1,14 +1,14 @@
 import time
 
 from Robot.communication.base_station_client import BaseStationClient
-from Robot.controller.robot import INSTRUCTION_FINISHED
+from Robot.controller.robot import INSTRUCTION_FINISHED, SWITCH_ACTIVATED,\
+    SWITCH_DEACTIVATED
 from Robot.controller.robot_controller import RobotController
 from Robot.country.country import Country
 from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
-from Robot.path_finding.point import Point
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
 
@@ -27,9 +27,15 @@ class Cycle(Observer):
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
         self._flag_creator = None
         self._robot_controller.get_robot().attach(INSTRUCTION_FINISHED, self)
+        self._robot_controller.get_robot().attach(SWITCH_ACTIVATED, self)
+        self._robot_controller.get_robot().attach(SWITCH_DEACTIVATED, self)
 
     def observer_update(self, event, value):
-        if (event == INSTRUCTION_FINISHED):
+        if (event == SWITCH_ACTIVATED):
+            self._robot_controller.turn_switch_on()
+        elif (event == SWITCH_DEACTIVATED):
+            self._robot_controller.turn_switch_off()
+        elif (event == INSTRUCTION_FINISHED):
             self.continue_cycle()
 
     def start_cycle(self):
@@ -146,7 +152,7 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
-        if (self._robot_controller.switch_on()):
+        if (self._robot_controller.get_switch_status()):
             self._state = CycleState.PICK_UP_CUBE
             self._next_state()
         else:

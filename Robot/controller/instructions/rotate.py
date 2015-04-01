@@ -16,7 +16,6 @@ class Rotate(RobotInstruction):
         if (self._angle != 0):
             command_to_send = self._format_angle_to_string()
             serial_port.send_string(command_to_send)
-            serial_port.wait_for_read_line()
 
     def _format_angle_to_string(self):
         if (self._angle < 0):
