@@ -181,6 +181,5 @@ class Cycle(Observer):
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().release_cube()
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        self._robot_controller.move_backward()
         self._state = CycleState.ASK_FOR_CUBE
-        self._next_state()
+        self._robot_controller.move_backward()

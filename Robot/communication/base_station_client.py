@@ -45,4 +45,7 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
             self.send_data(json.dumps({'message': message}))
 
     def _wait_for_robot_localization_response(self):
-        return create_localization_from_localization_dto(self.get_data())
+        print("waiting response")
+        response = self.get_data()
+        print("response received")
+        return create_localization_from_localization_dto(response)
