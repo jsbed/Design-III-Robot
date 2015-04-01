@@ -1,5 +1,3 @@
-import time
-
 from PySide.QtCore import QThread
 
 from BaseStation.ui.utilities.Signal import Signal
@@ -31,7 +29,6 @@ class RobotLocatorWorker(Observer, QThread):
         if (event == ROBOT_LOCALIZATION_UPDATED):
             localization_dto = create_localization_dto(value)
             self.signal.custom_signal.emit(localization_dto)
-            # time.sleep(0.5)
 
     def stop(self):
         self._running = False

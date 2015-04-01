@@ -21,9 +21,11 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
 
         return self._wait_for_robot_localization_response()
 
-    def send_question_and_country(self, question, country):
-        self.send_data(json.dumps({'question': question,
-                                   'country': country.name}))
+    def send_question(self, question):
+        self.send_data(json.dumps({'question': question}))
+
+    def send_country(self, country):
+        self.send_data(json.dumps({'country': country.name}))
 
         # Wait for user response
         response = self.get_data()

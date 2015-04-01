@@ -107,11 +107,8 @@ class Cycle(Observer):
         country_is_correct = False
 
         while not country_is_correct:
-            self._question = self._robot_controller.get_question_from_atlas()
-            country_name = QuestionAnalyser().answer_question(self._question)
-            self._country = CountryRepository().get(country_name)
-            country_is_correct = BaseStationClient().send_question_and_country(
-                self._question, self._country)
+            self._get_question_from_atlas()
+            country_is_correct = self._analyse_question()
 
         self._robot_controller.display_country_leds(self._country)
         self._flag_creator = FlagCreator(self._country)
@@ -192,3 +189,13 @@ class Cycle(Observer):
         time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.ASK_FOR_CUBE
         self._robot_controller.move_backward()
+
+    def _get_question_from_atlas(self):
+        self._question = self._robot_controller.get_question_from_atlas()
+        BaseStationClient().send_question(self._question)
+
+    def _analyse_question(self):
+        country_name = QuestionAnalyser().answer_question(self._question)
+        self._country = CountryRepository().get(country_name)
+
+        return BaseStationClient().send_country(self._country)
