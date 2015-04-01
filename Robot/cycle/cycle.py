@@ -115,6 +115,9 @@ class Cycle(Observer):
 
         self._robot_controller.display_country_leds(self._country)
         self._flag_creator = FlagCreator(self._country)
+        BaseStationClient().send_cube_position_and_color(
+            self._flag_creator.get_cube_order().get_target_zone_position(),
+            self._flag_creator.get_cube_order().get_color())
         self._state = CycleState.ASK_FOR_CUBE
         self._next_state()
 
