@@ -81,6 +81,9 @@ class ItemsDisplayer():
     def hide_robot(self):
         self._robot_displayed = False
 
+    def remove_path(self):
+        self._destination = QPoint(0, 0)
+
     def robot_is_visible(self):
         return self._robot_displayed
 

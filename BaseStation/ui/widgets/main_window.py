@@ -107,6 +107,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._chronometer.restart()
         self._set_question_buttons_enabled(False)
         self.ui.startCycle.setEnabled(True)
+        self._items_displayer.remove_path()
         self._clear_question_and_country()
 
     def _question_is_ok(self):
