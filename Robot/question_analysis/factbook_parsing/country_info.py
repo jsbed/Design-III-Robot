@@ -49,14 +49,14 @@ class Factbook(object):
         return info
 
     def get_matches(self, info_matcher):
-        country_results = set()
+        country_results = []
         for country in self._countries_info.keys():
             info_data = self.get_info_from_country(country, info_matcher.get_key())
             if info_data:
                 score = info_matcher.match(info_data)
                 if score:
                     country_result = CountryResult(country, score)
-                    country_results.add(country_result)
+                    country_results.append(country_result)
         return country_results
 
     def get_countries_list(self):

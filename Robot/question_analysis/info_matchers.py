@@ -1,5 +1,6 @@
 import operator
 import re
+from nltk.corpus import stopwords
 
 
 class InfoMatcher(object):
@@ -183,5 +184,20 @@ class ClimateMatcher(InfoMatcher):
 class IllicitDrugsActivitiesMatcher(InfoMatcher):
 
     def __init__(self, info_key, activities):
-        pattern = activities
-        super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, pattern)
+        self._activities = _remove_stop_words(activities)
+        self._activities = self._activities.split()
+        print(self._activities)
+        super(IllicitDrugsActivitiesMatcher, self).__init__(info_key, activities)
+
+    def match(self, info_data):
+        max_score = len(self._activities)
+        points = 0.0
+        for word in self._activities:
+            if word in info_data:
+                points += 1
+        score = points/max_score
+        return score
+
+
+def _remove_stop_words(text):
+    return ' '.join([w for w in text.split() if not w in stopwords.words('english')])

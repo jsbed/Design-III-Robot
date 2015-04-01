@@ -248,9 +248,9 @@ class EthnicGroups(QuestionWithListMatcher):
 class IllicitDrugsActivities(QuestionMatcher):
 
     def __init__(self):
-        pattern = r'illicit drug(?:s)? activities including a ([\w\s]+)(?: and ).*?'
-        info_matcher = IllicitDrugsActivitiesMatcher
+        pattern = r'([\w\s]+)'
         attribute = 'illicit drug'
+        info_matcher = IllicitDrugsActivitiesMatcher
         super(IllicitDrugsActivities, self).__init__(pattern, info_matcher, attribute)
 
 
@@ -268,7 +268,7 @@ class QuestionMatcherGenerator(object):
 
         self._specific_matchers = {'latitude': [LatitudeMatcher()], 'longitude': [LongitudeMatcher()],
                                    'climate': [Climate()], 'independence': [IndependenceMatcher()],
-                                    'ethnic groups': [EthnicGroups()],
+                                    'ethnic groups': [EthnicGroups()], 'illicit drug': [IllicitDrugsActivities()],
                                    'national anthem': [NationalAnthemComposedBy(),
                                                        TextQuestionMatcher('national anthem')]}
 

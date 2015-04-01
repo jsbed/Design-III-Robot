@@ -166,13 +166,12 @@ class TestQuestionAnalyser(object):
 
     def test_short_form_length(self):
         question = 'My birth rate is approximately 16 births/1000 and my local short country name contains 2 words.'
-        assert_true(self._question_analyser.answer_question(question) in ['Maldives', 'Vietnam', 'Sri Lanka', 'Costa Rica'])
+        assert_equal(self._question_analyser.answer_question(question), 'Costa Rica')
 
     def test_illicit_drugs(self):
         question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
         assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
 
-    #@nottest
     def test_illicit_drugs_trafficking(self):
         question = 'What country considers illicit drug trafficking as a serious offense and carry death penalty?'
         assert_equal(self._question_analyser.answer_question(question), 'Brunei')

@@ -44,7 +44,7 @@ class QuestionAnalyser(object):
                 raise Exception("No country found")
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
-            country_answer = country_answer.intersection(country_match)
+            country_answer = list(filter(lambda el: el in country_match, country_answer))
         country_answer = list(country_answer)
         country_answer = self._remove_country_duplicates(country_answer)
         country_answer = self._get_best_matches(country_answer)
