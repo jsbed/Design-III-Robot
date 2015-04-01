@@ -1,4 +1,4 @@
-from math import radians, cos, sin, atan2
+from math import radians, cos, sin, atan2, degrees
 from statistics import mean
 
 from Robot.configuration.config import Config
@@ -84,7 +84,8 @@ class RobotLocalizationFilter(Observable):
             x += cos(radians(orientation))
             y += sin(radians(orientation))
 
-        return atan2(y, x)
+        return degrees(atan2(y / len(orientations),
+                             x / len(orientations)))
 
     def _update_localization(self, localization):
         self._robot_localization = localization
