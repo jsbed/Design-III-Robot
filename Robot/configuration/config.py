@@ -18,6 +18,7 @@ SECTION_LEDS = "LEDS"
 SECTION_GRIPPER = "GRIPPERDATA"
 SECTION_PERSPECTIVE = "PERSPECTIVE"
 SECTION_SERIAL_PORT = "SERIALPORT"
+SECTION_VIDEO_SETTINGS = "VIDEOSETTINGS"
 
 
 class Config(metaclass=Singleton):
@@ -222,3 +223,9 @@ class Config(metaclass=Singleton):
 
     def get_stm_serial_port_timeout(self):
         return float(self._parser.get(SECTION_SERIAL_PORT, "STMTimeout"))
+
+    def get_camera_width(self):
+        return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CamWidth"))
+
+    def get_camera_height(self):
+        return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CamHeight"))
