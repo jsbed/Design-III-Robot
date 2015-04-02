@@ -9,6 +9,7 @@ from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.cycle.objects.cube import Cube
+from Robot.path_finding.point import Point
 from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
 
@@ -39,6 +40,8 @@ class Cycle(Observer):
             self.continue_cycle()
 
     def start_cycle(self):
+        self._robot_controller.get_gripper().take_cube()
+        self._robot_controller._led_manager.close_leds()
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
         self._next_state()
 
@@ -118,18 +121,14 @@ class Cycle(Observer):
         self._next_state()
 
     def _ask_for_cube_state(self):
-        cycle_done = False
-
         if (self._flag_creator.has_next_cubes()):
-            self._cube = self._flag_creator.next_cube()
-
-        else:
-            cycle_done = True
-
-        if not cycle_done:
+            self._cube = self._flag_creator.next_cube()          
+            self._cube.set_localization_position(Point(55, 130)) 
             self._robot_controller.ask_for_cube(self._cube)
             self._state = CycleState.LOCALIZE_CUBE
             self._robot_controller.move_robot_to_localize_cube()
+        else:
+            self._end_cycle()
 
     def _localize_cube_state(self):
         self._robot_controller.get_gripper().widest_gripper()
@@ -151,12 +150,13 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
-        if (self._robot_controller.get_switch_status()):
-            self._state = CycleState.PICK_UP_CUBE
-            self._next_state()
-        else:
-            self._robot_controller.push_cube(
-                self._cube.get_localization().position)
+        #if (self._robot_controller.get_switch_status()):
+        #    self._state = CycleState.PICK_UP_CUBE
+        #    self._next_state()
+        #else:
+        self._state = CycleState.PICK_UP_CUBE
+        self._robot_controller.push_cube(
+            self._cube.get_localization().position)
 
     def _pick_up_cube_state(self):
         self._robot_controller.get_gripper().take_cube()
@@ -198,3 +198,12 @@ class Cycle(Observer):
         self._country = CountryRepository().get(country_name)
 
         return BaseStationClient().send_country(self._country)
+
+    def _end_cycle(self):
+        self._robot_controller.end_cycle()
+        self._state = CycleState.MOVE_TO_ATLAS_ZONE        
+        BaseStationClient().send_end_signal()
+        BaseStationClient().wait_for_start_cycle_signal()
+        self.start_cycle()
+        
+        

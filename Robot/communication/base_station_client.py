@@ -42,6 +42,9 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
     def send_path(self, target_point):
         self.send_data(json.dumps({'path': target_point}))
 
+    def send_end_signal(self):
+        self.send_data(json.dumps({'end-signal': ""}))
+
     def send_cubes_location(self, cube_order):
         cubes = []
 

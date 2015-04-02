@@ -25,13 +25,13 @@ class Robot(Observable):
         print("execute:", command)
         command.execute(self._serial_port)
         self._serial_port.wait_for_read_line()
-        signal_message = self._serial_port.readline()
+        #signal_message = self._serial_port.readline()
         print("instruction finished")
-        print(signal_message)
-        if (signal_message == "switch on"):
-            self.notify(SWITCH_ACTIVATED, None)
-        elif (signal_message == "switch off"):
-            self.notify(SWITCH_DEACTIVATED, None)
+        # print(signal_message)
+        # if (signal_message == "switch on"):
+        #    self.notify(SWITCH_ACTIVATED, None)
+        # elif (signal_message == "switch off"):
+        #    self.notify(SWITCH_DEACTIVATED, None)
         self.notify(INSTRUCTION_FINISHED, None)
 
     def update_localization(self):

@@ -172,6 +172,9 @@ class RobotController():
 
     def next_instruction(self):
         self._robot.execute_instructions()
+    
+    def end_cycle(self):
+        self._led_manager.display_red_led()
 
     def _update_robot_localization(self):
         time.sleep(3)
