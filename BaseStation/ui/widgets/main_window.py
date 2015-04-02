@@ -78,12 +78,18 @@ class Main(QtGui.QMainWindow, Observer):
         if ("country" in signal_data):
             self._flag_displayer.display_country(signal_data["country"])
             self._set_question_buttons_enabled(True)
+        if ("end-signal" in signal_data):
+            self._outputer.output("Cycle finished")
+            self._items_displayer.remove_path()
+            self._chronometer.pause()
+            self.ui.startCycle.setEnabled(True)
         if ("request" in signal_data):
             if signal_data["request"] == ROBOT_LOCALIZATION_REQUEST:
                 localization = self._robot_locator_worker.get_localization()
                 self._tcp_server.send_localization_response(localization)
 
     def _start_cycle(self):
+        self._restart_cycle()
         self._tcp_server.send_start_cycle_signal()
         self._chronometer.start()
         self.ui.startCycle.setEnabled(False)
