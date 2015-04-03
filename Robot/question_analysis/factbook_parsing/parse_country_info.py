@@ -131,8 +131,7 @@ def parse_country_info():
 
 
 # Fill country repository from flags
-flags_file_path = os.path.join("..", "..", "resources", "flags.csv")
-country_repository_filler.fill_repository_from_file(flags_file_path)
+country_repository_filler.fill_repository_from_file()
 country_flags = CountryRepository().get_countries_name()
 
 parse_country_info()

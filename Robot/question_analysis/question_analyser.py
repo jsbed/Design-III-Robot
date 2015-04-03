@@ -1,9 +1,13 @@
 import collections
+import os
 
 from Robot.configuration.config import Config
+from Robot.filler import country_repository_filler
 from Robot.question_analysis.factbook_parsing.country_info import Factbook, INFO_KEY_ALIAS
 from Robot.question_analysis.question_matchers import QuestionMatcherGenerator
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
+from Robot.country.country_repository import CountryRepository
+from Robot.cycle.objects.color import Color
 
 
 class QuestionAnalyser(object):
@@ -11,6 +15,7 @@ class QuestionAnalyser(object):
     def __init__(self):
 
         self._config = Config()
+        self._country_repository = CountryRepository()
         self._question_segmentator = QuestionSegmentator()
         self._factbook = Factbook()
         self._question_matcher_generator = QuestionMatcherGenerator()
@@ -48,7 +53,7 @@ class QuestionAnalyser(object):
         country_answer = list(country_answer)
         country_answer = self._remove_country_duplicates(country_answer)
         country_answer = self._get_best_matches(country_answer)
-        country_answer = self._get_lowest_cube_country(country_answer)
+        country_answer = self._sort_by_cube_amount(country_answer)
         return country_answer[0].country_name
 
     def _remove_country_duplicates(self, country_answer):
@@ -75,5 +80,12 @@ class QuestionAnalyser(object):
         best_matches.extend(country_result_list)
         return best_matches
 
-    def _get_lowest_cube_country(self, country_result_list):
+    def _sort_by_cube_amount(self, country_result_list):
+        def get_country_cube_amount(country_result):
+            country = self._country_repository.get(country_result.country_name)
+            cubes = [cube for cube in country.flag if cube != Color.NONE]
+            return len(cubes)
+
+        country_repository_filler.fill_repository_from_file()
+        country_result_list.sort(key=get_country_cube_amount)
         return country_result_list

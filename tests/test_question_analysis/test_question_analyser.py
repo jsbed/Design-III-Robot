@@ -38,9 +38,7 @@ class TestQuestionAnalyser(object):
 
     def test_national_symbol(self):
         question = 'My national symbol is the elephant.'
-        assert_true(self._question_analyser.answer_question(question) in ['Thailand', 'Central African Republic',
-                                                                          'Laos', 'Swaziland', "Cote d'Ivoire",
-                                                                          'Congo, Republic of the'])
+        assert_equal(self._question_analyser.answer_question(question), "Cote d'Ivoire")
 
     def test_one_national_symbol_is(self):
         question = 'One national symbol of this country is the edelweiss.'
@@ -183,9 +181,3 @@ class TestQuestionAnalyser(object):
     def test_inflation_rate(self):
         question = 'What country has an inflation rate between 0.3% and 0.5%?'
         assert_equal(self._question_analyser.answer_question(question), 'Portugal')
-
-    def test_remove_duplicates(self):
-        country_results = [CountryResult('a', 0.5), CountryResult('a', 0.6), CountryResult('a', 0.7)]
-        actual = self._question_analyser._remove_country_duplicates(country_results)
-        expected = [CountryResult('a', 0.5)]
-        assert_equal(actual, expected)
