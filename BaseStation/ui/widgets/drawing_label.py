@@ -35,10 +35,10 @@ class DrawingLabel(QLabel):
             painter.resetTransform()
 
         for cube_it in range(0, self._items_displayer.get_number_of_cube()):
-            cube_position, cube_image = \
-                self._items_displayer.draw_cube(cube_it)
+            cube_position, cube_image = self._items_displayer.draw_cube(
+                cube_it)
             painter.drawImage(cube_position, cube_image)
+
         painter.drawPath(path)
         painter.end()
-
         self.update()
