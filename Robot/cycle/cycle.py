@@ -11,11 +11,10 @@ from Robot.question_analysis.question_analyser import QuestionAnalyser
 from Robot.utilities.observer import Observer
 
 
-CHECK_FOR_CUBE_DELAY = 2
-WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 2
-
-
 class Cycle(Observer):
+
+    CHECK_FOR_CUBE_DELAY = 2
+    WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 2
 
     def __init__(self):
         self._robot_controller = RobotController()
@@ -124,9 +123,9 @@ class Cycle(Observer):
 
     def _localize_cube_state(self):
         self._robot_controller.get_gripper().widest_gripper()
-        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         while (self._cube.get_localization().position is None):
-            time.sleep(CHECK_FOR_CUBE_DELAY)
+            time.sleep(self.CHECK_FOR_CUBE_DELAY)
         self._state = CycleState.MOVE_TO_CUBE
         self._next_state()
 
@@ -152,9 +151,9 @@ class Cycle(Observer):
 
     def _pick_up_cube_state(self):
         self._robot_controller.get_gripper().take_cube()
-        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().lift_gripper()
-        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.MOVE_TO_TARGET_ZONE
         self._next_state()
 
@@ -175,9 +174,9 @@ class Cycle(Observer):
 
     def _put_down_cube_state(self):
         self._robot_controller.get_gripper().lower_gripper()
-        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().release_cube()
-        time.sleep(WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
+        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.ASK_FOR_CUBE
         self._robot_controller.move_backward()
 
