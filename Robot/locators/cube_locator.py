@@ -19,7 +19,7 @@ def localize_with_camera(cube_color):
 
     corners = contours_finder.find_cube_corners_contours(extracted_cube)
     # TODO : EXTRACT CUBE LOCALIZATION
-    cube_location_computer.compute(corners)
+    cube_location_computer.compute_for_camera(corners)
     #cv2.imwrite("test.jpg", extracted_cube)
 
     for a in corners:
@@ -38,7 +38,7 @@ def localize_with_kinect(cube_color):
             cube_color)
         extracted_cube = cube_extractor.extract_cube(img_bgr)
 
-        return cube_location_computer.compute(extracted_cube, img_cloud)
+        return cube_location_computer.compute_for_kinect(extracted_cube, img_cloud)
     except:
         return Localization(None, None, unknown=True)
 

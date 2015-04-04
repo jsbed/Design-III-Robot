@@ -3,14 +3,18 @@ from statistics import mean
 from Robot.configuration.config import Config
 
 
-def compute(corners):
+def compute_for_camera(corners):
     try:
-        print(_find_position_and_size(corners))
+        print(_find_position_and_size_from_camera(corners))
     except:  # NO CORNERS
         pass
 
 
-def _find_position_and_size(corners):
+def compute_for_kinect(extracted_cube, img_cloud):
+    pass
+
+
+def _find_position_and_size_from_camera(corners):
     all_x = [coord[0] for coord in corners]
 
     mean_x = mean(all_x)
