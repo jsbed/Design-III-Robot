@@ -90,7 +90,6 @@ class RobotController():
         self._distance = self._point_adjustor. \
             calculate_distance_between_points(self._robot_position,
                                               destination_point)
-        print(destination_point)
         self._move_robot_towards_target_point(destination_point)
 
     def move_robot_to_localize_cube(self):
@@ -103,8 +102,8 @@ class RobotController():
             self._point_adjustor.find_robot_rotation(LOCALIZE_CUBE_ANGLE,
                                                      self._robot_position,
                                                      localization_position)
-        self._move_robot_towards_target_point(localization_position)
         self._append_rotations(rotation)
+        self._move_robot_towards_target_point(localization_position)
 
     def turn_switch_on(self):
         self._switch += 1
@@ -172,7 +171,7 @@ class RobotController():
 
     def next_instruction(self):
         self._robot.execute_instructions()
-    
+
     def end_cycle(self):
         self._led_manager.display_red_led()
 
@@ -202,6 +201,7 @@ class RobotController():
         return self._robot_is_facing_correct_angle(rotation)
 
     def _move_robot_towards_target_point(self, destination):
+        print("destination", destination)
         rotation = self._point_adjustor.find_robot_rotation(
             self._robot_orientation, self._robot_position, destination)
         self._append_rotations(rotation)
