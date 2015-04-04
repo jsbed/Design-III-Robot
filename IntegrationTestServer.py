@@ -1,5 +1,3 @@
-import os
-
 import zmq
 
 from Robot.communication.serial_port import SerialPort
@@ -36,8 +34,7 @@ if DEPLACEMENT_ENABLE or LEDS_ENABLE:
         timeout=Config().get_stm_serial_port_timeout())
 
 if LEDS_ENABLE:
-    flags_file_path = os.path.join("Robot", "resources", "flags.csv")
-    country_repository_filler.fill_repository_from_file(flags_file_path)
+    country_repository_filler.fill_repository()
     led_manager = LedManager(stm_serial)
 
 if DEPLACEMENT_ENABLE:

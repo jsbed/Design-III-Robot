@@ -1,12 +1,14 @@
-from Robot.question_analysis.country_result import CountryResult
-from Robot.question_analysis.question_analyser import QuestionAnalyser
 from nose.tools import assert_equal, assert_true, nottest
+
+from Robot.filler import country_repository_filler
+from Robot.question_analysis.question_analyser import QuestionAnalyser
 
 
 class TestQuestionAnalyser(object):
 
     def __init__(self):
         self._question_analyser = QuestionAnalyser()
+        country_repository_filler.fill_repository()
 
     def test_unemployment_rate(self):
         question = 'My unemployment rate is 40.6%.'

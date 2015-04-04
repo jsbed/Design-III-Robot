@@ -5,7 +5,7 @@ from Robot.country.country_repository import CountryRepository
 from Robot.cycle.objects.color import Color
 
 
-def fill_repository_from_file():
+def fill_repository():
     file_path = os.path.join(os.path.dirname(__file__), "..", "resources", "flags.csv")
     with open(file_path, newline='') as csvfile:
         country_dictionary = {}
