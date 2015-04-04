@@ -3,7 +3,8 @@ from PySide.QtCore import QThread
 from BaseStation.ui.utilities.Signal import Signal
 from Robot.communication.dtos.localization_dto import create_localization_dto
 from Robot.locators import robot_locator
-from Robot.locators.robot_localization_filter import RobotLocalizationFilter, ROBOT_LOCALIZATION_UPDATED
+from Robot.locators.robot_localization_filter import RobotLocalizationFilter,\
+    ROBOT_LOCALIZATION_UPDATED
 from Robot.utilities.observer import Observer
 
 
