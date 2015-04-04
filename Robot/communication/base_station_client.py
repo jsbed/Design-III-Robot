@@ -1,6 +1,6 @@
 import json
 
-from BaseStation.communication.tcp_server import QUESTION_OK_SIGNAL,\
+from BaseStation.communication.base_station_server import QUESTION_OK_SIGNAL,\
     START_CYCLE_SIGNAL
 from Robot.communication.dtos.cube_order_dto import create_cube_order_dto
 from Robot.communication.dtos.localization_dto import create_localization_from_localization_dto
