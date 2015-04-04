@@ -1,7 +1,7 @@
-import zmq
-
 from Robot.communication.serial_port import SerialPort
+from Robot.communication.tcp_server import TcpServer
 from Robot.configuration.config import Config
+from Robot.controller.instructions.lateral import Lateral
 from Robot.controller.instructions.move import Move
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
@@ -25,6 +25,7 @@ robot = None
 led_manager = None
 gripper_manager = None
 stm_serial = None
+server = None
 
 Config().load_config()
 
@@ -47,9 +48,7 @@ if GRIPPER_ENABLED:
 
 def up(message):
     value = int(message.split("-")[2])
-    print(str(value))
     robot.append_instruction(Move(value))
-    print("execute")
     robot.execute_instructions()
 
 
@@ -60,11 +59,15 @@ def down(message):
 
 
 def left(message):
-    print("left command")
+    value = -int(message.split("-")[2])
+    robot.append_instruction(Lateral(value))
+    robot.execute_instructions()
 
 
 def right(message):
-    print("right command")
+    value = int(message.split("-")[2])
+    robot.append_instruction(Lateral(value))
+    robot.execute_instructions()
 
 
 def rotate_right(message):
@@ -106,16 +109,13 @@ def set_all_led(color):
     led_manager._led_status = "F" + "".join(val for _ in range(9)) + "0"
     led_manager._display_new_led_status()
 
-
-context = zmq.Context()
-socket = context.socket(zmq.DEALER)  # @UndefinedVariable
-url = "tcp://{}:{}".format(ADDRESS, PORT)
-socket.bind(url)
-print("Listening on", url)
+server = TcpServer(ADDRESS, PORT)
+server.start_server()
+print("Listening on :", ADDRESS, str(PORT))
 
 while True:
     #  Wait for next request from client
-    message = socket.recv().decode("utf-8")
+    message = server.get_data()
 
     if message.startswith("move-up") and DEPLACEMENT_ENABLE:
         up(message)

@@ -16,7 +16,7 @@ class TcpServer():
         self._port = value
 
     def start_server(self):
-        url = "tcp://{}:{}".format(self._ip, self._port)
+        url = "tcp://{}:{}".format(self._host, self._port)
         self._socket.bind(url)
 
     def send_data(self, data):
