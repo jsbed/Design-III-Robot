@@ -4,23 +4,21 @@ import math
 from Robot.configuration import config
 from Robot.path_finding.point import Point
 
+ANGLE_ADJUSTMENT = 90
+ROTATION_MAX = 180
+
 
 class PointAdjustor():
-
-    def __init__(self):
-        self._target_point = Point(0, 0)
-        self._cube_center = Point(0, 0)
-        self._robot_position = Point(0, 0)
-        self._distance_between_points = (config.Config().get_cube_radius() +
-                                         config.Config().
-                                         get_distance_between_objects() +
-                                         config.Config().get_robot_radius() +
-                                         config.Config().get_gripper_size())
 
     def find_target_position(self, cube_position, robot_position):
         self._target_point = cube_position
         self._cube_center = cube_position
         self._robot_position = robot_position
+        self._distance_between_points = (config.Config().get_cube_radius() +
+                                         config.Config().
+                                         get_distance_between_objects() +
+                                         config.Config().get_robot_radius() +
+                                         config.Config().get_gripper_size())
 
         self._check_if_cube_is_too_close_to_wall()
 
@@ -32,30 +30,23 @@ class PointAdjustor():
 
         if (distance <= current_distance +
                 config.Config().get_distance_uncertainty()):
-            return Point(end.x, end.y)
-
+            return end
         else:
             angle = self.calculate_angle_between_points(start, end)
-            x = current_distance * math.cos(radians(angle))
-            y = current_distance * math.sin(radians(angle))
-            print("angle", angle)
-            print("x", x)
-            print("y", y)
-            return Point(start.x + int(x), start.y + int(y))
+            x = start.x + int(current_distance * math.cos(radians(angle)))
+            y = start.y + int(current_distance * math.sin(radians(angle)))
+            return Point(x, y)
 
-    def find_robot_rotation(self, robot_orientation, robot_position, point):
-        start_x = config.Config().get_table_width() - robot_position.x
-        end_x = config.Config().get_table_width() - point.x
-        start = Point(start_x, robot_position.y)
-        end = Point(end_x, point.y)
-        angle = self.calculate_angle_between_points(start, end)
-        rotation_angle = int(angle - robot_orientation - 90)
-        if (rotation_angle > 180):
+    def find_robot_rotation(self, robot_orientation, robot_position, target):
+        robot_position = Point(config.Config().get_table_width() -
+                               robot_position.x, robot_position.y)
+        target = Point(config.Config().get_table_width() - target.x, target.y)
+        angle = self.calculate_angle_between_points(robot_position, target)
+        rotation_angle = int(angle - robot_orientation - ANGLE_ADJUSTMENT)
+        if (rotation_angle > ROTATION_MAX):
             rotation_angle = rotation_angle - 360
-        if (rotation_angle < -180):
+        if (rotation_angle < -ROTATION_MAX):
             rotation_angle = 360 + rotation_angle
-
-        print(rotation_angle)
         return rotation_angle
 
     def calculate_distance_between_cube_and_closest_wall(self, cube_position):
