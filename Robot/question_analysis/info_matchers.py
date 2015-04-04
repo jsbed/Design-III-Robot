@@ -1,5 +1,6 @@
 import operator
 import re
+
 from nltk.corpus import stopwords
 
 
@@ -30,25 +31,15 @@ class NumericApproximationInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, expected_info):
         pattern = r'([\d,.\s-]+)'
-        self._expected_info = self._cast_to_float(expected_info)
+        self._expected_info = _cast_to_float(expected_info)
         super(NumericApproximationInfoMatcher, self).__init__(info_key, pattern)
-
-    def _cast_to_float(self, number):
-        number = number.replace(',', '').replace(' ', '')
-        if number[-1] == '.':
-            number = number[:-1]
-        try:
-            number = float(number)
-        except:
-            number = None
-        return number
 
     def match(self, info_data):
         score = 0.0
         info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match and any(char.isdigit() for char in info_data):
-            actual_info = self._cast_to_float(match.group(1))
+            actual_info = _cast_to_float(match.group(1))
             if actual_info:
                 # opposite of relative difference
                 score = 1.0 - (abs(self._expected_info - actual_info)/((self._expected_info + actual_info)/2))
@@ -59,28 +50,17 @@ class NumericInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, expected_info, op):
         pattern = r'([\d,.\s-]+)'
-        self._expected_info = self._cast_to_float(expected_info)
+        self._expected_info = _cast_to_float(expected_info)
         self._ops = {'=': operator.eq, '>': operator.gt, '<': operator.lt}
         self._op = self._ops[op]
         super(NumericInfoMatcher, self).__init__(info_key, pattern)
-
-    def _cast_to_float(self, number):
-        number = number.replace(',', '').replace(' ', '')
-        try:
-            if number[-1] == '.':
-                number = number[:-1]
-
-            number = float(number)
-        except:
-            number = None
-        return number
 
     def match(self, info_data):
         score = 0.0
         info_data = self.get_most_recent_info(info_data)
         match = self._regex.search(info_data)
         if match and any(char.isdigit() for char in info_data):
-            actual_info = self._cast_to_float(match.group(1))
+            actual_info = _cast_to_float(match.group(1))
             if actual_info and self._op(actual_info, self._expected_info):
                 score = 1.0
         return score
@@ -98,8 +78,8 @@ class NumericInfoMatcher(InfoMatcher):
 class BetweenMatcher(InfoMatcher):
 
     def __init__(self, info_key, lower_bound, upper_bound):
-        self._lower_bound = self._cast_to_float(lower_bound)
-        self._upper_bound = self._cast_to_float(upper_bound)
+        self._lower_bound = _cast_to_float(lower_bound)
+        self._upper_bound = _cast_to_float(upper_bound)
         self._sort_bounds()
         pattern = r"([\d.,-]+)"
         super(BetweenMatcher, self).__init__(info_key, pattern)
@@ -110,16 +90,10 @@ class BetweenMatcher(InfoMatcher):
         match = self._regex.search(info_data)
         if match:
             actual_value = match.group(1)
-            actual_value = self._cast_to_float(actual_value)
+            actual_value = _cast_to_float(actual_value)
             if self._lower_bound < actual_value < self._upper_bound:
                 score = 1.0
         return score
-
-    def _cast_to_float(self, number):
-        number = number.replace(',', '').replace(' ', '')
-        if number[-1] == '.':
-            number = number[:-1]
-        return float(number)
 
     def _sort_bounds(self):
         if self._lower_bound > self._upper_bound:
@@ -196,6 +170,17 @@ class IllicitDrugsActivitiesMatcher(InfoMatcher):
                 points += 1
         score = points/max_score
         return score
+
+
+def _cast_to_float(number):
+        number = number.replace(',', '').replace(' ', '')
+        try:
+            if number[-1] == '.':
+                number = number[:-1]
+            number = float(number)
+        except:
+            number = None
+        return number
 
 
 def _remove_stop_words(text):

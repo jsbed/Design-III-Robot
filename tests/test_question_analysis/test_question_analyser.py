@@ -1,4 +1,4 @@
-from nose.tools import assert_equal, assert_true, nottest
+from nose.tools import assert_equal, assert_true
 
 from Robot.filler import country_repository_filler
 from Robot.question_analysis.question_analyser import QuestionAnalyser
@@ -169,7 +169,8 @@ class TestQuestionAnalyser(object):
         assert_equal(self._question_analyser.answer_question(question), 'Costa Rica')
 
     def test_illicit_drugs(self):
-        question = 'What country has illicit drugs activities including a transshipment point for cocaine from South America to North America and illicit cultivation of cannabis?'
+        question = """What country has illicit drugs activities including a transshipment point for cocaine
+                    from South America to North America and illicit cultivation of cannabis?"""
         assert_equal(self._question_analyser.answer_question(question), 'Jamaica')
 
     def test_illicit_drugs_trafficking(self):
