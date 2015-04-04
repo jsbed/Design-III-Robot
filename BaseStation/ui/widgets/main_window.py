@@ -2,7 +2,7 @@ from PySide import QtGui
 from PySide.QtCore import Qt
 import json
 
-from BaseStation.communication.tcp_server import TcpServer
+from BaseStation.communication.base_station_server import BaseStationServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
 from BaseStation.ui.utilities.Chronometer import Chronometer, NEW_TIME_UPDATE
 from BaseStation.ui.utilities.Outputer import Outputer
@@ -29,7 +29,7 @@ class Main(QtGui.QMainWindow, Observer):
         self._robot_locator_worker = RobotLocatorWorker()
         self._items_displayer = ItemsDisplayer(self.ui.table_label.geometry())
         self._drawing_label = DrawingLabel(self._items_displayer, self)
-        self._tcp_server = TcpServer()
+        self._base_station_server = BaseStationServer()
         self._setup_ui()
         self._setup_tcp_servers()
 
@@ -55,9 +55,9 @@ class Main(QtGui.QMainWindow, Observer):
         self._robot_locator_worker.stop()
 
     def _setup_tcp_servers(self):
-        self._tcp_server.signal.custom_signal.connect(
+        self._base_station_server.signal.custom_signal.connect(
             self._handle_tcp_signal)
-        self._tcp_server.start()
+        self._base_station_server.start()
 
     def observer_update(self, event, value):
         if (event == NEW_TIME_UPDATE):
@@ -85,11 +85,11 @@ class Main(QtGui.QMainWindow, Observer):
         if ("request" in signal_data):
             if signal_data["request"] == ROBOT_LOCALIZATION_REQUEST:
                 localization = self._robot_locator_worker.get_localization()
-                self._tcp_server.send_localization_response(localization)
+                self._base_station_server.send_localization_response(localization)
 
     def _start_cycle(self):
         self._restart_cycle()
-        self._tcp_server.send_start_cycle_signal()
+        self._base_station_server.send_start_cycle_signal()
         self._chronometer.start()
         self.ui.startCycle.setEnabled(False)
 
@@ -118,11 +118,11 @@ class Main(QtGui.QMainWindow, Observer):
         self._clear_question_and_country()
 
     def _question_is_ok(self):
-        self._tcp_server.send_question_ok_signal()
+        self._base_station_server.send_question_ok_signal()
         self._set_question_buttons_enabled(False)
 
     def _ask_new_question(self):
-        self._tcp_server.send_new_question_signal()
+        self._base_station_server.send_new_question_signal()
         self._set_question_buttons_enabled(False)
         self._clear_question_and_country()
 

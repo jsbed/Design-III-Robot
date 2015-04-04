@@ -1,10 +1,9 @@
-import json
-
 from PySide.QtCore import QThread
-import zmq
+import json
 
 from BaseStation.ui.utilities.Signal import Signal
 from Robot.communication.dtos.localization_dto import create_localization_dto
+from Robot.communication.tcp_server import TcpServer
 from Robot.configuration.config import Config
 
 
@@ -13,28 +12,25 @@ ASK_NEW_QUESTION_SIGNAL = "ask new question"
 START_CYCLE_SIGNAL = "start cycle"
 
 
-class TcpServer(QThread):
+class BaseStationServer(TcpServer, QThread):
 
     def __init__(self):
+        TcpServer.__init__(self, Config().get_base_station_ip(),
+                           Config().get_base_station_port())
         QThread.__init__(self)
-        self._port = Config().get_base_station_port()
-        self._ip = Config().get_base_station_ip()
-        self._context = zmq.Context()
-        self._socket = self._context.socket(zmq.DEALER)  # @UndefinedVariable
         self.signal = Signal()
 
     def send_question_ok_signal(self):
-        self._socket.send(bytes(QUESTION_OK_SIGNAL, "utf-8"))
+        self.send_data(QUESTION_OK_SIGNAL)
 
     def send_new_question_signal(self):
-        self._socket.send(bytes(ASK_NEW_QUESTION_SIGNAL, "utf-8"))
+        self.send_data(ASK_NEW_QUESTION_SIGNAL)
 
     def send_start_cycle_signal(self):
-        self._socket.send(bytes(START_CYCLE_SIGNAL, "utf-8"))
+        self.send_data(START_CYCLE_SIGNAL)
 
     def run(self):
-        url = "tcp://{}:{}".format(self._ip, self._port)
-        self._socket.bind(url)
+        self.start_server()
         self._send_message("Base Station Request Server listening on port " +
                            str(self._port))
         self._wait_for_messages()
@@ -42,8 +38,7 @@ class TcpServer(QThread):
     def _wait_for_messages(self):
         while True:
             try:
-                data = self._socket.recv().decode("utf-8")
-                self.signal.custom_signal.emit(data)
+                self.signal.custom_signal.emit(self.get_data())
             except Exception as e:
                 self._send_message("Base Station Server error: " + str(e))
 
