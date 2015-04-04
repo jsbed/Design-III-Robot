@@ -7,7 +7,7 @@ from Robot.path_finding.point import Point
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
-class TestPointAdjuster(unittest.TestCase):
+class TestPointAdjusterTargetPosition(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
