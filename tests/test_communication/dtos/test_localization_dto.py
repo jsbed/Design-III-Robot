@@ -1,13 +1,13 @@
 from unittest.mock import patch, Mock
 import unittest
 
-from Robot.communication.localization.localization_dto import create_localization_dto,\
+from Robot.communication.dtos.localization_dto import create_localization_dto,\
     create_localization_from_localization_dto
 from Robot.locators.localization import Localization
 from Robot.path_finding.point import Point
 
 
-@patch("Robot.communication.localization.localization_dto.json")
+@patch("Robot.communication.dtos.localization_dto.json")
 class TestLocalizationDto(unittest.TestCase):
 
     UNKNOWN_LOCALIZATION = Localization(None, None, unknown=True)

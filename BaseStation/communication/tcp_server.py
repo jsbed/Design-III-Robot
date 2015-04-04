@@ -4,7 +4,7 @@ from PySide.QtCore import QThread
 import zmq
 
 from BaseStation.ui.utilities.Signal import Signal
-from Robot.communication.localization.localization_dto import create_localization_dto
+from Robot.communication.dtos.localization_dto import create_localization_dto
 from Robot.configuration.config import Config
 
 

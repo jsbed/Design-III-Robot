@@ -1,7 +1,6 @@
-import json
-
 from PySide import QtGui
 from PySide.QtCore import Qt
+import json
 
 from BaseStation.communication.tcp_server import TcpServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -11,8 +10,8 @@ from BaseStation.ui.widgets.drawing_label import DrawingLabel
 from BaseStation.ui.widgets.flag_displayer import FlagDisplayer
 from BaseStation.ui.widgets.items_displayer import ItemsDisplayer
 from BaseStation.workers.robot_locator_worker import RobotLocatorWorker
-from Robot.communication.localization.localization_dto import create_localization_from_localization_dto
-from Robot.communication.localization.localization_request import ROBOT_LOCALIZATION_REQUEST
+from Robot.communication.dtos.localization_dto import create_localization_from_localization_dto
+from Robot.communication.requests.localization_request import ROBOT_LOCALIZATION_REQUEST
 from Robot.utilities.observer import Observer
 
 
