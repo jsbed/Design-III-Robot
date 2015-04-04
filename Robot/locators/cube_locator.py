@@ -10,11 +10,9 @@ def localize_with_camera(cube_color):
     original_image = Camera().get_data()
     extractor = cube_extractor_factory.create_cube_extractor(cube_color)
     extracted_cube = extractor.extract_cube(original_image)
-
     corners = contours_finder.find_cube_corners_contours(extracted_cube)
 
-    # TODO : EXTRACT CUBE LOCALIZATION
-    cube_location_computer.compute_for_camera(corners)
+    return cube_location_computer.compute_for_camera(corners)
 
 
 def localize_with_kinect(cube_color):
