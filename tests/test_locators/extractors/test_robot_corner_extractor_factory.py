@@ -5,7 +5,7 @@ from Robot.cycle.objects.color import Color
 from Robot.locators.extractors.robot_corner.robot_corner_extractor_factory import create_robot_corner_extractor
 
 
-class TestCubeExtractor(unittest.TestCase):
+class TestRobotCornerExtractor(unittest.TestCase):
 
     @patch("Robot.locators.extractors.robot_corner.pink_robot_corner_extractor.PinkRobotCornerExtractor")
     def test_create_pink_robot_corner_extractor(self, SegmentatorMock):
