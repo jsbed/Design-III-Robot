@@ -14,6 +14,10 @@ class SerialPort():
     def send_array_of_ints(self, array):
         self._serial.write(bytearray(array))
 
+    # Wait for a non-empty line in the serial port
     def wait_for_read_line(self):
-        while not self._serial.readline():
-            pass
+        while True:
+            line = self._serial.readline()
+
+            if line:
+                return line.decode("utf-8")

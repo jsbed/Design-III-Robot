@@ -3,13 +3,14 @@ from Robot.locators.localization import Localization
 from Robot.utilities.observable import Observable
 
 
-FIRST_INSTRUCTION = 0
 INSTRUCTION_FINISHED = "finished instruction"
 SWITCH_ACTIVATED = "switch activated"
 SWITCH_DEACTIVATED = "switch deactivated"
 
 
 class Robot(Observable):
+
+    FIRST_INSTRUCTION = 0
 
     def __init__(self, serial_port):
         Observable.__init__(self)
@@ -21,18 +22,10 @@ class Robot(Observable):
         self._instructions.append(instruction)
 
     def execute_instructions(self):
-        command = self._instructions.pop(FIRST_INSTRUCTION)
+        command = self._instructions.pop(self.FIRST_INSTRUCTION)
         print("execute:", command)
         command.execute(self._serial_port)
-        self._serial_port.wait_for_read_line()
-        #signal_message = self._serial_port.readline()
-        print("instruction finished")
-        # print(signal_message)
-        # if (signal_message == "switch on"):
-        #    self.notify(SWITCH_ACTIVATED, None)
-        # elif (signal_message == "switch off"):
-        #    self.notify(SWITCH_DEACTIVATED, None)
-        self.notify(INSTRUCTION_FINISHED, None)
+        self._wait_until_robot_stops_moving()
 
     def update_localization(self):
         print("requesting position")
@@ -53,3 +46,20 @@ class Robot(Observable):
 
     def get_instructions(self):
         return self._instructions
+
+    def _wait_until_robot_stops_moving(self):
+        instruction_finished = False
+
+        while not instruction_finished:
+            message = self._serial_port.wait_for_read_line()
+            print(message)
+
+            if (message == "switch on"):
+                self.notify(SWITCH_ACTIVATED, None)
+            elif (message == "switch off"):
+                self.notify(SWITCH_DEACTIVATED, None)
+            elif (message == "ok"):
+                instruction_finished = True
+
+        self.notify(INSTRUCTION_FINISHED, None)
+        print("instruction finished")
