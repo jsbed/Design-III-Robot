@@ -116,7 +116,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         self.assertTrue(RobotController().arrived_at_zone_atlas())
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -124,7 +124,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.BaseStationClient')
     def test_move_to_atlas_when_robot_rotation_required_is_higher_than_rotation_max_then_rotate_is_called_twice(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
-            RobotMock, RotateMock, MoveMock, TimeMock, SerialPortMock):
+            RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
         config_mock.get_atlas_zone_position = Mock(return_value=Point(25, 25))
         config_mock.get_rotation_min = Mock(return_value=3)
@@ -141,7 +141,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         self.assertEqual(RotateMock.call_count, 2)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -149,7 +149,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.BaseStationClient')
     def test_move_to_atlas_when_robot_rotation_required_is_lower_than_rotation_max_then_rotate_is_called_once(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
-            RobotMock, RotateMock, MoveMock, TimeMock, SerialPortMock):
+            RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
         config_mock.get_atlas_zone_position = Mock(return_value=Point(25, 25))
         config_mock.get_rotation_min = Mock(return_value=3)
@@ -166,7 +166,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         self.assertEqual(RotateMock.call_count, 1)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -174,7 +174,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.BaseStationClient')
     def test_move_to_atlas_when_distance_is_shorter_than_min_distance_then_move_is_not_called(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
-            RobotMock, RotateMock, MoveMock, TimeMock, SerialPortMock):
+            RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
         config_mock.get_atlas_zone_position = Mock(return_value=Point(25, 25))
         config_mock.get_rotation_min = Mock(return_value=3)
@@ -188,10 +188,10 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().move_to_atlas()
-        self.assertEqual(MoveMock.call_count, 0)
+        self.assertEqual(MoveForwardMock.call_count, 0)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -199,7 +199,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.BaseStationClient')
     def test_move_to_atlas_when_rotation_is_shorter_than_min_rotation_then_rotate_is_not_called(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
-            RobotMock, RotateMock, MoveMock, TimeMock, SerialPortMock):
+            RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
         config_mock.get_atlas_zone_position = Mock(return_value=Point(25, 25))
         config_mock.get_rotation_min = Mock(return_value=3)
@@ -216,7 +216,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         self.assertEqual(RotateMock.call_count, 0)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -224,7 +224,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.BaseStationClient')
     def test_move_to_atlas_then_execute_instructions_is_called(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
-            RobotMock, RotateMock, MoveMock, TimeMock, SerialPortMock):
+            RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
         config_mock.get_atlas_zone_position = Mock(return_value=Point(25, 25))
         config_mock.get_rotation_min = Mock(return_value=3)

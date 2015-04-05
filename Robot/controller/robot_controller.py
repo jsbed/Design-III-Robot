@@ -4,8 +4,8 @@ import time
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.communication.serial_port import SerialPort
 from Robot.configuration import config
-from Robot.controller.instructions.lateral import Lateral
-from Robot.controller.instructions.move import Move
+from Robot.controller.instructions.move_forward import MoveForward
+from Robot.controller.instructions.move_right import MoveRight
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.cycle import atlas
@@ -141,7 +141,7 @@ class RobotController():
                     config.Config().get_cube_radius()):
                 push_distance = (self._distance + wall_distance +
                                  config.Config().get_cube_radius())
-            self._robot.append_instruction(Move(push_distance))
+            self._robot.append_instruction(MoveForward(push_distance))
             self._robot.execute_instructions()
 
     def move_forward_to_target_zone(self, target_zone_position):
@@ -156,17 +156,17 @@ class RobotController():
         lateral_distance = target_zone_position.x - self._robot_position.x
         if (lateral_distance > config.Config().get_distance_min() or
                 lateral_distance < -config.Config().get_distance_min()):
-            self._robot.append_instruction(Lateral(lateral_distance))
+            self._robot.append_instruction(MoveRight(lateral_distance))
         self._robot.append_instruction(
-            Move(self._robot_position.y - target_zone_position.y -
-                 config.Config().get_gripper_size() -
-                 config.Config().get_cube_radius() -
-                 config.Config().get_robot_radius()))
+            MoveForward(self._robot_position.y - target_zone_position.y -
+                        config.Config().get_gripper_size() -
+                        config.Config().get_cube_radius() -
+                        config.Config().get_robot_radius()))
         self._robot.execute_instructions()
 
     def move_backward(self):
-        self._robot.append_instruction(Move((config.Config().
-                                             get_move_backward_distance())))
+        self._robot.append_instruction(MoveForward((config.Config().
+                                                    get_move_backward_distance())))
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
@@ -209,7 +209,7 @@ class RobotController():
             self._robot_orientation, self._robot_position, destination)
         self._append_rotations(rotation)
         if (self._distance >= config.Config().get_distance_min()):
-            self._robot.append_instruction(Move(self._distance))
+            self._robot.append_instruction(MoveForward(self._distance))
         self._send_new_path(destination)
 
     def _send_new_path(self, target_point):

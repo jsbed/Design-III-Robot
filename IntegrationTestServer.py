@@ -1,8 +1,8 @@
 from Robot.communication.serial_port import SerialPort
 from Robot.communication.tcp_server import TcpServer
 from Robot.configuration.config import Config
-from Robot.controller.instructions.lateral import Lateral
-from Robot.controller.instructions.move import Move
+from Robot.controller.instructions.move_forward import MoveForward
+from Robot.controller.instructions.move_right import MoveRight
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.country.country_repository import CountryRepository
@@ -48,25 +48,25 @@ if GRIPPER_ENABLED:
 
 def up(message):
     value = int(message.split("-")[2])
-    robot.append_instruction(Move(value))
+    robot.append_instruction(MoveForward(value))
     robot.execute_instructions()
 
 
 def down(message):
     value = -int(message.split("-")[2])
-    robot.append_instruction(Move(value))
+    robot.append_instruction(MoveForward(value))
     robot.execute_instructions()
 
 
 def left(message):
     value = -int(message.split("-")[2])
-    robot.append_instruction(Lateral(value))
+    robot.append_instruction(MoveRight(value))
     robot.execute_instructions()
 
 
 def right(message):
     value = int(message.split("-")[2])
-    robot.append_instruction(Lateral(value))
+    robot.append_instruction(MoveRight(value))
     robot.execute_instructions()
 
 

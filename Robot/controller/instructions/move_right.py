@@ -8,7 +8,7 @@ MOVE_LEFT = "LE"
 MOVE_RIGHT = "RI"
 
 
-class Lateral(RobotInstruction):
+class MoveRight(RobotInstruction):
 
     def __init__(self, distance_cm):
         self._distance_mm = int(distance_cm * CM_TO_MM_MULTIPLIER)

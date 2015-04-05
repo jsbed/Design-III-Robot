@@ -9,6 +9,7 @@ from Robot.path_finding.point import Point
 
 @patch('Robot.controller.robot_controller.SerialPort')
 class RobotControllerTestForRobotMoveTo(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls._cube = Cube(Color.RED, Point(50, 10))
@@ -100,7 +101,7 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
                 self._cube.get_localization().position))
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -131,7 +132,7 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
         assert robot_mock.execute_instructions.called
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -161,7 +162,7 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
         assert robot_mock.execute_instructions.called
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
@@ -189,7 +190,7 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
         self.assertEqual(RotateMock.call_count, 4)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
     @patch('Robot.controller.robot_controller.config.Config')
@@ -212,7 +213,7 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
         MoveMock.assert_called_with(-8)
 
     @patch("time.sleep")
-    @patch('Robot.controller.robot_controller.Move')
+    @patch('Robot.controller.robot_controller.MoveForward')
     @patch('Robot.controller.robot_controller.Rotate')
     @patch('Robot.controller.robot_controller.Robot')
     @patch('Robot.controller.robot_controller.PointAdjustor')
