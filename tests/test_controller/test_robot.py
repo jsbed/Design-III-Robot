@@ -6,6 +6,8 @@ from Robot.controller.robot import Robot
 
 class RobotTest(unittest.TestCase):
 
+    FINISHED_INSTRUCTION_SIGNAL = "ok"
+
     def setUp(self):
         self._robot = Robot(self._create_serial_port_mock())
 
@@ -16,7 +18,9 @@ class RobotTest(unittest.TestCase):
 
     def _create_serial_port_mock(self):
         a_mock = MagicMock()
-        a_mock.wait_for_read_line = Mock()
+        a_mock.wait_for_read_line = Mock(
+            return_value=self.FINISHED_INSTRUCTION_SIGNAL)
+
         return a_mock
 
     def test_given_an_instruction_when_execute_instruction_should_execute_given_instruction(self):
