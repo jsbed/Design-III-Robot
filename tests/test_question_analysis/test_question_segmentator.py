@@ -1,4 +1,5 @@
 from nose.tools import assert_equal
+
 from Robot.question_analysis.question_segmentator import QuestionSegmentator
 
 

@@ -22,7 +22,7 @@ class InfoMatcher(object):
 
     def get_most_recent_info(self, info_data):
         if isinstance(info_data, list):
-            info_data = list(filter(lambda el: 'NA' not in el, info_data))
+            info_data = [el for el in info_data if 'NA' not in el]
             info_data = info_data[0]
         return info_data
 
@@ -75,14 +75,14 @@ class NumericInfoMatcher(InfoMatcher):
         return hash(self._op) + hash(self._expected_info)
 
 
-class BetweenMatcher(InfoMatcher):
+class BetweenInfoMatcher(InfoMatcher):
 
     def __init__(self, info_key, lower_bound, upper_bound):
         self._lower_bound = _cast_to_float(lower_bound)
         self._upper_bound = _cast_to_float(upper_bound)
         self._sort_bounds()
         pattern = r"([\d.,-]+)"
-        super(BetweenMatcher, self).__init__(info_key, pattern)
+        super(BetweenInfoMatcher, self).__init__(info_key, pattern)
 
     def match(self, info_data):
         score = 0.0
@@ -138,21 +138,6 @@ class LengthMatcher(InfoMatcher):
         if match and len(match.group(1).split()) == self._length:
             score = 1.0
         return score
-
-
-class NationalAnthemMatcher(InfoMatcher):
-
-    def __init__(self, national_anthem):
-        info_key = 'national anthem'
-        regex = re.compile(national_anthem, re.IGNORECASE)
-        super(NationalAnthemMatcher, self).__init__(info_key, regex)
-
-
-class ClimateMatcher(InfoMatcher):
-
-    def __init__(self, info_key, climate):
-        pattern = climate
-        super(ClimateMatcher, self).__init__(info_key, pattern)
 
 
 class IllicitDrugsActivitiesMatcher(InfoMatcher):

@@ -41,6 +41,7 @@ class QuestionAnalyser(object):
 
             if not country_matches:
                 raise Exception("No country found")
+
         country_answer = country_matches[0]
         for country_match in country_matches[1:]:
             country_answer = list(filter(lambda el: el in country_match, country_answer))

@@ -1,6 +1,6 @@
 import re
-from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, LengthMatcher, BetweenMatcher, \
-    NumericInfoMatcher, ClimateMatcher, IllicitDrugsActivitiesMatcher, NumericApproximationInfoMatcher
+from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, LengthMatcher, BetweenInfoMatcher, \
+    NumericInfoMatcher, IllicitDrugsActivitiesMatcher, NumericApproximationInfoMatcher
 
 
 END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ']
@@ -157,7 +157,7 @@ class QuestionWithIntervalMatcher(TextQuestionMatcher):
 
     def __init__(self, attribute):
         pattern = r'between ([\d\.\s,-]+)%? and ([\d\.\s,-]+)%?'
-        info_matcher = BetweenMatcher
+        info_matcher = BetweenInfoMatcher
         super(QuestionWithIntervalMatcher, self).__init__(attribute, pattern, info_matcher)
 
     def get_info_matcher(self, question):
@@ -214,7 +214,7 @@ class Climate(QuestionMatcher):
     def __init__(self):
         pattern = r'\s?([\w]+) climate'
         attribute = 'climate'
-        info_matcher = ClimateMatcher
+        info_matcher = InfoMatcher
         super(Climate, self).__init__(pattern, info_matcher, attribute)
 
 

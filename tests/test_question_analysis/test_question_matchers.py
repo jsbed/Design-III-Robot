@@ -1,8 +1,9 @@
 from nose.tools import assert_true
 
-from Robot.question_analysis.question_matchers import EqualsMatcher, GreaterThanMatcher, LessThanMatcher, StartsWithMatcher, \
-    EndsWithMatcher, QuestionWithIntervalMatcher, TextQuestionMatcher, ContainsMatcher, ApproximationMatcher, \
-    LatitudeMatcher
+from Robot.question_analysis.question_matchers import EqualsMatcher, GreaterThanMatcher, LessThanMatcher
+from Robot.question_analysis.question_matchers import EndsWithMatcher, TextQuestionMatcher, StartsWithMatcher
+from Robot.question_analysis.question_matchers import LatitudeMatcher, ContainsMatcher, ApproximationMatcher
+from Robot.question_analysis.question_matchers import QuestionWithIntervalMatcher
 
 
 def only_one(a_lst):
@@ -17,8 +18,6 @@ def only_one(a_lst):
 
 
 class TestQuestionMatchers(object):
-    def __init__(self):
-        pass
 
     def assert_info_matcher_list(self, info_matchers, data):
         info_matcher_results = list(map(lambda el: el.match(data), info_matchers))
