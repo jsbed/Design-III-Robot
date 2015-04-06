@@ -8,7 +8,7 @@ MOVE_BACKWARD = "BA"
 MOVE_FOWARD = "GO"
 
 
-class Move(RobotInstruction):
+class MoveForward(RobotInstruction):
 
     def __init__(self, distance_cm):
         self._distance_mm = int(distance_cm * CM_TO_MM_MULTIPLIER)
