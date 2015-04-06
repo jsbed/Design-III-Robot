@@ -16,17 +16,17 @@ class QuestionMatcher(object):
         self._info_matcher = info_matcher
 
     def find_info(self, question):
-        return self.get_info_matcher(question)
+        return self._get_info_matcher(question)
 
-    def get_match(self, question):
+    def _get_match(self, question):
         match = self._regex.search(question)
         if match:
             match = match.group(1)
         return match
 
-    def get_info_matcher(self, question):
+    def _get_info_matcher(self, question):
         info_matcher = None
-        match = self.get_match(question)
+        match = self._get_match(question)
         if match:
             info_matcher = self._info_matcher(self._attribute, match)
         return info_matcher
@@ -103,7 +103,7 @@ class TextQuestionMatcher(QuestionMatcher):
                     end_positions = [position.start() for position in re.finditer(end_delimiter, substring, re.IGNORECASE)]
                     values = [substring[:position] for position in end_positions]
                     for value in values:
-                        info_matcher = self.get_info_matcher(value)
+                        info_matcher = self._get_info_matcher(value)
                         if info_matcher:
                             info_matchers.add(info_matcher)
         return info_matchers
@@ -116,7 +116,7 @@ class LatitudeMatcher(TextQuestionMatcher):
         attribute = 'latitude'
         super(LatitudeMatcher, self).__init__(attribute, value_matcher)
 
-    def get_match(self, question):
+    def _get_match(self, question):
         match = self._regex.search(question)
         if match:
             match = match.group(1).replace('.', ' ')
@@ -130,7 +130,7 @@ class LongitudeMatcher(TextQuestionMatcher):
         attribute = 'longitude'
         super(LongitudeMatcher, self).__init__(attribute, value_matcher)
 
-    def get_match(self, question):
+    def _get_match(self, question):
         match = self._regex.search(question)
         if match:
             match = match.group(1).replace('.', ' ')
@@ -160,16 +160,16 @@ class QuestionWithIntervalMatcher(TextQuestionMatcher):
         info_matcher = BetweenInfoMatcher
         super(QuestionWithIntervalMatcher, self).__init__(attribute, pattern, info_matcher)
 
-    def get_info_matcher(self, question):
+    def _get_info_matcher(self, question):
         info_matcher = None
-        match = self.get_match(question)
+        match = self._get_match(question)
         if match:
             lower_bound = match.group(1)
             upper_bound = match.group(2)
             info_matcher = self._info_matcher(self._attribute, lower_bound, upper_bound)
         return info_matcher
 
-    def get_match(self, question):
+    def _get_match(self, question):
         return self._regex.search(question)
 
 
@@ -180,9 +180,9 @@ class NumericQuestionMatcher(TextQuestionMatcher):
         info_matcher = NumericInfoMatcher
         super(NumericQuestionMatcher, self).__init__(attribute, pattern, info_matcher)
 
-    def get_info_matcher(self, question):
+    def _get_info_matcher(self, question):
         info_matcher = None
-        match = self.get_match(question)
+        match = self._get_match(question)
         if match:
             info_matcher = self._info_matcher(self._attribute, match, self._op)
         return info_matcher
