@@ -20,7 +20,7 @@ def compute_distance_from_camera(corners):
     return Config().get_cube_radius() / tan(radians(cube_angle / 2))
 
 
-def computer_center_angle_from_camera(corners):
+def compute_center_angle_from_camera(corners):
     cube_center = _find_position_from_camera(corners)
 
     return CAMERA_FIELD_OF_VIEW_ANGLE * cube_center / \
