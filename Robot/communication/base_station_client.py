@@ -30,6 +30,11 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
 
         return self._wait_for_user_country_response()
 
+    def send_country_error(self):
+        self.send_data(json.dumps({'country-error': ""}))
+
+        return self._wait_for_user_country_response()
+
     def wait_for_start_cycle_signal(self):
         while self.get_data() != START_CYCLE_SIGNAL:
             pass

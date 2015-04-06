@@ -1,6 +1,7 @@
+import json
+
 from PySide import QtGui
 from PySide.QtCore import Qt
-import json
 
 from BaseStation.communication.base_station_server import BaseStationServer
 from BaseStation.ui.QtProject.GeneratedFiles.mainwindow import Ui_MainWindow
@@ -77,6 +78,9 @@ class Main(QtGui.QMainWindow, Observer):
         if ("country" in signal_data):
             self._flag_displayer.display_country(signal_data["country"])
             self._set_question_buttons_enabled(True)
+        if ("country-error" in signal_data):
+            self.ui.countryLabel.setText("Not found (error)")
+            self.ui.new_question_button.setEnabled(True)
         if ("end-signal" in signal_data):
             self._outputer.output("Cycle finished")
             self._items_displayer.remove_path()
@@ -85,7 +89,8 @@ class Main(QtGui.QMainWindow, Observer):
         if ("request" in signal_data):
             if signal_data["request"] == ROBOT_LOCALIZATION_REQUEST:
                 localization = self._robot_locator_worker.get_localization()
-                self._base_station_server.send_localization_response(localization)
+                self._base_station_server.send_localization_response(
+                    localization)
 
     def _start_cycle(self):
         self._restart_cycle()

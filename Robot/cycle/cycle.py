@@ -185,10 +185,13 @@ class Cycle(Observer):
         BaseStationClient().send_question(self._question)
 
     def _analyse_question(self):
-        country_name = QuestionAnalyser().answer_question(self._question)
-        self._country = CountryRepository().get(country_name)
-
-        return BaseStationClient().send_country(self._country)
+        try:
+            country_name = QuestionAnalyser().answer_question(self._question)
+            self._country = CountryRepository().get(country_name)
+        except:
+            return BaseStationClient().send_country_error()
+        else:
+            return BaseStationClient().send_country(self._country)
 
     def _display_country(self):
         self._robot_controller.display_country_leds(self._country)
