@@ -12,7 +12,7 @@ def find_cube_distance_from_camera(cube_color):
     return cube_location_computer.compute_distance_from_camera(cube_corners)
 
 
-def find_cube_center_angle_with_camera(cube_color):
+def find_cube_center_angle_from_camera(cube_color):
     cube_corners = _find_cube_corners_from_camera(cube_color)
 
     return cube_location_computer.computer_center_angle_from_camera(cube_corners)
