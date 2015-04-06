@@ -2,7 +2,7 @@ import cv2
 import numpy
 
 
-def find_robot_corners_contours(img):
+def find_extracted_shape_contour(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     contours = cv2.findContours(gray, cv2.RETR_LIST,
                                 cv2.CHAIN_APPROX_SIMPLE)[1]
