@@ -51,10 +51,10 @@ class Robot(Observable):
         instruction_finished = False
 
         while not instruction_finished:
-            message = self._serial_port.wait_for_read_line()
+            message = self._serial_port.wait_for_read_line().lower()
             print(message)
 
-            if (message == "switch on"):
+            if (message == "switch1" or message == "switch2"):
                 self.notify(SWITCH_ACTIVATED, None)
             elif (message == "switch off"):
                 self.notify(SWITCH_DEACTIVATED, None)
