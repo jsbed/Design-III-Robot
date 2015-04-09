@@ -1,3 +1,4 @@
+from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
 from Robot.locators.extractors.cube import cube_extractor_factory
 from Robot.locators.localization import Localization
@@ -19,6 +20,13 @@ def find_cube_center_angle_from_camera(cube_color):
 
 
 def localize_with_kinect(cube_color):
+    if Color.is_segmentable(cube_color):
+        return _localicalize_with_kinect(cube_color)
+    else:
+        return Localization(None, None, unknown=True)
+
+
+def _localicalize_with_kinect(cube_color):
     try:
         img_bgr, img_cloud = Kinect().get_data()
         extractor = cube_extractor_factory.create_cube_extractor(cube_color)
