@@ -11,3 +11,7 @@ class Color(Enum):
     BLACK = 6
     PINK = 7
     ORANGE = 8
+
+    @staticmethod
+    def is_segmentable(color):
+        return color.value != 5 and color.value != 6 and color.value != 0
