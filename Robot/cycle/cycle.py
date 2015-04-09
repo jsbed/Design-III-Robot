@@ -147,10 +147,6 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
-        # if (self._robot_controller.get_switch_status()):
-        #    self._state = CycleState.PICK_UP_CUBE
-        #    self._next_state()
-        # else:
         self._cube.set_localization_position(
             self._robot_controller.find_cube_position(self._cube))
         print("Cube position : ", self._cube.get_localization().position)

@@ -56,11 +56,13 @@ class PointAdjustor():
                        cube_position.y - 0))
 
     def calculate_cube_position(self, distance, robot_orientation):
-        x = int(distance * math.sin(radians(robot_orientation)))        
-        y = int(distance * math.cos(radians(robot_orientation)) + config.Config().get_cube_radius() + config.Config().get_robot_radius() + config.Config().get_gripper_size())
-        
+        x = int(distance * math.sin(radians(robot_orientation)))
+        y = int(distance * math.cos(radians(robot_orientation)) +
+                config.Config().get_cube_radius() +
+                config.Config().get_robot_radius() +
+                config.Config().get_gripper_size())
+
         return (x, y)
-                
 
     '''
     Description: Verify if the cube is too close or next to a wall

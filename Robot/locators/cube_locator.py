@@ -1,3 +1,5 @@
+import cv2
+
 from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
 from Robot.locators.extractors.cube import cube_extractor_factory
@@ -8,15 +10,21 @@ from Robot.resources.kinect import Kinect
 
 
 def find_cube_distance_from_camera(cube_color):
-    cube_corners = _find_cube_corners_from_camera(cube_color)
+    try:
+        cube_corners = _find_cube_corners_from_camera(cube_color)
 
-    return cube_location_computer.compute_distance_from_camera(cube_corners)
+        return cube_location_computer.compute_distance_from_camera(cube_corners)
+    except Exception as e:
+        raise Exception("Cube distance not found : ", str(e))
 
 
 def find_cube_center_angle_from_camera(cube_color):
-    cube_corners = _find_cube_corners_from_camera(cube_color)
+    try:
+        cube_corners = _find_cube_corners_from_camera(cube_color)
 
-    return cube_location_computer.compute_center_angle_from_camera(cube_corners)
+        return cube_location_computer.compute_center_angle_from_camera(cube_corners)
+    except Exception as e:
+        raise Exception("Cube center angle not found : ", str(e))
 
 
 def localize_with_kinect(cube_color):
@@ -40,6 +48,7 @@ def _localicalize_with_kinect(cube_color):
 
 def _find_cube_corners_from_camera(cube_color):
     original_image = Camera().get_data()
+    cv2.imwrite("last_cube_img.jpg")
     extractor = cube_extractor_factory.create_cube_extractor(cube_color)
     extracted_cube = extractor.extract_cube(original_image)
 

@@ -113,32 +113,33 @@ class RobotController():
         self._robot.execute_instructions()
 
     def robot_is_facing_cube(self, cube):
-        angle = abs(cube_locator.find_cube_center_angle_from_camera(
-            cube.get_color()))
+        try:
+            self._angle = abs(cube_locator.find_cube_center_angle_from_camera(
+                cube.get_color()))
+        except:
+            self._angle = None
+            print("robot_is_facing_cube : cube not found")
+            return False
+        else:
+            print("robot_is_facing_cube : ", self._angle <=
+                  config.Config().get_orientation_uncertainty())
 
-        print("robot_is_facing_cube : ", angle <=
-              config.Config().get_orientation_uncertainty())
-
-        return angle <= config.Config().get_orientation_uncertainty()
+            return self._angle <= config.Config().get_orientation_uncertainty()
 
     def rotate_robot_torwards_cube(self, cube):
-        angle = cube_locator.find_cube_center_angle_from_camera(
-            cube.get_color())
-        self._append_rotations(angle)
-        self._robot.execute_instructions()
+        if self._angle:
+            self._append_rotations(self._angle)
+            self._robot.execute_instructions()
+        else:
+            self._fix_robot_orientation_for_localization()
 
     def find_cube_position(self, cube):
         self._update_robot_localization()
 
-        angle = cube_locator.find_cube_center_angle_from_camera(
-            cube.get_color())
-
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
         x, y = PointAdjustor().calculate_cube_position(
-            distance, self._robot_orientation + angle)
-        
-        
+            distance, self._robot_orientation + self._angle)
 
         return Point(self._robot_position.x + x, self._robot_position.y + y)
 
@@ -215,6 +216,18 @@ class RobotController():
 
     def end_cycle(self):
         self._led_manager.display_red_led()
+
+    def _fix_robot_orientation_for_localization(self):
+        self._update_robot_localization()
+        angle_fix = config.Config().get_adjusted_localization_rotation()
+
+        if self._robot_orientation <= 180:
+            self._append_rotations(- angle_fix - self._robot_orientation)
+        else:
+            self._append_rotations(abs(
+                self._robot_orientation - 360 - angle_fix))
+
+        self._robot.execute_instructions()
 
     def _update_robot_localization(self):
         time.sleep(3)
