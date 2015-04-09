@@ -122,7 +122,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.PointAdjustor')
     @patch('Robot.controller.robot_controller.config.Config')
     @patch('Robot.controller.robot_controller.BaseStationClient')
-    def test_move_to_atlas_when_robot_rotation_required_is_higher_than_rotation_max_then_rotate_is_called_twice(
+    def test_move_to_atlas_when_robot_rotation_required_is_higher_than_rotation_max_then_rotate_is_called_4_times(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
             RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
@@ -138,7 +138,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().move_to_atlas()
-        self.assertEqual(RotateMock.call_count, 2)
+        self.assertEqual(RotateMock.call_count, 4)
 
     @patch("time.sleep")
     @patch('Robot.controller.robot_controller.MoveForward')
@@ -147,7 +147,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
     @patch('Robot.controller.robot_controller.PointAdjustor')
     @patch('Robot.controller.robot_controller.config.Config')
     @patch('Robot.controller.robot_controller.BaseStationClient')
-    def test_move_to_atlas_when_robot_rotation_required_is_lower_than_rotation_max_then_rotate_is_called_once(
+    def test_move_to_atlas_when_robot_rotation_required_is_lower_than_rotation_max_then_rotate_is_called_twice(
             self, BaseStationClientMock, ConfigMock, PointAdjustorMock,
             RobotMock, RotateMock, MoveForwardMock, TimeMock, SerialPortMock):
         config_mock = self._setup_config_mock()
@@ -163,7 +163,7 @@ class RobotControllerTestForZoneAtlas(unittest.TestCase):
         PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().move_to_atlas()
-        self.assertEqual(RotateMock.call_count, 1)
+        self.assertEqual(RotateMock.call_count, 2)
 
     @patch("time.sleep")
     @patch('Robot.controller.robot_controller.MoveForward')

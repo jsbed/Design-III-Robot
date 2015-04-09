@@ -59,6 +59,8 @@ class CycleTestDisplayCubeState(unittest.TestCase):
                  call.get_question_from_atlas(),
                  call.display_country_leds(self._a_country),
                  call.ask_for_cube(flag_mock.return_value.next_cube()),
+                 call.get_gripper(),
+                 call.get_gripper().widest_gripper(),
                  call.move_robot_to_localize_cube()]
 
         self._robot_controller_mock.assert_has_calls(calls)

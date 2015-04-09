@@ -116,18 +116,21 @@ class Cycle(Observer):
         if (self._flag_creator.has_next_cubes()):
             self._cube = self._flag_creator.next_cube()
             self._robot_controller.ask_for_cube(self._cube)
+            self._robot_controller.get_gripper().widest_gripper()
             self._state = CycleState.LOCALIZE_CUBE
             self._robot_controller.move_robot_to_localize_cube()
         else:
             self._end_cycle()
 
     def _localize_cube_state(self):
-        self._robot_controller.get_gripper().widest_gripper()
-        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
-        while (self._cube.get_localization().position is None):
-            time.sleep(self.CHECK_FOR_CUBE_DELAY)
-        self._state = CycleState.MOVE_TO_CUBE
-        self._next_state()
+        if(self._robot_controller.robot_is_facing_cube()):
+            self._cube.set_localization_position(
+                self._robot_controller.find_cube_position())
+            print("Cube position : ", self._cube.get_localization().position)
+            self._state = CycleState.MOVE_TO_CUBE
+            self._next_state()
+        else:
+            self._robot_controller.rotate_robot_torwards_cube()
 
     def _move_to_cube_state(self):
         cube_position = self._cube.get_localization().position
@@ -145,6 +148,9 @@ class Cycle(Observer):
         #    self._state = CycleState.PICK_UP_CUBE
         #    self._next_state()
         # else:
+        self._cube.set_localization_position(
+            self._robot_controller.find_cube_position())
+        print("Cube position : ", self._cube.get_localization().position)
         self._state = CycleState.PICK_UP_CUBE
         self._robot_controller.push_cube(
             self._cube.get_localization().position)

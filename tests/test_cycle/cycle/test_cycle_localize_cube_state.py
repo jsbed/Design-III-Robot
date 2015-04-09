@@ -62,13 +62,16 @@ class CycleTestLocalizeCubeState(unittest.TestCase):
             robot_is_next_to_target_with_correct_orientation = Mock(
                 return_value=False)
         self._robot_controller_mock.move_robot_to = Mock()
+        self._robot_controller_mock.find_cube_position = Mock()
+        self._robot_controller_mock.robot_is_facing_cube = Mock(return_value=True)
         self._robot_controller_mock.instruction_remaining = Mock(
             return_value=False)
 
         self._cycle.start_cycle()
         self._cycle.continue_cycle()
 
-        calls = [call.get_gripper().widest_gripper(),
+        calls = [call.robot_is_facing_cube(),
+                 call.find_cube_position(),
                  call.robot_is_next_to_target_with_correct_orientation(
                  flag_mock.return_value.next_cube().
                  get_localization().position),
