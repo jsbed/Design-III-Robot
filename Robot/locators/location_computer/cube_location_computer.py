@@ -1,6 +1,5 @@
 from math import tan, radians
 from statistics import mean
-import cv2
 import numpy
 
 from Robot.configuration.config import Config
