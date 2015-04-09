@@ -152,36 +152,46 @@ class RobotController():
     def get_switch_status(self):
         return self._switch >= config.Config().get_number_of_switches()
 
-    def push_cube(self, cube_position):
+    def push_cube(self, cube):
         self._update_robot_localization()
-        self._distance = PointAdjustor(). \
-            calculate_distance_between_points(self._robot_position,
-                                              cube_position)
-        self._distance -= (config.Config().get_gripper_size() +
-                           config.Config().get_cube_radius() +
-                           config.Config().get_robot_radius())
-        if (self._robot_is_next_to_cube()):
-            self.move_backward()
-        else:
-            print("pushing")
-            rotation = PointAdjustor().find_robot_rotation(
-                self._robot_orientation, self._robot_position,
-                cube_position)
-            self._append_rotations(rotation)
-            wall_distance = \
-                PointAdjustor().\
-                calculate_distance_between_cube_and_closest_wall(cube_position)
-            print("Distance from wall :", wall_distance)
-            print("Distance :", self._distance)
-            push_distance = (self._distance +
-                             config.Config().get_push_cube_distance())
-            print("Push distance :", push_distance)
-            if (push_distance > self._distance + wall_distance +
-                    config.Config().get_cube_radius()):
-                push_distance = (self._distance + wall_distance +
-                                 config.Config().get_cube_radius())
-            self._robot.append_instruction(MoveForward(push_distance))
-            self._robot.execute_instructions()
+
+        distance = cube_locator.find_cube_distance_from_camera(
+            cube.get_color())
+
+        self._robot.append_instruction(
+            MoveForward(distance + config.Config().get_push_cube_distance()))
+
+        # TODO: FIX DISTANCE TO NOT HIT WALL
+
+#         self._update_robot_localization()
+#         self._distance = PointAdjustor(). \
+#             calculate_distance_between_points(self._robot_position,
+#                                               cube_position)
+#         self._distance -= (config.Config().get_gripper_size() +
+#                            config.Config().get_cube_radius() +
+#                            config.Config().get_robot_radius())
+#         if (self._robot_is_next_to_cube()):
+#             self.move_backward()
+#         else:
+#             print("pushing")
+#             rotation = PointAdjustor().find_robot_rotation(
+#                 self._robot_orientation, self._robot_position,
+#                 cube_position)
+#             self._append_rotations(rotation)
+#             wall_distance = \
+#                 PointAdjustor().\
+#                 calculate_distance_between_cube_and_closest_wall(cube_position)
+#             print("Distance from wall :", wall_distance)
+#             print("Distance :", self._distance)
+#             push_distance = (self._distance +
+#                              config.Config().get_push_cube_distance())
+#             print("Push distance :", push_distance)
+#             if (push_distance > self._distance + wall_distance +
+#                     config.Config().get_cube_radius()):
+#                 push_distance = (self._distance + wall_distance +
+#                                  config.Config().get_cube_radius())
+#             self._robot.append_instruction(MoveForward(push_distance))
+#             self._robot.execute_instructions()
 
     def move_forward_to_target_zone(self, target_zone_position):
         print("MOVING TORWARD ", target_zone_position)
@@ -204,8 +214,8 @@ class RobotController():
         self._robot.execute_instructions()
 
     def move_backward(self):
-        self._robot.append_instruction(MoveForward((config.Config().
-                                                    get_move_backward_distance())))
+        self._robot.append_instruction(
+            MoveForward((config.Config().get_move_backward_distance())))
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
