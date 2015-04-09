@@ -26,7 +26,7 @@ def _extract_corners_from_contours(contours):
         if area > 100:
             peri = cv2.arcLength(i, True)
             approx = cv2.approxPolyDP(i, 0.02 * peri, True)
-            if area > max_area and len(approx) == 4:
+            if area > max_area and len(approx) < 8:
                 biggest = approx
                 max_area = area
 
