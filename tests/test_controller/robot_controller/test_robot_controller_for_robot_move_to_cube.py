@@ -240,4 +240,4 @@ class RobotControllerTestForRobotMoveTo(unittest.TestCase):
         PointAdjustorMock.return_value = point_adjustor_mock
 
         RobotController().push_cube(self._cube.get_localization().position)
-        MoveMock.assert_called_with(25)
+        MoveMock.assert_called_with(34.5)

@@ -55,6 +55,10 @@ class PointAdjustor():
                    min(config.Config().get_table_height() - cube_position.y,
                        cube_position.y - 0))
 
+    def calculate_cube_position(self, distance, robot_orientation):
+        return (int(distance * math.sin(radians(robot_orientation))),
+                int(distance * math.cos(radians(robot_orientation))))
+
     '''
     Description: Verify if the cube is too close or next to a wall
                  and adjust the target position accordingly. Otherwise,

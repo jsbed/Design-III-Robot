@@ -11,6 +11,7 @@ from Robot.controller.robot import Robot
 from Robot.cycle import atlas
 from Robot.managers.gripper_manager import GripperManager
 from Robot.managers.led_manager import LedManager
+from Robot.path_finding.point import Point
 from Robot.path_finding.point_adjustor import PointAdjustor
 
 
@@ -62,8 +63,12 @@ class RobotController():
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
                                               atlas_zone_position)
+        rotation = -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
+                                                        self._robot_position,
+                                                        atlas_zone_position)
 
         self._move_robot_towards_target_point(atlas_zone_position)
+        self._append_rotations(rotation)
         self._robot.execute_instructions()
 
     def display_country_leds(self, country):
@@ -99,13 +104,33 @@ class RobotController():
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
                                               localization_position)
-        rotation = LOCALIZE_CUBE_ANGLE - \
-            PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
-                                                self._robot_position,
-                                                localization_position)
+        rotation = -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
+                                                        self._robot_position,
+                                                        localization_position)
         self._move_robot_towards_target_point(localization_position)
         self._append_rotations(rotation)
         self._robot.execute_instructions()
+
+    def robot_is_facing_cube(self):
+        # Get angle between cube and robot
+        angle = 0
+        return angle <= config.Config().get_orientation_uncertainty()
+
+    def rotate_robot_torwards_cube(self):
+        # Get angle between cube and robot
+        angle = 0
+        self._append_rotations(angle)
+        self._robot.execute_instructions()
+
+    def find_cube_position(self):
+        self._update_robot_localization()
+        # Get angle between cube and robot
+        angle = 0
+        # Get distance between cube and robot
+        distance = 0 + config.Config().get_cube_radius()
+        x, y = PointAdjustor().calculate_cube_position(
+            distance, self._robot_orientation + angle)
+        return Point(self._robot_position.x + x, self._robot_position.y + y)
 
     def turn_switch_on(self):
         self._switch += 1
@@ -136,7 +161,10 @@ class RobotController():
                 PointAdjustor().\
                 calculate_distance_between_cube_and_closest_wall(cube_position)
             print("Distance from wall :", wall_distance)
-            push_distance = config.Config().get_push_cube_distance()
+            print("Distance :", self._distance)
+            push_distance = (self._distance +
+                             config.Config().get_push_cube_distance())
+            print("Push distance :", push_distance)
             if (push_distance > self._distance + wall_distance +
                     config.Config().get_cube_radius()):
                 push_distance = (self._distance + wall_distance +

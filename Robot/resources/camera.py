@@ -36,5 +36,5 @@ class Camera(metaclass=Singleton):
 
         self._capture.release()
 
-    def get_data(self):
-        return self._img
+    def get_data(self, file):
+        return cv2.imread(file)  # self._img
