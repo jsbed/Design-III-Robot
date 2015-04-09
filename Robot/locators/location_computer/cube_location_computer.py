@@ -1,6 +1,7 @@
 from math import tan, radians
 from statistics import mean
 import cv2
+import numpy
 
 from Robot.configuration.config import Config
 from Robot.locators.contour import contours_finder
@@ -29,6 +30,7 @@ def compute_center_angle_from_camera(corners):
 
 def compute_localization_for_kinect(extracted_cube, img_cloud):
     cube_contour = contours_finder.find_extracted_shape_contour(extracted_cube)
+    cube_contour = numpy.squeeze(numpy.concatenate(cube_contour))
 
     moments = cv2.moments(cube_contour)
     centroid_x = int(moments['m10'] / moments['m00'])
