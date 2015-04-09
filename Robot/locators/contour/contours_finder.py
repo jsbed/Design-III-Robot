@@ -18,6 +18,14 @@ def find_cube_corners_contours(img):
     return _extract_corners_from_contours(contours)
 
 
+def get_central_pixel_from_contour(contour):
+    moments = cv2.moments(contour)
+    centroid_x = int(moments['m10'] / moments['m00'])
+    centroid_y = int(moments['m01'] / moments['m00'])
+
+    return centroid_x, centroid_y
+
+
 def _extract_corners_from_contours(contours):
     biggest = None
     max_area = 0

@@ -77,11 +77,9 @@ def _extract_robot_corner_position(img_bgr, img_cloud, color):
 
 def _find_corner_position_from_contour(contour, img_cloud):
     new_contour = numpy.squeeze(numpy.concatenate(contour))
-    moments = cv2.moments(new_contour)
-    centroid_x = int(moments['m10'] / moments['m00'])
-    centroid_y = int(moments['m01'] / moments['m00'])
-    new_point = perspective_transformation.transform(img_cloud[centroid_y,
-                                                               centroid_x])
+    x, y = contours_finder.get_central_pixel_from_contour(new_contour)
+
+    new_point = perspective_transformation.transform(img_cloud[y, x])
 
     return Point3D(new_point[0] * 100, new_point[1] * 100 +
                    Config().get_robot_corner_size(), new_point[2])

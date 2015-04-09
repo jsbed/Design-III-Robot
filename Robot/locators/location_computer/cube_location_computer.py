@@ -31,13 +31,9 @@ def compute_center_angle_from_camera(corners):
 def compute_localization_for_kinect(extracted_cube, img_cloud):
     cube_contour = contours_finder.find_extracted_shape_contour(extracted_cube)
     cube_contour = numpy.squeeze(numpy.concatenate(cube_contour))
+    x, y = contours_finder.get_central_pixel_from_contour(cube_contour)
 
-    moments = cv2.moments(cube_contour)
-    centroid_x = int(moments['m10'] / moments['m00'])
-    centroid_y = int(moments['m01'] / moments['m00'])
-
-    new_point = perspective_transformation.transform(img_cloud[centroid_y,
-                                                               centroid_x])
+    new_point = perspective_transformation.transform(img_cloud[y, x])
 
     return Localization(Point(new_point[0] * 100, new_point[1] * 100 +
                               Config().get_cube_radius()), 0)
