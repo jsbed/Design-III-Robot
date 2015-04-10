@@ -48,7 +48,7 @@ def _localicalize_with_kinect(cube_color):
 
 def _find_cube_corners_from_camera(cube_color):
     original_image = Camera().get_data()
-    cv2.imwrite("last_cube_img.jpg")
+    cv2.imwrite("last_cube_img.jpg", original_image)
     extractor = cube_extractor_factory.create_cube_extractor(cube_color)
     extracted_cube = extractor.extract_cube(original_image)
 

@@ -114,17 +114,17 @@ class RobotController():
 
     def robot_is_facing_cube(self, cube):
         try:
-            self._angle = abs(cube_locator.find_cube_center_angle_from_camera(
-                cube.get_color()))
-        except:
+            self._angle = cube_locator.find_cube_center_angle_from_camera(
+                cube.get_color())
+        except Exception as e:
             self._angle = None
-            print("robot_is_facing_cube : cube not found")
+            print("robot_is_facing_cube : cube not found - ", str(e))
             return False
         else:
-            print("robot_is_facing_cube : ", self._angle <=
+            print("robot_is_facing_cube : ", abs(self._angle) <=
                   config.Config().get_orientation_uncertainty())
 
-            return self._angle <= config.Config().get_orientation_uncertainty()
+            return abs(self._angle) <= config.Config().get_orientation_uncertainty()
 
     def rotate_robot_torwards_cube(self, cube):
         if self._angle:
@@ -157,9 +157,13 @@ class RobotController():
 
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
+        
+        print("cube distance with cam : ", distance)
 
         self._robot.append_instruction(
             MoveForward(distance + config.Config().get_push_cube_distance()))
+        
+        self._robot.execute_instructions()
 
         # TODO: FIX DISTANCE TO NOT HIT WALL
 
@@ -240,7 +244,7 @@ class RobotController():
         self._robot.execute_instructions()
 
     def _update_robot_localization(self):
-        time.sleep(3)
+        time.sleep(1.5)
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
         self._robot_orientation = self._robot.get_localization_orientation()
