@@ -8,6 +8,7 @@ from Robot.country.country_repository import CountryRepository
 from Robot.country.flag_creator import FlagCreator
 from Robot.cycle.cycle_state import CycleState
 from Robot.question_analysis.question_analyser import QuestionAnalyser
+from Robot.resources.camera import Camera
 from Robot.utilities.observer import Observer
 
 
@@ -117,20 +118,22 @@ class Cycle(Observer):
             self._cube = self._flag_creator.next_cube()
             self._robot_controller.ask_for_cube(self._cube)
             self._robot_controller.get_gripper().widest_gripper()
+
+            Camera().start()
             self._state = CycleState.LOCALIZE_CUBE
             self._robot_controller.move_robot_to_localize_cube()
         else:
             self._end_cycle()
 
     def _localize_cube_state(self):
-        if(self._robot_controller.robot_is_facing_cube()):
+        if(self._robot_controller.robot_is_facing_cube(self._cube)):
             self._cube.set_localization_position(
-                self._robot_controller.find_cube_position())
+                self._robot_controller.find_cube_position(self._cube))
             print("Cube position : ", self._cube.get_localization().position)
             self._state = CycleState.MOVE_TO_CUBE
             self._next_state()
         else:
-            self._robot_controller.rotate_robot_torwards_cube()
+            self._robot_controller.rotate_robot_torwards_cube(self._cube)
 
     def _move_to_cube_state(self):
         cube_position = self._cube.get_localization().position
@@ -149,7 +152,7 @@ class Cycle(Observer):
         #    self._next_state()
         # else:
         self._cube.set_localization_position(
-            self._robot_controller.find_cube_position())
+            self._robot_controller.find_cube_position(self._cube))
         print("Cube position : ", self._cube.get_localization().position)
         self._state = CycleState.PICK_UP_CUBE
         self._robot_controller.push_cube(
@@ -161,6 +164,8 @@ class Cycle(Observer):
         self._robot_controller.get_gripper().lift_gripper()
         time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.MOVE_TO_TARGET_ZONE
+
+        Camera().stop()
         self._next_state()
 
     def _move_to_target_zone_state(self):

@@ -2,10 +2,8 @@ from threading import Thread
 import cv2
 import numpy
 
+from Robot.configuration.config import Config
 from Robot.utilities.singleton import Singleton
-
-
-CAMERA_INDEX = 1
 
 
 class Camera(metaclass=Singleton):
@@ -21,7 +19,7 @@ class Camera(metaclass=Singleton):
         self._capturing = False
 
     def _video_capture(self):
-        self._capture = cv2.VideoCapture(CAMERA_INDEX)
+        self._capture = cv2.VideoCapture(Config().get_camera_index())
         self._capturing = True
 
         while(1):

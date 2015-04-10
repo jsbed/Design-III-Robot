@@ -9,6 +9,7 @@ from Robot.controller.instructions.move_right import MoveRight
 from Robot.controller.instructions.rotate import Rotate
 from Robot.controller.robot import Robot
 from Robot.cycle import atlas
+from Robot.locators import cube_locator
 from Robot.managers.gripper_manager import GripperManager
 from Robot.managers.led_manager import LedManager
 from Robot.path_finding.point import Point
@@ -111,25 +112,34 @@ class RobotController():
         self._append_rotations(rotation)
         self._robot.execute_instructions()
 
-    def robot_is_facing_cube(self):
-        # Get angle between cube and robot
-        angle = 0
+    def robot_is_facing_cube(self, cube):
+        angle = abs(cube_locator.find_cube_center_angle_from_camera(
+            cube.get_color()))
+
+        print("robot_is_facing_cube : ", angle <=
+              config.Config().get_orientation_uncertainty())
+
         return angle <= config.Config().get_orientation_uncertainty()
 
-    def rotate_robot_torwards_cube(self):
-        # Get angle between cube and robot
-        angle = 0
+    def rotate_robot_torwards_cube(self, cube):
+        angle = cube_locator.find_cube_center_angle_from_camera(
+            cube.get_color())
         self._append_rotations(angle)
         self._robot.execute_instructions()
 
-    def find_cube_position(self):
+    def find_cube_position(self, cube):
         self._update_robot_localization()
-        # Get angle between cube and robot
-        angle = 0
-        # Get distance between cube and robot
-        distance = 0 + config.Config().get_cube_radius()
+
+        angle = cube_locator.find_cube_center_angle_from_camera(
+            cube.get_color())
+
+        distance = cube_locator.find_cube_distance_from_camera(
+            cube.get_color())
         x, y = PointAdjustor().calculate_cube_position(
             distance, self._robot_orientation + angle)
+        
+        
+
         return Point(self._robot_position.x + x, self._robot_position.y + y)
 
     def turn_switch_on(self):

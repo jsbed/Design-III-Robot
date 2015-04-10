@@ -17,11 +17,14 @@ def compute_distance_from_camera(corners):
     cube_angle = CAMERA_FIELD_OF_VIEW_ANGLE * \
         cube_size / Config().get_camera_width()
 
+    print("cube size from cam:", cube_size)
+
     return Config().get_cube_radius() / tan(radians(cube_angle / 2))
 
 
 def compute_center_angle_from_camera(corners):
     cube_center = _find_position_from_camera(corners)
+    print("cube center from cam:", cube_center)
 
     return CAMERA_FIELD_OF_VIEW_ANGLE * cube_center / \
         Config().get_camera_width()

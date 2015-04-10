@@ -240,3 +240,6 @@ class Config(metaclass=Singleton):
 
     def get_camera_height(self):
         return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CamHeight"))
+
+    def get_camera_index(self):
+        return int(self._parser.get(SECTION_VIDEO_SETTINGS, "CameraIndex"))
