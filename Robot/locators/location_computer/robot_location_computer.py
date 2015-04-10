@@ -22,24 +22,33 @@ from Robot.path_finding.point import Point
 
 def compute(close_corner, far_corner):
     robot_radius = config.Config().get_robot_radius()
-    middle_point = Point(close_corner.location.x +
-                         (far_corner.location.x -
-                          close_corner.location.x) / 2,
-                         close_corner.location.y +
-                         (far_corner.location.y -
-                          close_corner.location.y) / 2)
 
-    orientation = arctan((far_corner.location.y - close_corner.location.y) /
-                         (far_corner.location.x - close_corner.location.x))
+    if ((close_corner.location.x >= far_corner.location.x) and
+            (close_corner.color == Color.ORANGE and
+             far_corner.color == Color.PINK) or
+            (close_corner.color == Color.PINK and
+             far_corner.color == Color.BLUE) or
+            (1)):
+        pass
+    else:
+        middle_point = Point(close_corner.location.x +
+                             (far_corner.location.x -
+                              close_corner.location.x) / 2,
+                             close_corner.location.y +
+                             (far_corner.location.y -
+                              close_corner.location.y) / 2)
 
-    location = Point(middle_point.x - robot_radius * cos(pi / 2 - orientation),
-                     middle_point.y + robot_radius * sin(pi / 2 - orientation))
+        orientation = arctan((far_corner.location.y - close_corner.location.y) /
+                             (far_corner.location.x - close_corner.location.x))
 
-    if (middle_point.x < close_corner.location.x):
-        orientation *= -1
+        location = Point(middle_point.x - robot_radius * cos(pi / 2 - orientation),
+                         middle_point.y + robot_radius * sin(pi / 2 - orientation))
 
-    exact_orientation = _find_exact_orientation_from_corner_colors(
-        orientation, close_corner, far_corner)
+        if (middle_point.x < close_corner.location.x):
+            orientation *= -1
+
+        exact_orientation = _find_exact_orientation_from_corner_colors(
+            orientation, close_corner, far_corner)
 
     return Localization(location, exact_orientation)
 
@@ -49,15 +58,9 @@ def _find_exact_orientation_from_corner_colors(orientation, close_corner, far_co
         if (close_corner.location.x < far_corner.location.x):
             orientation = pi / 2 - orientation
     elif (close_corner.color == Color.PINK and far_corner.color == Color.BLUE):
-        if (close_corner.location.x < far_corner.location.x):
-            orientation = pi - orientation
-        else:
-            orientation += 3 * pi / 2
+        orientation = pi - orientation
     elif (close_corner.color == Color.BLUE and far_corner.color == Color.PINK):
-        if (close_corner.location.x < far_corner.location.x):
-            orientation = 3 * pi / 2 - orientation
-        else:
-            orientation += pi
+        orientation += pi
     elif (close_corner.color == Color.PINK and far_corner.color == Color.ORANGE):
         if (close_corner.location.x < far_corner.location.x):
             orientation = 2 * pi - orientation
