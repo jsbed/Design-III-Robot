@@ -38,7 +38,7 @@ class Cycle(Observer):
             self.continue_cycle()
 
     def start_cycle(self):
-        self._robot_controller.get_gripper().take_cube()
+        self._robot_controller.get_gripper().release_cube()
         self._robot_controller.get_gripper().lower_gripper()
         self._robot_controller._led_manager.close_leds()
         self._state = CycleState.MOVE_TO_ATLAS_ZONE
@@ -151,7 +151,7 @@ class Cycle(Observer):
             self._state = CycleState.PICK_UP_CUBE
             self._robot_controller.push_cube(self._cube)
         else:
-            self.rotate_robot_torwards_cube(self._cube)
+            self._robot_controller.rotate_robot_torwards_cube(self._cube)
 
     def _pick_up_cube_state(self):
         self._robot_controller.get_gripper().take_cube()
@@ -187,16 +187,21 @@ class Cycle(Observer):
         self._robot_controller.move_backward()
 
     def _get_question_from_atlas(self):
+        print("request question")
         self._question = self._robot_controller.get_question_from_atlas()
+        print("sending question")
         BaseStationClient().send_question(self._question)
+        print("question sent")
 
     def _analyse_question(self):
         try:
+            print("analysing country")
             country_name = QuestionAnalyser().answer_question(self._question)
             self._country = CountryRepository().get(country_name)
         except:
             return BaseStationClient().send_country_error()
         else:
+            print("sending country")
             return BaseStationClient().send_country(self._country)
 
     def _display_country(self):

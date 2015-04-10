@@ -58,7 +58,7 @@ class Robot(Observable):
                 self.notify(SWITCH_ACTIVATED, None)
             elif (message == "switch off"):
                 self.notify(SWITCH_DEACTIVATED, None)
-            elif (message == "ok"):
+            elif ("ok" in message):
                 instruction_finished = True
 
         self.notify(INSTRUCTION_FINISHED, None)
