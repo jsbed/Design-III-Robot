@@ -1,5 +1,5 @@
 from math import radians, cos, sin, atan2, degrees
-from statistics import mean
+from statistics import mean, median
 
 from Robot.configuration.config import Config
 from Robot.locators.localization import Localization
@@ -38,36 +38,48 @@ class RobotLocalizationFilter(Observable):
             localization = self._find_mean_localization()
             self._last_data_points.clear()
 
-            if (not localization.unknown):
-                if (self._robot_localization.unknown):
-                    self._update_localization(localization)
-                else:
-                    new_distance = PointAdjustor.calculate_distance_between_points(
-                        localization.position, self._robot_localization.position)
-                    orientation_diff = localization.orientation
+            # if (not localization.unknown):
+            if (self._robot_localization.unknown):
+                self._update_localization(localization)
+            else:
+                new_distance = PointAdjustor.calculate_distance_between_points(
+                    localization.position, self._robot_localization.position)
+                orientation_diff = self._find_angle_difference(
+                    self._robot_localization.orientation,
+                    localization.orientation)
 
-                    if (self._can_update_new_localization(new_distance,
-                                                          orientation_diff)):
-                        self._update_localization(localization)
+                if (self._can_update_new_localization(new_distance,
+                                                      orientation_diff)):
+                    self._update_localization(localization)
 
     def _find_mean_localization(self):
-        good_points, wrong_points = self._find_good_and_wrong_points(
-            self._last_data_points)
+        #         good_points, wrong_points = self._find_good_and_wrong_points(
+        #             self._last_data_points)
+        #
+        #         if len(wrong_points) <= 1:
+        #             self._last_data_points.pop(0)
+        #
+        #             return self._compute_mean_localization(good_points)
+        #         elif len(wrong_points) == 4:
+        #             good_points, wrong_points = self._find_good_and_wrong_points(
+        #                 wrong_points)
+        #
+        #             if len(good_points) == 4:
+        #                 self._last_data_points.pop(0)
+        #
+        #                 return self._compute_mean_localization(good_points)
+        # loc.position for loc in self._last_data_points
+        #         return Localization(None, None, unknown=True)
+        points = [loc.position for loc in self._last_data_points]
+        orientations = [loc.orientation for loc in self._last_data_points]
+        median_x = median(point.x for point in points)
+        median_y = median(point.y for point in points)
+        median_orientation = self._find_median_of_orientation(orientations)
 
-        if len(wrong_points) <= 1:
-            self._last_data_points.pop(0)
+        return Localization(Point(median_x, median_y), median_orientation)
 
-            return self._compute_mean_localization(good_points)
-        elif len(wrong_points) == 4:
-            good_points, wrong_points = self._find_good_and_wrong_points(
-                wrong_points)
-
-            if len(good_points) == 4:
-                self._last_data_points.pop(0)
-
-                return self._compute_mean_localization(good_points)
-
-        return Localization(None, None, unknown=True)
+    def _get_positions_from_localization(self, localizations):
+        return [loc.position for loc in localizations]
 
     def _compute_mean_localization(self, localization):
         x = mean([loc.position.x for loc in localization])
@@ -86,6 +98,18 @@ class RobotLocalizationFilter(Observable):
 
         return degrees(atan2(y / len(orientations),
                              x / len(orientations)))
+
+    def _find_median_of_orientation(self, values):
+        if all(value < 350 for value in values):
+            return median(values)
+        else:
+            for index, value in enumerate(values):
+                if (value < 180):
+                    values[index] += 360
+
+            orientation = median(values)
+
+        return orientation if orientation < 360 else orientation - 360
 
     def _update_localization(self, localization):
         self._robot_localization = localization
