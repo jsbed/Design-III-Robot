@@ -42,7 +42,7 @@ def compute_localization_for_kinect(extracted_cube, img_cloud):
 
 
 def _find_position_from_camera(corners):
-    mean_x = mean(coord[0] for coord in corners)
+    mean_x = mean(float(coord[0]) for coord in corners)
 
     return Config().get_camera_width() / 2 - mean_x
 
