@@ -1,7 +1,18 @@
+import os
+import shutil
+
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.configuration.config import Config
 from Robot.cycle.cycle import Cycle
 from Robot.filler import country_repository_filler
+
+ss_folder_name = "run_screenshots"
+
+# Create/Clear screenshot folder
+if os.path.isdir(ss_folder_name):
+    shutil.rmtree(ss_folder_name)
+
+os.makedirs(ss_folder_name)
 
 
 # Initiate configuration
