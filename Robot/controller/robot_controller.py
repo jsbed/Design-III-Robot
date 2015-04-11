@@ -245,7 +245,6 @@ class RobotController():
     def move_backward(self):
         self._robot.append_instruction(
             MoveForward((config.Config().get_move_backward_distance())))
-        self._append_rotations(180)
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
