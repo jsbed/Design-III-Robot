@@ -59,7 +59,6 @@ class RobotController():
         return self._robot_is_next_to_atlas()
 
     def move_to_atlas(self):
-        self._update_robot_localization()
         atlas_zone_position = config.Config().get_atlas_zone_position()
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
