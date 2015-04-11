@@ -18,6 +18,8 @@ from Robot.path_finding.point_adjustor import PointAdjustor
 
 LOCALIZE_CUBE_ANGLE = 0
 CUBE_RELEASE_ANGLE = 180
+ROTATION_MIN_POSSIBLE = 3
+DISTANCE_MIN_POSSIBLE = 3
 
 
 class RobotController():
@@ -124,7 +126,8 @@ class RobotController():
             print("robot_is_facing_cube : ", abs(self._angle) <=
                   config.Config().get_orientation_uncertainty())
 
-            return abs(self._angle) <= config.Config().get_orientation_uncertainty()
+            return (abs(self._angle) <=
+                    config.Config().get_orientation_uncertainty())
 
     def rotate_robot_torwards_cube(self, cube):
         if self._angle:
@@ -139,12 +142,12 @@ class RobotController():
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
 
-        print("cube distance from cam :", distance)         
+        print("cube distance from cam :", distance)
         print("robot pos :", self._robot_position)
 
         x, y = PointAdjustor().calculate_cube_position(
             distance, self._robot_orientation + self._angle)
-        
+
         return Point(self._robot_position.x + x, self._robot_position.y + y)
 
     def turn_switch_on(self):
@@ -157,63 +160,55 @@ class RobotController():
         return self._switch >= config.Config().get_number_of_switches()
 
     def push_cube(self, cube):
-        self._update_robot_localization()
-
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
-        
+
+        distance_between_cube_and_wall = PointAdjustor().\
+            calculate_distance_between_cube_and_closest_wall(
+                cube.get_localization().position)
+
+        push_distance = distance + config.Config().get_push_cube_distance()
+        max_push_distance = (distance + distance_between_cube_and_wall -
+                             config.Config().get_cube_radius() * 2 -
+                             config.Config().get_gripper_size())
+
         print("cube distance with cam : ", distance)
 
-        self._robot.append_instruction(
-            MoveForward(distance + config.Config().get_push_cube_distance()))
-        
+        if (push_distance > max_push_distance):
+            push_distance = max_push_distance
+
+        self._robot.append_instruction(MoveForward(push_distance))
+
         self._robot.execute_instructions()
 
-        # TODO: FIX DISTANCE TO NOT HIT WALL
-
-#         self._update_robot_localization()
-#         self._distance = PointAdjustor(). \
-#             calculate_distance_between_points(self._robot_position,
-#                                               cube_position)
-#         self._distance -= (config.Config().get_gripper_size() +
-#                            config.Config().get_cube_radius() +
-#                            config.Config().get_robot_radius())
-#         if (self._robot_is_next_to_cube()):
-#             self.move_backward()
-#         else:
-#             print("pushing")
-#             rotation = PointAdjustor().find_robot_rotation(
-#                 self._robot_orientation, self._robot_position,
-#                 cube_position)
-#             self._append_rotations(rotation)
-#             wall_distance = \
-#                 PointAdjustor().\
-#                 calculate_distance_between_cube_and_closest_wall(cube_position)
-#             print("Distance from wall :", wall_distance)
-#             print("Distance :", self._distance)
-#             push_distance = (self._distance +
-#                              config.Config().get_push_cube_distance())
-#             print("Push distance :", push_distance)
-#             if (push_distance > self._distance + wall_distance +
-#                     config.Config().get_cube_radius()):
-#                 push_distance = (self._distance + wall_distance +
-#                                  config.Config().get_cube_radius())
-#             self._robot.append_instruction(MoveForward(push_distance))
-#             self._robot.execute_instructions()
-
-    def move_forward_to_target_zone(self, target_zone_position):
-        print("MOVING TORWARD ", target_zone_position)
-
+    def robot_is_next_to_target_zone_with_correct_orientation(
+            self, target_zone_position):
         self._update_robot_localization()
+
+        lateral_distance = target_zone_position.x - self._robot_position.x
 
         rotation = -PointAdjustor().find_robot_rotation(
             CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
-        print("Rotation ", rotation)
-        self._append_rotations(rotation)
-        lateral_distance = target_zone_position.x - self._robot_position.x
-        if (lateral_distance > config.Config().get_distance_min() or
-                lateral_distance < -config.Config().get_distance_min()):
-            self._robot.append_instruction(MoveRight(lateral_distance))
+
+        target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
+
+        return (lateral_distance <= target_zone_uncertainty and
+                lateral_distance >= -target_zone_uncertainty and
+                rotation <= target_zone_uncertainty and
+                rotation >= -target_zone_uncertainty)
+
+    def move_robot_into_target_zone(self, target_zone_position):
+        self._update_robot_localization()
+
+        self._rotate_to_target_zone(target_zone_position)
+        self._lateral_move_to_target_zone(target_zone_position)
+
+        self._robot.execute_instructions()
+
+    def move_forward_to_target_zone(self, target_zone_position):
+        print("MOVING TORWARD ", target_zone_position)
+        self._update_robot_localization()
+
         self._robot.append_instruction(
             MoveForward(self._robot_position.y - target_zone_position.y -
                         config.Config().get_gripper_size() -
@@ -234,6 +229,42 @@ class RobotController():
 
     def end_cycle(self):
         self._led_manager.display_red_led()
+
+    def _rotate_to_target_zone(self, target_zone_position):
+        target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
+
+        rotation = -PointAdjustor().find_robot_rotation(
+            CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
+
+        if (rotation > target_zone_uncertainty or
+                rotation < -target_zone_uncertainty):
+            print("Rotation ", rotation)
+
+            if (rotation > config.Config().get_rotation_min() or
+                    rotation < -config.Config().get_rotation_min()):
+                self._robot.append_instruction(Rotate(rotation))
+            else:
+                self._robot.append_instruction(Rotate(ROTATION_MIN_POSSIBLE +
+                                                      rotation))
+                self._robot.append_instruction(Rotate(-ROTATION_MIN_POSSIBLE))
+
+    def _lateral_move_to_target_zone(self, target_zone_position):
+        target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
+
+        lateral_distance = target_zone_position.x - self._robot_position.x
+
+        if (lateral_distance > target_zone_uncertainty or
+                lateral_distance < -target_zone_uncertainty):
+            print("Lateral distance ", lateral_distance)
+
+            if (lateral_distance > config.Config().get_distance_min() or
+                    lateral_distance < -config.Config().get_distance_min()):
+                self._robot.append_instruction(MoveRight(lateral_distance))
+            else:
+                self._robot.append_instruction(MoveRight(
+                    DISTANCE_MIN_POSSIBLE + lateral_distance))
+                self._robot.append_instruction(MoveRight(
+                    -DISTANCE_MIN_POSSIBLE))
 
     def _fix_robot_orientation_for_localization(self):
         self._update_robot_localization()
