@@ -5,9 +5,9 @@ from Robot.locators import robot_locator
 from Robot.locators.extractors.robot_corner import robot_corner_extractor_factory,\
     blue_robot_corner_extractor
 from Robot.locators.extractors.robot_corner.blue_robot_corner_extractor import BlueRobotCornerExtractor
+from Robot.locators.extractors.robot_corner.cyan_robot_corner_extractor import CyanRobotCornerExtractor
 from Robot.locators.extractors.robot_corner.orange_robot_corner_extractor import OrangeRobotCornerExtractor
 from Robot.locators.extractors.robot_corner.pink_robot_corner_extractor import PinkRobotCornerExtractor
-from Robot.locators.extractors.robot_corner.purple_robot_corner_extractor import PurpleRobotCornerExtractor
 from Robot.resources.kinect import Kinect
 
 
@@ -21,7 +21,7 @@ while(1):
     try:
         #blue = BlueRobotCornerExtractor().extract(bgr)
         pink = PinkRobotCornerExtractor().extract(bgr)
-        #purple = PurpleRobotCornerExtractor().extract(bgr)
+        #cyan = CyanRobotCornerExtractor().extract(bgr)
     #orange = OrangeRobotCornerExtractor().extract(bgr)
         #median = cv2.medianBlur(purple, 21)
     #bil = cv2.bilateralFilter(bgr, 10, 30, 30)
