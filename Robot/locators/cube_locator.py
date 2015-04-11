@@ -3,6 +3,7 @@ import os
 
 from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
+from Robot.locators.corner_dectector import harris_detector_factory
 from Robot.locators.extractors.cube import cube_extractor_factory
 from Robot.locators.localization import Localization
 from Robot.locators.location_computer import cube_location_computer
@@ -84,4 +85,6 @@ def _find_cube_corners_for_segmentable_colors(cam_img, cube_color):
 
 # For White and Black cubes
 def _find_cube_corners_for_non_segmentable_colors(cam_img, cube_color):
-    pass
+    corner_dectector = harris_detector_factory.create_detector(cube_color)
+
+    return corner_dectector.detect_corners(cam_img)
