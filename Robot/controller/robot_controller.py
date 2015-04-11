@@ -138,9 +138,13 @@ class RobotController():
 
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
+
+        print("cube distance from cam :", distance)         
+        print("robot pos :", self._robot_position)
+
         x, y = PointAdjustor().calculate_cube_position(
             distance, self._robot_orientation + self._angle)
-
+        
         return Point(self._robot_position.x + x, self._robot_position.y + y)
 
     def turn_switch_on(self):
