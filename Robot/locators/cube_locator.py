@@ -69,7 +69,19 @@ def _localicalize_with_kinect(cube_color):
 
 
 def _find_cube_corners_from_camera(cam_img, cube_color):
+    if Color.is_segmentable(cube_color):
+        _find_cube_corners_for_segmentable_colors(cam_img, cube_color)
+    else:
+        _find_cube_corners_for_non_segmentable_colors(cam_img, cube_color)
+
+
+def _find_cube_corners_for_segmentable_colors(cam_img, cube_color):
     extractor = cube_extractor_factory.create_cube_extractor(cube_color)
     extracted_cube = extractor.extract_cube(cam_img)
 
     return contours_finder.find_cube_corners_contours(extracted_cube)
+
+
+# For White and Black cubes
+def _find_cube_corners_for_non_segmentable_colors(cam_img, cube_color):
+    pass
