@@ -174,9 +174,14 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(target_zone)
 
     def _move_into_target_zone_state(self):
-        self._state = CycleState.PUT_DOWN_CUBE
-        self._robot_controller.move_forward_to_target_zone(
-            self._cube.get_target_zone_position())
+        target_zone = self._cube.get_target_zone_position()
+
+        if(self._robot_controller.
+           robot_is_next_to_target_zone_with_correct_orientation(target_zone)):
+            self._state = CycleState.PUT_DOWN_CUBE
+            self._robot_controller.move_forward_to_target_zone(target_zone)
+        else:
+            self._robot_controller.move_robot_into_target_zone(target_zone)
 
     def _put_down_cube_state(self):
         self._robot_controller.get_gripper().lower_gripper()
