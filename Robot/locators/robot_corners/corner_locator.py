@@ -36,7 +36,17 @@ def locate(img_bgr, img_cloud):
     except:
         pass
 
+    try:  # Try extracting a purple corner
+        pink_corner = _extract_robot_corner_position(
+            img_bgr, img_cloud, Color.CYAN)
+
+        corners.append(RobotCorner(pink_corner, Color.CYAN))
+    except:
+        pass
+
     corners.sort(key=lambda corner: corner[0][1])
+
+    print(corners)
 
     if len(corners) < 2:
         raise Exception("Not enough robot corners found.")
