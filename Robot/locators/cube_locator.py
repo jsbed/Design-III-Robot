@@ -21,7 +21,7 @@ def find_cube_distance_from_camera(cube_color):
         distance = cube_location_computer.compute_distance_from_camera(
             cube_corners)
 
-        cv2.imwrite(os.path.join(ss_folder_name, str(distance) +
+        cv2.imwrite(os.path.join(ss_folder_name, str(abs(distance)) +
                                  "_cube_distance.jpg"), cam_img)
 
         return distance
@@ -39,7 +39,7 @@ def find_cube_center_angle_from_camera(cube_color):
         angle = cube_location_computer.compute_center_angle_from_camera(
             cube_corners)
 
-        cv2.imwrite(os.path.join(ss_folder_name, str(angle) +
+        cv2.imwrite(os.path.join(ss_folder_name, str(abs(angle)) +
                                  "_cube_angle.jpg"), cam_img)
 
         return angle

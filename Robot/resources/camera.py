@@ -1,6 +1,7 @@
 from threading import Thread
 import cv2
 import numpy
+import os
 
 from Robot.configuration.config import Config
 from Robot.utilities.singleton import Singleton
@@ -11,6 +12,10 @@ class Camera(metaclass=Singleton):
     def __init__(self):
         self._capturing = False
         self._img = numpy.zeros((480, 640))
+
+        mask_path = os.path.join(os.path.dirname(__file__), "masks",
+                                 "camera.jpg")
+        self._cam_mask = cv2.imread(mask_path, 0)
 
     def start(self):
         Thread(target=self._video_capture).start()
@@ -27,7 +32,9 @@ class Camera(metaclass=Singleton):
                 captured, frame = self._capture.read()
 
                 if captured:
-                    self._img = frame
+                    # Apply mask
+                    self._img = cv2.bitwise_and(frame, frame,
+                                                mask=self._cam_mask)
             else:
                 self._img = numpy.zeros((480, 640))
                 break
