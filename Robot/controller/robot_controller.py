@@ -180,9 +180,31 @@ class RobotController():
 
         self._robot.execute_instructions()
 
+    def robot_is_close_to_target_zone_with_correct_orientation(self, target):
+        self._update_robot_localization()
+        self._robot_orientation = (self._robot_orientation + 180) % 360
+        target_point = self._find_next_destination_point(target)
+        self._distance = PointAdjustor(). \
+            calculate_distance_between_points(self._robot_position,
+                                              target_point)
+
+        return (self._robot_is_next_to_target_point() and
+                self._robot_has_correct_orientation(target))
+
+    def move_robot_to_target_zone(self, destination):
+        self._update_robot_localization()
+        self._robot_orientation = (self._robot_orientation + 180) % 360
+        destination_point = self._find_next_destination_point(destination)
+        self._distance = PointAdjustor(). \
+            calculate_distance_between_points(self._robot_position,
+                                              destination_point)
+        self._move_robot_towards_target_zone_backward(destination_point)
+        self._robot.execute_instructions()
+
     def robot_is_next_to_target_zone_with_correct_orientation(
             self, target_zone_position):
         self._update_robot_localization()
+        self._robot_orientation = (self._robot_orientation + 180) % 360
 
         lateral_distance = target_zone_position.x - self._robot_position.x
 
@@ -198,6 +220,7 @@ class RobotController():
 
     def move_robot_into_target_zone(self, target_zone_position):
         self._update_robot_localization()
+        self._robot_orientation = (self._robot_orientation + 180) % 360
 
         self._rotate_to_target_zone(target_zone_position)
         self._lateral_move_to_target_zone(target_zone_position)
@@ -209,10 +232,11 @@ class RobotController():
         self._update_robot_localization()
 
         self._robot.append_instruction(
-            MoveForward(self._robot_position.y - target_zone_position.y -
-                        config.Config().get_gripper_size() -
-                        config.Config().get_cube_radius() -
-                        config.Config().get_robot_radius()))
+            MoveForward(-(self._robot_position.y - target_zone_position.y -
+                          config.Config().get_gripper_size() -
+                          config.Config().get_cube_radius() -
+                          config.Config().get_robot_radius())))
+        self._robot.append_instruction(Rotate(180))
         self._robot.execute_instructions()
 
     def move_backward(self):
@@ -294,6 +318,15 @@ class RobotController():
         self._append_rotations(rotation)
         if (self._distance >= config.Config().get_distance_min()):
             self._robot.append_instruction(MoveForward(self._distance))
+        self._send_new_path(destination)
+
+    def _move_robot_towards_target_zone_backward(self, destination):
+        print("destination", destination)
+        rotation = PointAdjustor().find_robot_rotation(
+            self._robot_orientation, self._robot_position, destination)
+        self._append_rotations(rotation)
+        if (self._distance >= config.Config().get_distance_min()):
+            self._robot.append_instruction(MoveForward(-self._distance))
         self._send_new_path(destination)
 
     def _send_new_path(self, target_point):

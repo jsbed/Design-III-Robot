@@ -174,11 +174,11 @@ class Cycle(Observer):
         target_zone = self._cube.get_target_zone_position()
 
         if(self._robot_controller.
-           robot_is_next_to_target_with_correct_orientation(target_zone)):
+           robot_is_close_to_target_zone_with_correct_orientation(target_zone)):
             self._state = CycleState.MOVE_INTO_TARGET_ZONE
             self._next_state()
         else:
-            self._robot_controller.move_robot_to(target_zone)
+            self._robot_controller.move_robot_to_target_zone(target_zone)
 
     def _move_into_target_zone_state(self):
         target_zone = self._cube.get_target_zone_position()
