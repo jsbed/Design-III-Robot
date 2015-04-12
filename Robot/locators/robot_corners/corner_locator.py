@@ -46,6 +46,8 @@ def locate(img_bgr, img_cloud):
 
     corners.sort(key=lambda corner: corner[0][1])
 
+    print(corners)
+
     if len(corners) < 2:
         raise Exception("Not enough robot corners found.")
     else:
