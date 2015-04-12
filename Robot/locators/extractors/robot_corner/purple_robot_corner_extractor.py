@@ -7,7 +7,7 @@ class PurpleRobotCornerExtractor(RobotCornerExtractor):
 
     def __init__(self):
         self._segmentor = RobotCornerSegmentor()
-        self._segmentor.set_lower_hsv_values([81, 122, 70])
+        self._segmentor.set_lower_hsv_values([81, 60, 70])
         self._segmentor.set_upper_hsv_values([105, 255, 255])
 
     def extract(self, img):
