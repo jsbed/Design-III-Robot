@@ -15,7 +15,7 @@ from Robot.utilities.observer import Observer
 class Cycle(Observer):
 
     CHECK_FOR_CUBE_DELAY = 2
-    WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 2
+    WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 1
 
     def __init__(self):
         self._robot_controller = RobotController()

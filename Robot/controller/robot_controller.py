@@ -220,7 +220,6 @@ class RobotController():
 
     def move_robot_into_target_zone(self, target_zone_position):
         self._update_robot_localization()
-        self._robot_orientation = (self._robot_orientation + 180) % 360
 
         self._rotate_to_target_zone(target_zone_position)
         self._lateral_move_to_target_zone(target_zone_position)
@@ -231,17 +230,20 @@ class RobotController():
         print("MOVING TORWARD ", target_zone_position)
         self._update_robot_localization()
 
-        self._robot.append_instruction(
-            MoveForward(-(self._robot_position.y - target_zone_position.y -
-                          config.Config().get_gripper_size() -
-                          config.Config().get_cube_radius() -
-                          config.Config().get_robot_radius())))
-        self._robot.append_instruction(Rotate(180))
+        print("target zone y position: ", target_zone_position.y)
+        
+        distance = self._robot_position.y - target_zone_position.y - config.Config().get_gripper_size() - 2*config.Config().get_cube_radius() - config.Config().get_robot_radius()
+        
+        print("droping distance", distance)        
+
+        self._append_rotations(180)
+        self._robot.append_instruction(MoveForward(distance))
         self._robot.execute_instructions()
 
     def move_backward(self):
         self._robot.append_instruction(
             MoveForward((config.Config().get_move_backward_distance())))
+        self._append_rotations(180)
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
@@ -256,8 +258,7 @@ class RobotController():
     def _rotate_to_target_zone(self, target_zone_position):
         target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
 
-        rotation = -PointAdjustor().find_robot_rotation(
-            CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
+        rotation = -self._robot_orientation if self._robot_orientation < 180 else 360 - self._robot_orientation
 
         if (abs(rotation) > target_zone_uncertainty):
             print("Rotation ", rotation)
@@ -272,7 +273,7 @@ class RobotController():
         if (abs(lateral_distance) > target_zone_uncertainty):
             print("Lateral distance ", lateral_distance)
 
-            self._robot.append_instruction(MoveRight(lateral_distance))
+            self._robot.append_instruction(MoveRight(-lateral_distance))
 
     def _fix_robot_orientation_for_localization(self):
         self._update_robot_localization()
@@ -287,7 +288,7 @@ class RobotController():
         self._robot.execute_instructions()
 
     def _update_robot_localization(self):
-        time.sleep(1.5)
+        time.sleep(2)
         self._robot.update_localization()
         self._robot_position = self._robot.get_localization_position()
         self._robot_orientation = self._robot.get_localization_orientation()
@@ -353,6 +354,7 @@ class RobotController():
                 rotation >= -angle_uncertainty)
 
     def _append_rotations(self, rotation):
+        print("appending rotation :", rotation) 
         orientation_max = config.Config().get_orientation_max()
         number_sign = math.copysign(1, rotation)
         number_of_rotation = math.floor(abs(rotation /
