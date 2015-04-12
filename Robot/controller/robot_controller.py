@@ -235,35 +235,20 @@ class RobotController():
         rotation = -PointAdjustor().find_robot_rotation(
             CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
 
-        if (rotation > target_zone_uncertainty or
-                rotation < -target_zone_uncertainty):
+        if (abs(rotation) > target_zone_uncertainty):
             print("Rotation ", rotation)
 
-            if (rotation > config.Config().get_rotation_min() or
-                    rotation < -config.Config().get_rotation_min()):
-                self._robot.append_instruction(Rotate(rotation))
-            else:
-                self._robot.append_instruction(Rotate(ROTATION_MIN_POSSIBLE +
-                                                      rotation))
-                self._robot.append_instruction(Rotate(-ROTATION_MIN_POSSIBLE))
+            self._robot.append_instruction(Rotate(rotation))
 
     def _lateral_move_to_target_zone(self, target_zone_position):
         target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
 
         lateral_distance = target_zone_position.x - self._robot_position.x
 
-        if (lateral_distance > target_zone_uncertainty or
-                lateral_distance < -target_zone_uncertainty):
+        if (abs(lateral_distance) > target_zone_uncertainty):
             print("Lateral distance ", lateral_distance)
 
-            if (lateral_distance > config.Config().get_distance_min() or
-                    lateral_distance < -config.Config().get_distance_min()):
-                self._robot.append_instruction(MoveRight(lateral_distance))
-            else:
-                self._robot.append_instruction(MoveRight(
-                    DISTANCE_MIN_POSSIBLE + lateral_distance))
-                self._robot.append_instruction(MoveRight(
-                    -DISTANCE_MIN_POSSIBLE))
+            self._robot.append_instruction(MoveRight(lateral_distance))
 
     def _fix_robot_orientation_for_localization(self):
         self._update_robot_localization()

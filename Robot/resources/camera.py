@@ -18,12 +18,15 @@ class Camera(metaclass=Singleton):
         self._cam_mask = cv2.imread(mask_path, 0)
 
     def start(self):
+        print("starting cam")
         Thread(target=self._video_capture).start()
 
     def stop(self):
+        print("stoping cam")
         self._capturing = False
 
     def _video_capture(self):
+        print("cam running")
         self._capture = cv2.VideoCapture(Config().get_camera_index())
         self._capturing = True
 
@@ -40,6 +43,7 @@ class Camera(metaclass=Singleton):
                 break
 
         self._capture.release()
+        print("cam released")
 
     def get_data(self):
         return self._img

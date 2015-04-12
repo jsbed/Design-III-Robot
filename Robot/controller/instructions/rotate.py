@@ -10,6 +10,7 @@ ANTICLOCKWISE_ROTATION = "ROL"
 class Rotate(RobotInstruction):
 
     def __init__(self, angle):
+        print("received angle", angle)
         self._angle = int(angle)
 
     def execute(self, serial_port):

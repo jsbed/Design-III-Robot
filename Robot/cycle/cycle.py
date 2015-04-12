@@ -127,11 +127,18 @@ class Cycle(Observer):
 
     def _localize_cube_state(self):
         if(self._robot_controller.robot_is_facing_cube(self._cube)):
-            self._cube.set_localization_position(
-                self._robot_controller.find_cube_position(self._cube))
-            print("Cube position : ", self._cube.get_localization().position)
-            self._state = CycleState.MOVE_TO_CUBE
-            self._next_state()
+            try:
+                cube_position = self._robot_controller.find_cube_position(
+                    self._cube)
+            except Exception as e:
+                print("Cube not found ", str(e))
+                self._localize_cube_state()
+            else:
+                self._cube.set_localization_position(cube_position)
+                print("Cube position : ",
+                      self._cube.get_localization().position)
+                self._state = CycleState.MOVE_TO_CUBE
+                self._next_state()
         else:
             self._robot_controller.rotate_robot_torwards_cube(self._cube)
 
