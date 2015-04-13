@@ -106,20 +106,11 @@ class RobotController():
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
                                               localization_position)
-
-        rotation = LOCALIZE_CUBE_ANGLE - self._robot_orientation
-        if (abs(rotation) > config.Config().get_orientation_uncertainty()):
-            self._move_robot_towards_target_point(localization_position)
-            self._append_rotations(
-                -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
-                                                     self._robot_position,
-                                                     localization_position))
-        else:
-            self._robot.append_instruction(
-                MoveForward(localization_position.y - self._robot_position.y))
-            self._robot.append_instruction(
-                MoveRight(localization_position.x - self._robot_position.x))
-
+        rotation = -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
+                                                        self._robot_position,
+                                                        localization_position)
+        self._move_robot_towards_target_point(localization_position)
+        self._append_rotations(rotation)
         self._robot.execute_instructions()
 
     def robot_is_facing_cube(self, cube):
@@ -254,7 +245,6 @@ class RobotController():
     def move_backward(self):
         self._robot.append_instruction(
             MoveForward((config.Config().get_move_backward_distance())))
-        self._append_rotations(180)
         self._robot.execute_instructions()
 
     def instruction_remaining(self):
