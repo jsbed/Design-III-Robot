@@ -3,6 +3,7 @@ from statistics import mean
 import numpy
 
 from Robot.configuration.config import Config
+from Robot.cycle.objects.color import Color
 from Robot.locators.contour import contours_finder
 from Robot.locators.localization import Localization
 from Robot.locators.perspective import perspective_transformation
@@ -12,8 +13,8 @@ from Robot.path_finding.point import Point
 CAMERA_FIELD_OF_VIEW_ANGLE = 70
 
 
-def compute_distance_from_camera(corners):
-    cube_size = _find_size_from_camera(corners)
+def compute_distance_from_camera(corners, color):
+    cube_size = _find_size_from_camera(corners, color)
     cube_angle = CAMERA_FIELD_OF_VIEW_ANGLE * \
         cube_size / Config().get_camera_width()
 
@@ -47,7 +48,14 @@ def _find_position_from_camera(corners):
     return Config().get_camera_width() / 2 - mean_x
 
 
-def _find_size_from_camera(corners):
+def _find_size_from_camera(corners, color):
     all_x = [coord[0] for coord in corners]
 
-    return max(all_x) - min(all_x)
+    if color == Color.BLACK:
+        adjustment = -15
+    elif color == Color.WHITE:
+        adjustment = -11
+    else:
+        adjustment = 0
+
+    return max(all_x) - min(all_x) + adjustment

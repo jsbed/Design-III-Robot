@@ -20,7 +20,7 @@ def find_cube_distance_from_camera(cube_color):
     try:
         cube_corners = _find_cube_corners_from_camera(cam_img, cube_color)
         distance = cube_location_computer.compute_distance_from_camera(
-            cube_corners)
+            cube_corners, cube_color)
 
         cv2.imwrite(os.path.join(ss_folder_name, str(abs(distance)) +
                                  "_cube_distance.jpg"), cam_img)

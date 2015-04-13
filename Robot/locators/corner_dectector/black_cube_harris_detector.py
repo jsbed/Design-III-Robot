@@ -24,7 +24,9 @@ class BlackCubeHarrisDectector(HarrisDetector):
         #new = img.copy()
         #new[dst > red_dot * dst.max()] = [0, 0, 255]
         corners = (dst > red_dot * dst.max()).nonzero()
-        corners = [(corners[0][i], corners[1][i])
+        corners = [(corners[1][i], corners[0][i])
                    for i in range(corners[0].shape[0])]
+
+        # print(corners)
 
         return corners
