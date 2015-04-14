@@ -10,7 +10,7 @@ from Robot.path_finding.point import Point
 
 
 @patch("Robot.configuration.config.Config")
-class TestRobotLocationComputerPinkOrange(unittest.TestCase):
+class TestRobotLocationComputerOrangePink(unittest.TestCase):
 
     ROBOT_RADIUS = 8.5
 
@@ -33,8 +33,8 @@ class TestRobotLocationComputerPinkOrange(unittest.TestCase):
 
     def test_pink_orange_left_corners_when_robot_at_right(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.ORANGE)
-        far_corner = RobotCorner(Point(65, 58), Color.PINK)
+        close_corner = RobotCorner(Point(50, 50), Color.PINK)
+        far_corner = RobotCorner(Point(65, 58), Color.ORANGE)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -45,8 +45,8 @@ class TestRobotLocationComputerPinkOrange(unittest.TestCase):
 
     def test_pink_orange_right_corners_when_robot_at_right(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.PINK)
-        far_corner = RobotCorner(Point(42, 65), Color.ORANGE)
+        close_corner = RobotCorner(Point(50, 50), Color.ORANGE)
+        far_corner = RobotCorner(Point(42, 65), Color.PINK)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -57,8 +57,8 @@ class TestRobotLocationComputerPinkOrange(unittest.TestCase):
 
     def test_pink_orange_left_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.ORANGE)
-        far_corner = RobotCorner(Point(58, 65), Color.PINK)
+        close_corner = RobotCorner(Point(50, 50), Color.PINK)
+        far_corner = RobotCorner(Point(58, 65), Color.ORANGE)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -69,8 +69,8 @@ class TestRobotLocationComputerPinkOrange(unittest.TestCase):
 
     def test_pink_orange_front_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.PINK)
-        far_corner = RobotCorner(Point(35, 58), Color.ORANGE)
+        close_corner = RobotCorner(Point(50, 50), Color.ORANGE)
+        far_corner = RobotCorner(Point(35, 58), Color.PINK)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -81,8 +81,8 @@ class TestRobotLocationComputerPinkOrange(unittest.TestCase):
 
     def test_pink_orange_right_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(35, 58), Color.PINK)
-        far_corner = RobotCorner(Point(43, 73), Color.ORANGE)
+        close_corner = RobotCorner(Point(35, 58), Color.ORANGE)
+        far_corner = RobotCorner(Point(43, 73), Color.PINK)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
