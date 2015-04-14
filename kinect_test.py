@@ -5,9 +5,9 @@ from Robot.locators import robot_locator
 from Robot.locators.extractors.robot_corner import robot_corner_extractor_factory,\
     blue_robot_corner_extractor
 from Robot.locators.extractors.robot_corner.blue_robot_corner_extractor import BlueRobotCornerExtractor
+from Robot.locators.extractors.robot_corner.cyan_robot_corner_extractor import CyanRobotCornerExtractor
 from Robot.locators.extractors.robot_corner.orange_robot_corner_extractor import OrangeRobotCornerExtractor
 from Robot.locators.extractors.robot_corner.pink_robot_corner_extractor import PinkRobotCornerExtractor
-from Robot.locators.extractors.robot_corner.purple_robot_corner_extractor import PurpleRobotCornerExtractor
 from Robot.resources.kinect import Kinect
 
 
@@ -19,14 +19,15 @@ while(1):
     cc = cv2.waitKey(1)
     bgr, depth = Kinect().get_data()
     try:
-        #blue = BlueRobotCornerExtractor().extract(bgr)
+        blue = BlueRobotCornerExtractor().extract(bgr)
         pink = PinkRobotCornerExtractor().extract(bgr)
-        #purple = PurpleRobotCornerExtractor().extract(bgr)
-    #orange = OrangeRobotCornerExtractor().extract(bgr)
+        cyan = CyanRobotCornerExtractor().extract(bgr)
+        orange = OrangeRobotCornerExtractor().extract(bgr)
         #median = cv2.medianBlur(purple, 21)
     #bil = cv2.bilateralFilter(bgr, 10, 30, 30)
         #cv2.imshow("blue", blue)
-        cv2.imshow("pink", pink)
+        #cv2.imshow("pink", pink)
+        cv2.imshow("cyan", cyan)
     #cv2.imshow("orange", orange)
     #cv2.imshow("median", median)
     #cv2.imshow("bil", bil)

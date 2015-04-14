@@ -104,6 +104,14 @@ class Config(metaclass=Singleton):
         return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
                                            "HighPinkHSV"))
 
+    def get_robot_low_cyan_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "LowCyanHSV"))
+
+    def get_robot_high_cyan_hsv_values(self):
+        return json.loads(self._parser.get(SECTION_ROBOT_SEGMENTATION,
+                                           "HighCyanHSV"))
+
     def get_perspective_translation_matrix(self):
         return json.loads(self._parser.get(SECTION_PERSPECTIVE,
                                            "TranslationMatrix"))
@@ -204,6 +212,11 @@ class Config(metaclass=Singleton):
     def get_atlas_zone_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,
                                                        "AtlasZonePosition")))
+
+    def get_target_zone_robot_position(self):
+        return Point._make(
+            json.loads(self._parser.get(SECTION_PATHFINDING,
+                                        "TargetZoneRobotPosition")))
 
     def get_localize_cube_position(self):
         return Point._make(json.loads(self._parser.get(SECTION_PATHFINDING,

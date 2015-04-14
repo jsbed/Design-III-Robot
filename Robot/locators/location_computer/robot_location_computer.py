@@ -1,13 +1,13 @@
 '''
-Pink________| |________Blue
-    |                  |
-    |                  |
-    |                  |
-    |                  |
-    |                  |
-    |                  |
-    |__________________|
-Orange                 Cyan
+Orange_______| |_______Cyan
+     |                  |
+     |                  |
+     |                  |
+     |                  |
+     |                  |
+     |                  |
+     |__________________|
+ Pink                   Blue
 
 Gripper facing upwards is 0 degrees
 '''
@@ -77,41 +77,40 @@ def _compute_localization_for_reversed_side(close_corner, far_corner):
 
 
 def _find_exact_orientation_from_corner_colors(orientation, close_corner, far_corner):
-    if (close_corner.color == Color.BLUE and far_corner.color == Color.CYAN):
-        orientation = 3 * pi / 2 - orientation
-    elif (close_corner.color == Color.CYAN and far_corner.color == Color.BLUE):
-        if (close_corner.location.x > far_corner.location.x):
-            orientation += 3 * pi / 2
-    elif (close_corner.color == Color.PINK and far_corner.color == Color.BLUE):
-        orientation = pi - orientation
+    if (close_corner.color == Color.PINK and far_corner.color == Color.BLUE):
+        if (close_corner.location.x < far_corner.location.x):
+            orientation += pi / 2
     elif (close_corner.color == Color.BLUE and far_corner.color == Color.PINK):
-        if (close_corner.location.x > far_corner.location.x):
-            orientation += pi
-        else:
-            orientation += 3 * pi / 2
-    elif (close_corner.color == Color.CYAN and far_corner.color == Color.ORANGE):
         orientation = 2 * pi - orientation
-    elif (close_corner.color == Color.ORANGE and far_corner.color == Color.CYAN):
+    elif (close_corner.color == Color.BLUE and far_corner.color == Color.CYAN):
+        if (close_corner.location.x > far_corner.location.x):
+            orientation += 3 * pi / 2
+    elif (close_corner.color == Color.CYAN and far_corner.color == Color.BLUE):
+        orientation = 3 * pi / 2 - orientation
+    elif (close_corner.color == Color.CYAN and far_corner.color == Color.ORANGE):
         if (close_corner.location.x < far_corner.location.x):
-            orientation += pi / 2
+            orientation += 3 * pi / 2
+        else:
+            orientation += pi
+    elif (close_corner.color == Color.ORANGE and far_corner.color == Color.CYAN):
+        orientation = pi - orientation
     elif (close_corner.color == Color.ORANGE and far_corner.color == Color.PINK):
-        orientation = pi / 2 - orientation
-    elif (close_corner.color == Color.PINK and far_corner.color == Color.ORANGE):
         if (close_corner.location.x < far_corner.location.x):
             orientation += pi
         else:
             orientation += pi / 2
-
+    elif (close_corner.color == Color.PINK and far_corner.color == Color.ORANGE):
+        orientation = pi / 2 - orientation
     return degrees(orientation)
 
 
 def _corners_are_from_reversed_side(close_corner, far_corner):
     return ((close_corner.location.x < far_corner.location.x) and
-            ((close_corner.color == Color.ORANGE and
-              far_corner.color == Color.CYAN) or
-             (close_corner.color == Color.CYAN and
-                far_corner.color == Color.BLUE) or
-             (close_corner.color == Color.BLUE and
-                far_corner.color == Color.PINK) or
+            ((close_corner.color == Color.CYAN and
+              far_corner.color == Color.ORANGE) or
              (close_corner.color == Color.PINK and
-                far_corner.color == Color.ORANGE)))
+              far_corner.color == Color.BLUE) or
+             (close_corner.color == Color.BLUE and
+              far_corner.color == Color.CYAN) or
+             (close_corner.color == Color.ORANGE and
+              far_corner.color == Color.PINK)))

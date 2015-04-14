@@ -1,5 +1,6 @@
 import time
 
+from Robot.configuration import config
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.controller.robot import INSTRUCTION_FINISHED, SWITCH_ACTIVATED,\
     SWITCH_DEACTIVATED
@@ -171,7 +172,7 @@ class Cycle(Observer):
         self._next_state()
 
     def _move_to_target_zone_state(self):
-        target_zone = self._cube.get_target_zone_position()
+        target_zone = config.Config().get_target_zone_robot_position()
 
         if(self._robot_controller.
            robot_is_close_to_target_zone_with_correct_orientation(
@@ -182,20 +183,21 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to_target_zone(target_zone)
 
     def _move_into_target_zone_state(self):
-        target_zone = self._cube.get_target_zone_position()
+        target_zone = config.Config().get_target_zone_robot_position()
+        target_zone_cube_position = self._cube.get_target_zone_position()
 
-        if(self._robot_controller.
-           robot_is_next_to_target_zone_with_correct_orientation(target_zone)):
+        if self._robot_controller.robot_is_next_to_target_zone_with_correct_orientation(
+                target_zone):
             self._state = CycleState.PUT_DOWN_CUBE
-            self._robot_controller.move_forward_to_target_zone(target_zone)
-        else:
-            self._robot_controller.move_robot_into_target_zone(target_zone)
+            self._robot_controller.move_forward_to_target_zone(
+                target_zone_cube_position)
+        elif not self._robot_controller.move_robot_into_target_zone(
+                target_zone):
+            self._next_state()
 
     def _put_down_cube_state(self):
         self._robot_controller.get_gripper().lower_gripper()
-        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().release_cube()
-        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.ASK_FOR_CUBE
         self._robot_controller.move_backward()
 

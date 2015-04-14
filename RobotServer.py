@@ -1,10 +1,14 @@
 import os
 import shutil
+import sys
 
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.configuration.config import Config
 from Robot.cycle.cycle import Cycle
 from Robot.filler import country_repository_filler
+
+
+sys.setrecursionlimit(150000)
 
 ss_folder_name = "run_screenshots"
 

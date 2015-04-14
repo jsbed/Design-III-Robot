@@ -27,12 +27,12 @@ class QuestionAnalyser(object):
             question_matchers = self._question_matcher_generator.get_question_matchers(question_attribute)
 
             for matcher in question_matchers:
-                info_matcher = matcher.find_info(question)
-                if info_matcher:
-                    if isinstance(info_matcher, collections.Iterable):
-                        info_matchers.extend(info_matcher)
+                question_info_matcher = matcher.find_info(question)
+                if question_info_matcher:
+                    if isinstance(question_info_matcher, collections.Iterable):
+                        info_matchers.extend(question_info_matcher)
                     else:
-                        info_matchers.append(info_matcher)
+                        info_matchers.append(question_info_matcher)
 
             for info_matcher in info_matchers:
                 matches = self._factbook.get_matches(info_matcher)

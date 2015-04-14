@@ -12,46 +12,34 @@ from Robot.path_finding.point import Point, Point3D
 def locate(img_bgr, img_cloud):
     corners = []
 
-    try:  # Try extracting a blue corner
-        blue_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud, Color.BLUE)
-
-        corners.append(RobotCorner(blue_corner, Color.BLUE))
-    except:
-        pass
-
-    try:  # Try extracting a orange corner
-        orange_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud, Color.ORANGE)
-
-        corners.append(RobotCorner(orange_corner, Color.ORANGE))
-    except:
-        pass
-
-    try:  # Try extracting a pink corner
-        pink_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud, Color.PINK)
-
-        corners.append(RobotCorner(pink_corner, Color.PINK))
-    except:
-        pass
-
-    try:  # Try extracting a purple corner
-        pink_corner = _extract_robot_corner_position(
-            img_bgr, img_cloud, Color.CYAN)
-
-        corners.append(RobotCorner(pink_corner, Color.CYAN))
-    except:
-        pass
-
-    corners.sort(key=lambda corner: corner[0][1])
+    _try_extracting_robot_corner_for_specific_color(
+        corners, img_bgr, img_cloud, Color.BLUE)
+    _try_extracting_robot_corner_for_specific_color(
+        corners, img_bgr, img_cloud, Color.ORANGE)
+    _try_extracting_robot_corner_for_specific_color(
+        corners, img_bgr, img_cloud, Color.PINK)
+    _try_extracting_robot_corner_for_specific_color(
+        corners, img_bgr, img_cloud, Color.CYAN)
 
     print(corners)
+
+    corners.sort(key=lambda corner: corner[0][1])
 
     if len(corners) < 2:
         raise Exception("Not enough robot corners found.")
     else:
         return corners[0], corners[1]
+
+
+def _try_extracting_robot_corner_for_specific_color(corners, img_bgr,
+                                                    img_cloud, color):
+    try:
+        corner = _extract_robot_corner_position(
+            img_bgr, img_cloud, color)
+
+        corners.append(RobotCorner(corner, color))
+    except:
+        pass
 
 
 def _extract_robot_corner_position(img_bgr, img_cloud, color):
