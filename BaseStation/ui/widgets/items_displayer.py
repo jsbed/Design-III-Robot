@@ -34,12 +34,12 @@ class ItemsDisplayer():
             self._robot_displayed = True
 
     def display_path(self, destination):
-        if destination:
-            virtual_x, virtual_y = self._convert_real_to_virtual(destination[0],
-                                                                 destination[1])
-            self._destination = QtCore.QPoint(virtual_x, virtual_y)
-        else:
-            self.remove_path()
+        self._destination = []
+
+        for point in destination:
+            (virtual_x, virtual_y) = self._convert_real_to_virtual(
+                point[0], point[1])
+            self._destination.append(QtCore.QPoint(virtual_x, virtual_y))
 
     def display_cubes(self, cubes):
         self.remove_cubes()
@@ -49,8 +49,8 @@ class ItemsDisplayer():
             self._display_cube_position(cube["cube position"])
 
     def _display_cube_position(self, cube_position):
-        virtual_x, virtual_y = self._convert_real_to_virtual(cube_position[0],
-                                                             cube_position[1])
+        (virtual_x, virtual_y) = self._convert_real_to_virtual(
+            cube_position[0], cube_position[1])
 
         cube_position = QtCore.QPoint(virtual_x, virtual_y)
         self._cube_positions.append(cube_position)
@@ -83,9 +83,13 @@ class ItemsDisplayer():
 
     def draw_path(self):
         path = QPainterPath()
-        if not (self._destination == QtCore.QPoint(0, 0)):
+
+        if self._destination:
             path.moveTo(self._robot_position.x(), self._robot_position.y())
-            path.lineTo(self._destination.x(), self._destination.y())
+
+            for point in self._destination:
+                path.lineTo(point.x(), point.y())
+
         return path
 
     def draw_robot(self):
@@ -113,7 +117,7 @@ class ItemsDisplayer():
         self._robot_displayed = False
 
     def remove_path(self):
-        self._destination = QPoint(0, 0)
+        self._destination = []
 
     def remove_cubes(self):
         self._cube_images.clear()
@@ -129,4 +133,4 @@ class ItemsDisplayer():
         virtual_y = self._table_area.height() - real_y * self._table_area.height() / \
             self._config.get_table_height()
 
-        return virtual_x, virtual_y
+        return (virtual_x, virtual_y)

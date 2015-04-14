@@ -40,7 +40,9 @@ class BaseStationClient(TCPClient, metaclass=Singleton):
             pass
 
     def send_path(self, target_point):
-        self.send_data(json.dumps({'path': target_point}))
+        path = [(point.x, point.y) for point in target_point]
+
+        self.send_data(json.dumps({'path': path}))
 
     def remove_path(self):
         self.send_data(json.dumps({'path': []}))

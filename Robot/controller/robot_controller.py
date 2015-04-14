@@ -283,7 +283,7 @@ class RobotController():
             rotation = -self._robot_orientation
         else:
             rotation = 360 - self._robot_orientation
-        
+
         print("calculated rotation", rotation)
 
         if (abs(rotation) > target_zone_uncertainty):
@@ -295,8 +295,8 @@ class RobotController():
         target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
 
         lateral_distance = target_zone_position.x - self._robot_position.x
-        
-        print("calculated lateral distance", lateral_distance)        
+
+        print("calculated lateral distance", lateral_distance)
 
         if (abs(lateral_distance) > target_zone_uncertainty):
             print("Lateral distance ", lateral_distance)
@@ -347,7 +347,7 @@ class RobotController():
         self._append_rotations(rotation)
         if (self._distance >= config.Config().get_distance_min()):
             self._robot.append_instruction(MoveForward(self._distance))
-        self._send_new_path(destination)
+        BaseStationClient().send_path([destination])
 
     def _move_robot_towards_target_zone_backward(self, destination):
         print("destination", destination)
@@ -356,11 +356,7 @@ class RobotController():
         self._append_rotations(rotation)
         if (self._distance >= config.Config().get_distance_min()):
             self._robot.append_instruction(MoveForward(-self._distance))
-        self._send_new_path(destination)
-
-    def _send_new_path(self, target_point):
-        path = [target_point.x, target_point.y]
-        BaseStationClient().send_path(path)
+        BaseStationClient().send_path(destination)
 
     def _robot_is_next_to_atlas(self):
         return self._distance <= \
@@ -395,4 +391,3 @@ class RobotController():
         if (final_rotation >= config.Config().get_rotation_min()):
             self._robot.append_instruction(Rotate(number_sign *
                                                   final_rotation))
-
