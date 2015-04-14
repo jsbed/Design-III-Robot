@@ -123,6 +123,9 @@ class RobotController():
                 MoveForward(localization_position.y - self._robot_position.y))
             self._robot.append_instruction(
                 MoveRight(self._robot_position.x - localization_position.x))
+            BaseStationClient().send_path(
+                [Point(self._robot_position.x, localization_position.y),
+                 Point(localization_position.x, localization_position.y)])
 
         self._robot.execute_instructions()
 
@@ -172,6 +175,8 @@ class RobotController():
         return self._switch >= config.Config().get_number_of_switches()
 
     def push_cube(self, cube):
+        self._update_robot_localization()
+
         distance = cube_locator.find_cube_distance_from_camera(
             cube.get_color())
 
@@ -188,6 +193,10 @@ class RobotController():
 
         if (push_distance > max_push_distance):
             push_distance = max_push_distance
+
+        destination_point = [PointAdjustor().calculate_cube_position(
+            push_distance, self._robot_orientation)]
+        BaseStationClient().send_path(destination_point)
 
         self._robot.append_instruction(MoveForward(push_distance))
 

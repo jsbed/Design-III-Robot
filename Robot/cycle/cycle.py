@@ -16,7 +16,6 @@ from Robot.utilities.observer import Observer
 class Cycle(Observer):
 
     CHECK_FOR_CUBE_DELAY = 2
-    WAIT_TIME_BETWEEN_GRIPPERS_ACTION = 1
 
     def __init__(self):
         self._robot_controller = RobotController()
@@ -128,6 +127,8 @@ class Cycle(Observer):
             self._end_cycle()
 
     def _localize_cube_state(self):
+        BaseStationClient().remove_path()
+
         if(self._robot_controller.robot_is_facing_cube(self._cube)):
             try:
                 cube_position = self._robot_controller.find_cube_position(
@@ -163,10 +164,10 @@ class Cycle(Observer):
             self._robot_controller.rotate_robot_torwards_cube(self._cube)
 
     def _pick_up_cube_state(self):
+        BaseStationClient().remove_path()
+
         self._robot_controller.get_gripper().take_cube()
-        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._robot_controller.get_gripper().lift_gripper()
-        time.sleep(self.WAIT_TIME_BETWEEN_GRIPPERS_ACTION)
         self._state = CycleState.MOVE_TO_TARGET_ZONE
 
         Camera().stop()
