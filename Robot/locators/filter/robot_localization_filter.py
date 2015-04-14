@@ -13,8 +13,8 @@ ROBOT_LOCALIZATION_UPDATED = "Robot localization updated"
 
 class RobotLocalizationFilter(Observable):
     MAX_NUMBER_OF_DATA_POINTS = 5
-    DISTANCE_THRESHOLD = 2
-    ANGLE_THRESHOLD = 3
+    DISTANCE_THRESHOLD = 1
+    ANGLE_THRESHOLD = 2
 
     def __init__(self):
         Observable.__init__(self)
@@ -38,7 +38,6 @@ class RobotLocalizationFilter(Observable):
             localization = self._find_mean_localization()
             self._last_data_points.clear()
 
-            # if (not localization.unknown):
             if (self._robot_localization.unknown):
                 self._update_localization(localization)
             else:
@@ -53,23 +52,6 @@ class RobotLocalizationFilter(Observable):
                     self._update_localization(localization)
 
     def _find_mean_localization(self):
-        #         good_points, wrong_points = self._find_good_and_wrong_points(
-        #             self._last_data_points)
-        #
-        #         if len(wrong_points) <= 1:
-        #             self._last_data_points.pop(0)
-        #
-        #             return self._compute_mean_localization(good_points)
-        #         elif len(wrong_points) == 4:
-        #             good_points, wrong_points = self._find_good_and_wrong_points(
-        #                 wrong_points)
-        #
-        #             if len(good_points) == 4:
-        #                 self._last_data_points.pop(0)
-        #
-        #                 return self._compute_mean_localization(good_points)
-        # loc.position for loc in self._last_data_points
-        #         return Localization(None, None, unknown=True)
         points = [loc.position for loc in self._last_data_points]
         orientations = [loc.orientation for loc in self._last_data_points]
         median_x = median(point.x for point in points)

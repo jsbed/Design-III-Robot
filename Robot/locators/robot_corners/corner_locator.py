@@ -21,6 +21,8 @@ def locate(img_bgr, img_cloud):
     _try_extracting_robot_corner_for_specific_color(
         corners, img_bgr, img_cloud, Color.CYAN)
 
+    print(corners)
+
     corners.sort(key=lambda corner: corner[0][1])
 
     if len(corners) < 2:
