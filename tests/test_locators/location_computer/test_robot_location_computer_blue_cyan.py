@@ -10,7 +10,7 @@ from Robot.path_finding.point import Point
 
 
 @patch("Robot.configuration.config.Config")
-class TestRobotLocationComputerCyanBlue(unittest.TestCase):
+class TestRobotLocationComputerBlueCyan(unittest.TestCase):
 
     ROBOT_RADIUS = 8.5
 
@@ -31,10 +31,10 @@ class TestRobotLocationComputerCyanBlue(unittest.TestCase):
 
         mock.return_value = a_mock
 
-    def test_cyan_blue_left_corners_when_robot_at_right(self, config_mock):
+    def test_blue_cyan_left_corners_when_robot_at_right(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.BLUE)
-        far_corner = RobotCorner(Point(65, 58), Color.CYAN)
+        close_corner = RobotCorner(Point(50, 50), Color.CYAN)
+        far_corner = RobotCorner(Point(65, 58), Color.BLUE)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -43,10 +43,10 @@ class TestRobotLocationComputerCyanBlue(unittest.TestCase):
             actual_localization,
             self.EXPECTED_LOCALIZATION_WITH_LEFT_CORNERS_AT_RIGHT)
 
-    def test_cyan_blue_right_corners_when_robot_at_right(self, config_mock):
+    def test_blue_cyan_right_corners_when_robot_at_right(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.CYAN)
-        far_corner = RobotCorner(Point(42, 65), Color.BLUE)
+        close_corner = RobotCorner(Point(50, 50), Color.BLUE)
+        far_corner = RobotCorner(Point(42, 65), Color.CYAN)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -55,10 +55,10 @@ class TestRobotLocationComputerCyanBlue(unittest.TestCase):
             actual_localization,
             self.EXPECTED_LOCALIZATION_WITH_RIGHT_CORNERS_AT_RIGHT)
 
-    def test_cyan_blue_left_corners_when_robot_at_left(self, config_mock):
+    def test_blue_cyan_left_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.BLUE)
-        far_corner = RobotCorner(Point(58, 65), Color.CYAN)
+        close_corner = RobotCorner(Point(50, 50), Color.CYAN)
+        far_corner = RobotCorner(Point(58, 65), Color.BLUE)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -67,10 +67,10 @@ class TestRobotLocationComputerCyanBlue(unittest.TestCase):
             actual_localization,
             self.EXPECTED_LOCALIZATION_WITH_LEFT_CORNERS_AT_LEFT)
 
-    def test_cyan_blue_front_corners_when_robot_at_left(self, config_mock):
+    def test_blue_cyan_front_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(50, 50), Color.CYAN)
-        far_corner = RobotCorner(Point(35, 58), Color.BLUE)
+        close_corner = RobotCorner(Point(50, 50), Color.BLUE)
+        far_corner = RobotCorner(Point(35, 58), Color.CYAN)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
@@ -79,10 +79,10 @@ class TestRobotLocationComputerCyanBlue(unittest.TestCase):
             actual_localization,
             self.EXPECTED_LOCALIZATION_WITH_FRONT_CORNERS_AT_LEFT)
 
-    def test_cyan_blue_right_corners_when_robot_at_left(self, config_mock):
+    def test_blue_cyan_right_corners_when_robot_at_left(self, config_mock):
         self._setup_config_mock(config_mock)
-        close_corner = RobotCorner(Point(35, 58), Color.CYAN)
-        far_corner = RobotCorner(Point(43, 73), Color.BLUE)
+        close_corner = RobotCorner(Point(35, 58), Color.BLUE)
+        far_corner = RobotCorner(Point(43, 73), Color.CYAN)
 
         actual_localization = robot_location_computer.compute(close_corner,
                                                               far_corner)
