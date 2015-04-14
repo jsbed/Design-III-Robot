@@ -107,9 +107,12 @@ class RobotController():
             calculate_distance_between_points(self._robot_position,
                                               localization_position)
 
-        rotation = LOCALIZE_CUBE_ANGLE - self._robot_orientation
-        if (abs(rotation) > config.Config().get_orientation_uncertainty()
-                or self._distance > 40):
+        if self._robot_orientation < 180:
+            rotation = -self._robot_orientation
+        else:
+            rotation = 360 - self._robot_orientation
+
+        if (abs(rotation) > 5 or self._distance > 40):
             self._move_robot_towards_target_point(localization_position)
             self._append_rotations(
                 -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
@@ -214,29 +217,30 @@ class RobotController():
     def robot_is_next_to_target_zone_with_correct_orientation(
             self, target_zone_position):
         self._update_robot_localization()
-        self._robot_orientation = (self._robot_orientation + 180) % 360
-
-        lateral_distance = target_zone_position.x - self._robot_position.x
-
-        rotation = -PointAdjustor().find_robot_rotation(
-            CUBE_RELEASE_ANGLE, self._robot_position, target_zone_position)
 
         target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
+        lateral_distance = target_zone_position.x - self._robot_position.x
 
-        return (lateral_distance <= target_zone_uncertainty and
-                lateral_distance >= -target_zone_uncertainty and
-                rotation <= target_zone_uncertainty and
-                rotation >= -target_zone_uncertainty)
+        if self._robot_orientation < 180:
+            rotation = self._robot_orientation
+        else:
+            rotation = 360 - self._robot_orientation
+
+        return (abs(lateral_distance) <= target_zone_uncertainty and
+                abs(rotation) <= target_zone_uncertainty)
 
     def move_robot_into_target_zone(self, target_zone_position):
         self._update_robot_localization()
 
         self._rotate_to_target_zone(target_zone_position)
         self._lateral_move_to_target_zone(target_zone_position)
-
+        
+        print("verif if instructions remain")
         if (self.instruction_remaining()):
+            print("yes -> execute instructions")
             self._robot.execute_instructions()
         else:
+            print("no -> restart checkup")
             False
 
     def move_forward_to_target_zone(self, target_zone_position):
@@ -289,6 +293,8 @@ class RobotController():
         target_zone_uncertainty = config.Config().get_target_zone_uncertainty()
 
         lateral_distance = target_zone_position.x - self._robot_position.x
+        
+        print("calculated lateral distance", lateral_distance)        
 
         if (abs(lateral_distance) > target_zone_uncertainty):
             print("Lateral distance ", lateral_distance)
