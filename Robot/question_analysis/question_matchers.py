@@ -21,7 +21,7 @@ class QuestionMatcher(object):
     def _get_match(self, question):
         match = self._regex.search(question)
         if match:
-            match = match.group(1)
+            match = match.group(1).strip()
         return match
 
     def _get_info_matcher(self, question):
@@ -64,10 +64,7 @@ class StartsWithMatcher(QuestionMatcher):
         super(StartsWithMatcher, self).__init__(pattern, info_matcher, attribute)
 
     def find_info(self, question):
-        info_matcher = None
-        match = self._regex.search(question)
-        if match:
-            info_matcher = self._info_matcher(self._attribute, r'^' + match.group(1))
+        info_matcher = self._get_info_matcher(question)
         return info_matcher
 
 
@@ -80,10 +77,7 @@ class EndsWithMatcher(QuestionMatcher):
         super(EndsWithMatcher, self).__init__(pattern, info_matcher, attribute)
 
     def find_info(self, question):
-        info_matcher = None
-        match = self._regex.search(question)
-        if match:
-            info_matcher = self._info_matcher(self._attribute, match.group(1) + r'$')
+        info_matcher = self._get_info_matcher(question)
         return info_matcher
 
 
@@ -119,7 +113,7 @@ class LatitudeMatcher(TextQuestionMatcher):
     def _get_match(self, question):
         match = self._regex.search(question)
         if match:
-            match = match.group(1).replace('.', ' ')
+            match = match.group(1).replace('.', ' ').strip()
         return match
 
 
@@ -133,7 +127,7 @@ class LongitudeMatcher(TextQuestionMatcher):
     def _get_match(self, question):
         match = self._regex.search(question)
         if match:
-            match = match.group(1).replace('.', ' ')
+            match = match.group(1).replace('.', ' ').strip()
         return match
 
 
@@ -237,7 +231,7 @@ class EthnicGroups(QuestionWithListMatcher):
         info_matcher = None
         match = self._regex.search(question)
         if match:
-            info_list = match.group(1)
+            info_list = match.group(1).strip()
             info_list = info_list.replace(' of ', ' ').replace('%', '')
             info_list = re.split(', and\s|, |\sand\s', info_list)
             info_list = [info.split()[1] + ' ' + info.split()[0] for info in info_list]
