@@ -234,7 +234,7 @@ class RobotController():
 
         self._rotate_to_target_zone(target_zone_position)
         self._lateral_move_to_target_zone(target_zone_position)
-        
+
         print("verif if instructions remain")
         if (self.instruction_remaining()):
             print("yes -> execute instructions")
@@ -245,18 +245,20 @@ class RobotController():
 
     def move_forward_to_target_zone(self, target_zone_position):
         print("MOVING TORWARD ", target_zone_position)
-        self._update_robot_localization()
+        # self._update_robot_localization()
 
         print("target zone y position: ", target_zone_position.y)
 
-        distance = self._robot_position.y - target_zone_position.y - \
+        distance_x = self._robot_position.x - target_zone_position.x
+        distance_y = self._robot_position.y - target_zone_position.y - \
             config.Config().get_gripper_size() - \
             config.Config().get_robot_radius()
 
-        print("droping distance", distance)
+        print("droping distance", distance_y)
 
         self._append_rotations(180)
-        self._robot.append_instruction(MoveForward(distance))
+        self._robot.append_instruction(MoveForward(distance_x))
+        self._robot.append_instruction(MoveForward(distance_y))
         self._robot.execute_instructions()
 
     def move_backward(self):
