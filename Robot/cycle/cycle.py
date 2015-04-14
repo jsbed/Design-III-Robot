@@ -1,7 +1,7 @@
 import time
 
-from Robot.configuration import config
 from Robot.communication.base_station_client import BaseStationClient
+from Robot.configuration import config
 from Robot.controller.robot import INSTRUCTION_FINISHED, SWITCH_ACTIVATED,\
     SWITCH_DEACTIVATED
 from Robot.controller.robot_controller import RobotController
@@ -97,6 +97,7 @@ class Cycle(Observer):
         print("atlas zone state")
         if(self._robot_controller.arrived_at_zone_atlas()):
             print("arrived")
+            BaseStationClient().remove_path()
             self._state = CycleState.DISPLAY_COUNTRY
             self._next_state()
         else:

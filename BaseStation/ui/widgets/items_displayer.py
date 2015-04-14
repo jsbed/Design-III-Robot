@@ -34,9 +34,12 @@ class ItemsDisplayer():
             self._robot_displayed = True
 
     def display_path(self, destination):
-        virtual_x, virtual_y = self._convert_real_to_virtual(destination[0],
-                                                             destination[1])
-        self._destination = QtCore.QPoint(virtual_x, virtual_y)
+        if destination:
+            virtual_x, virtual_y = self._convert_real_to_virtual(destination[0],
+                                                                 destination[1])
+            self._destination = QtCore.QPoint(virtual_x, virtual_y)
+        else:
+            self.remove_path()
 
     def display_cubes(self, cubes):
         self.remove_cubes()
