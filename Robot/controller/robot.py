@@ -1,5 +1,3 @@
-from threading import Thread
-
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.locators.localization import Localization
 from Robot.utilities.observable import Observable
@@ -24,7 +22,10 @@ class Robot(Observable):
         self._instructions.append(instruction)
 
     def execute_instructions(self):
-        Thread(target=self._execute_instructions).start()
+        command = self._instructions.pop(self.FIRST_INSTRUCTION)
+        print("execute:", command)
+        command.execute(self._serial_port)
+        self._wait_until_robot_stops_moving()
 
     def update_localization(self):
         print("requesting position")
@@ -45,12 +46,6 @@ class Robot(Observable):
 
     def get_instructions(self):
         return self._instructions
-
-    def _execute_instructions(self):
-        command = self._instructions.pop(self.FIRST_INSTRUCTION)
-        print("execute:", command)
-        command.execute(self._serial_port)
-        self._wait_until_robot_stops_moving()
 
     def _wait_until_robot_stops_moving(self):
         instruction_finished = False

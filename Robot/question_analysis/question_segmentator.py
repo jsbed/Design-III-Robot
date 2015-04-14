@@ -15,6 +15,7 @@ class QuestionSegmentator(object):
         self._attributes = INFO_KEY_ALIAS.keys()
 
     def segment_question(self, question):
+        self._subquestions = []
         question = self._clean_question(question)
         attributes_position = self._find_attributes_in_question(question)
         while len(attributes_position) > 1:

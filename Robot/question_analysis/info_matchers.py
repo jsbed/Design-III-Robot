@@ -24,7 +24,7 @@ class InfoMatcher(object):
         if isinstance(info_data, list):
             info_data = [el for el in info_data if 'NA' not in el]
             info_data = info_data[0]
-        return info_data
+        return info_data.strip()
 
 
 class NumericApproximationInfoMatcher(InfoMatcher):

@@ -108,8 +108,8 @@ class RobotController():
                                               localization_position)
 
         rotation = LOCALIZE_CUBE_ANGLE - self._robot_orientation
-        if (abs(rotation) > config.Config().get_orientation_uncertainty() or
-                self._distance > 40):
+        if (abs(rotation) > config.Config().get_orientation_uncertainty()
+                or self._distance > 40):
             self._move_robot_towards_target_point(localization_position)
             self._append_rotations(
                 -PointAdjustor().find_robot_rotation(LOCALIZE_CUBE_ANGLE,
@@ -234,7 +234,10 @@ class RobotController():
         self._rotate_to_target_zone(target_zone_position)
         self._lateral_move_to_target_zone(target_zone_position)
 
-        self._robot.execute_instructions()
+        if (self.instruction_remaining()):
+            self._robot.execute_instructions()
+        else:
+            False
 
     def move_forward_to_target_zone(self, target_zone_position):
         print("MOVING TORWARD ", target_zone_position)
@@ -274,6 +277,8 @@ class RobotController():
             rotation = -self._robot_orientation
         else:
             rotation = 360 - self._robot_orientation
+        
+        print("calculated rotation", rotation)
 
         if (abs(rotation) > target_zone_uncertainty):
             print("Rotation ", rotation)
@@ -382,3 +387,4 @@ class RobotController():
         if (final_rotation >= config.Config().get_rotation_min()):
             self._robot.append_instruction(Rotate(number_sign *
                                                   final_rotation))
+
