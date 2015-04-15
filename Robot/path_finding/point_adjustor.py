@@ -64,6 +64,12 @@ class PointAdjustor():
 
         return (x, y)
 
+    def calculate_distance_point_with_robot(self, distance, robot_orientation):
+        x = int(distance * math.sin(radians(robot_orientation)))
+        y = int(distance * math.cos(radians(robot_orientation)))
+
+        return (x, y)
+
     '''
     Description: Verify if the cube is too close or next to a wall
                  and adjust the target position accordingly. Otherwise,
