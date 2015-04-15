@@ -5,7 +5,7 @@ from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, 
 
 END_DELIMITERS = [r' and ', r' as ', r' is the', r'\?$', r'\.$', ', ', r'$']
 BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ',
-                    r'(?:\s|^)the ', r'(?:\s|^)are ', r'(?:\s|^)as a ', r'^']
+                    r'(?:\s|^)the ', r'(?:\s|^)are ', r'(?:\s|^)as a ', r'^', r'(?:\s|^)a ']
 
 
 class QuestionMatcher(object):
@@ -150,7 +150,7 @@ class ContainsMatcher(QuestionMatcher):
 class QuestionWithIntervalMatcher(TextQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'between ([\d\.\s,-]+)%? and ([\d\.\s,-]+)%?'
+        pattern = r'between ([\d\.\s,-]+)(?:[\s\w/-]+)?%? and ([\d\.\s,-]+)(?:[\s\w/-]+)?%?'
         info_matcher = BetweenInfoMatcher
         super(QuestionWithIntervalMatcher, self).__init__(attribute, pattern, info_matcher)
 
@@ -185,21 +185,21 @@ class NumericQuestionMatcher(TextQuestionMatcher):
 class LessThanMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'less than ([\d\.\s,-]+)%?'
+        pattern = r'less than ([\d\.\s,-]+)(?:[\s\w]+/-)?%?'
         super(LessThanMatcher, self).__init__(attribute, pattern, '<')
 
 
 class GreaterThanMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'greater than ([\d\.\s,-]+)%?'
+        pattern = r'greater than ([\d\.\s,-]+)(?:[\s\w/-]+)?%?'
         super(GreaterThanMatcher, self).__init__(attribute, pattern, '>')
 
 
 class EqualsMatcher(NumericQuestionMatcher):
 
     def __init__(self, attribute):
-        pattern = r'([\d\.\s,-]+)%?'
+        pattern = r'([\d\.\s,-]+)(?:[\s\w/-]+)?%?'
         super(EqualsMatcher, self).__init__(attribute, pattern, '=')
 
 
@@ -210,6 +210,19 @@ class Climate(QuestionMatcher):
         attribute = 'climate'
         info_matcher = InfoMatcher
         super(Climate, self).__init__(pattern, info_matcher, attribute)
+
+    def _get_match(self, question):
+        match = self._regex.search(question)
+        if match:
+            begin_delimiters = BEGIN_DELIMITERS[:]
+            begin_delimiters.remove(r'^')
+            for delimiter in begin_delimiters:
+                if re.compile('the', re.IGNORECASE).search(match.group(1)):
+                    match = None
+                    break
+            if match:
+                match = match.group(1).strip()
+        return match
 
 
 class NationalAnthemComposedBy(QuestionWithListMatcher):
@@ -261,7 +274,8 @@ class QuestionMatcherGenerator(object):
     def __init__(self):
 
         self._specific_matchers = {'latitude': [LatitudeMatcher()], 'longitude': [LongitudeMatcher()],
-                                   'climate': [Climate()], 'independence': [IndependenceMatcher()],
+                                    'independence': [IndependenceMatcher()],
+                                    'climate': [Climate(), TextQuestionMatcher('climate')],
                                     'ethnic groups': [EthnicGroups()], 'illicit drug': [IllicitDrugsActivities()],
                                    'national anthem': [NationalAnthemComposedBy(),
                                                        TextQuestionMatcher('national anthem')]}

@@ -54,4 +54,4 @@ def hello_world():
     return flask.jsonify({"question": random.choice(questions)})
 
 if __name__ == '__main__':
-    app.run(host="192.168.1.31", port=4000)
+    app.run(host="192.168.0.34", port=4000)
