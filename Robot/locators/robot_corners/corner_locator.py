@@ -52,21 +52,17 @@ def _extract_robot_corner_position(img_bgr, img_cloud, color):
 
     if len(corner_contours) == 1:
         return _find_corner_position_from_contour(corner_contours, img_cloud)
-    elif len(corner_contours) == 2:
-        point_a = _find_corner_position_from_contour(corner_contours[0],
-                                                     img_cloud)
-        point_b = _find_corner_position_from_contour(corner_contours[1],
-                                                     img_cloud)
+    elif len(corner_contours) >= 2:
+        points = []
 
-        if color == Color.BLUE:
-            # Returns the highest point
-            point_to_return = point_a if point_a.z > point_b.z else point_b
-        else:
-            # Returns the closest point
-            point_to_return = point_a if point_a.y < point_b.y else point_b
+        for contour in corner_contours:
+            points.append(_find_corner_position_from_contour(contour,
+                                                             img_cloud))
 
-        # Returns the closest point
-        return Point(point_to_return.x, point_to_return.y)
+        points.sort(key=lambda point: point.z, reverse=True)
+
+        # Returns the highest point
+        return Point(points[0].x, points[0].y)
 
     else:
         raise Exception("Corner not found")
