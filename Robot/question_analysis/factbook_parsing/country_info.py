@@ -7,6 +7,7 @@ from Robot.question_analysis.country_result import CountryResult
 INFO_KEY_ALIAS = {'capital': ['Capital', 'name'], 'unemployment rate': ['Unemployment rate', 'description'],
                   'population': ['Population', 'description'],
                   'major urban areas': ['Major urban areas - population', 'description'],
+                  'major urban area': ['Major urban areas - population', 'description'],
                   'national symbol': ['National symbol(s)'], 'religions': ['Religions', 'description'],
                   'country code': ['Internet country code'], 'independence': ['Independence', 'description'],
                   'population growth rate': ['Population growth rate', 'description'],

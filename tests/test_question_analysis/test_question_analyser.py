@@ -184,3 +184,27 @@ class TestQuestionAnalyser(object):
     def test_inflation_rate(self):
         question = 'What country has an inflation rate between 0.3% and 0.5%?'
         assert_equal(self._question_analyser.answer_question(question), 'Portugal')
+
+    def test_the_capital_is(self):
+        question = "The capital is Paris."
+        assert_equal(self._question_analyser.answer_question(question), 'France')
+
+    def test_starts_with_multi_word(self):
+        question = 'My capital name starts with Phnom Pe'
+        assert_equal(self._question_analyser.answer_question(question), 'Cambodia')
+
+    def test_between_telephone_lines(self):
+        question = 'My telephone lines in use are between 1.216 and 1.218 million'
+        assert_equal(self._question_analyser.answer_question(question), 'Cuba')
+
+    def test_between_birth_rate(self):
+        question = 'What country has a birth rate between 46.11 births/ 1000 population and 46.13 births/ 1000 population?'
+        assert_equal(self._question_analyser.answer_question(question), 'Niger')
+
+    def test_between_number_with_spaces(self):
+        question = 'What country has a total area between 3 9 0 7 5 6 sq km and 3 9 0 758 sq km?'
+        assert_equal(self._question_analyser.answer_question(question), 'Zimbabwe')
+
+    def test_climate_is(self):
+        question = 'The climate is tropical and has a capital that starts with the letters Phn?'
+        assert_equal(self._question_analyser.answer_question(question), 'Cambodia')
