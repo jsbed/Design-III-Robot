@@ -3,7 +3,7 @@ from Robot.question_analysis.info_matchers import InfoMatcher, InfoListMatcher, 
     NumericInfoMatcher, IllicitDrugsActivitiesMatcher, NumericApproximationInfoMatcher
 
 
-END_DELIMITERS = [r' and ', r' as ', r' is ', r'\?$', r'\.$', ', ', r'$']
+END_DELIMITERS = [r' and ', r' as ', r' is the', r'\?$', r'\.$', ', ', r'$']
 BEGIN_DELIMITERS = [r'(?:\s|^)is ', r'(?:\s|^)has ', r'(?:\s|^)of ', r'(?:\s|^)in ', r'(?:\s|^)on ',
                     r'(?:\s|^)the ', r'(?:\s|^)are ', r'(?:\s|^)as a ', r'^']
 
