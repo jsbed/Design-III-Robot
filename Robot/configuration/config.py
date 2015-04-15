@@ -185,9 +185,13 @@ class Config(metaclass=Singleton):
         return float(self._parser.get(SECTION_PATHFINDING,
                                       "OrientationUncertainty"))
 
-    def get_target_zone_uncertainty(self):
+    def get_target_zone_uncertainty_with_orientation(self):
         return float(self._parser.get(SECTION_PATHFINDING,
-                                      "UncertaintyWithTargetZone"))
+                                      "OrientationUncertaintyWithTargetZone"))
+
+    def get_target_zone_uncertainty_with_distance(self):
+        return float(self._parser.get(SECTION_PATHFINDING,
+                                      "DistanceUncertaintyWithTargetZone"))
 
     def get_orientation_max(self):
         return float(self._parser.get(SECTION_PATHFINDING,

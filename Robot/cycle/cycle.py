@@ -1,5 +1,3 @@
-import time
-
 from Robot.communication.base_station_client import BaseStationClient
 from Robot.configuration import config
 from Robot.controller.robot import INSTRUCTION_FINISHED, SWITCH_ACTIVATED,\
@@ -14,8 +12,6 @@ from Robot.utilities.observer import Observer
 
 
 class Cycle(Observer):
-
-    CHECK_FOR_CUBE_DELAY = 2
 
     def __init__(self):
         self._robot_controller = RobotController()
@@ -115,6 +111,8 @@ class Cycle(Observer):
         self._next_state()
 
     def _ask_for_cube_state(self):
+        BaseStationClient().remove_path()
+
         if (self._flag_creator.has_next_cubes()):
             self._cube = self._flag_creator.next_cube()
             self._robot_controller.ask_for_cube(self._cube)
@@ -201,10 +199,12 @@ class Cycle(Observer):
             self._next_state()
 
     def _put_down_cube_state(self):
+        BaseStationClient().remove_path()
         self._robot_controller.get_gripper().lower_gripper()
         self._robot_controller.get_gripper().release_cube()
         self._state = CycleState.ASK_FOR_CUBE
-        self._robot_controller.move_backward()
+        self._robot_controller.move_backward(
+            self._cube.get_target_zone_position())
 
     def _get_question_from_atlas(self):
         print("request question")
