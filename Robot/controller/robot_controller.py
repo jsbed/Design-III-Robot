@@ -185,38 +185,45 @@ class RobotController():
                 cube.get_localization().position)
 
         push_distance = distance + config.Config().get_push_cube_distance()
-        max_push_distance = (distance + distance_between_cube_and_wall -
+        wall_push_distance = (distance + distance_between_cube_and_wall -
                              config.Config().get_cube_radius() * 2 -
                              config.Config().get_gripper_size())
 
         print("cube distance with cam : ", distance)
-
+        max_push_distance = 40
+        
         if (push_distance > max_push_distance):
             push_distance = max_push_distance
+        elif (push_distance > wall_push_distance):
+            push_distance = wall_push_distance
 
-        destination_point = [PointAdjustor().calculate_cube_position(
-            push_distance, self._robot_orientation)]
-        BaseStationClient().send_path(destination_point)
+        x, y = PointAdjustor().calculate_distance_point_with_robot(
+            push_distance, self._robot_orientation)
+
+        print("destination point for path : ", x, y)
+        BaseStationClient().send_path(
+            [Point(self._robot_position.x + x, self._robot_position.y + y)])
 
         self._robot.append_instruction(MoveForward(push_distance))
 
         self._robot.execute_instructions()
 
-    def robot_is_close_to_target_zone_with_correct_orientation(self, target):
+    def robot_is_close_to_target_zone(self, target):
         self._update_robot_localization()
         self._robot_orientation = (self._robot_orientation + 180) % 360
-        target_point = self._find_next_destination_point(target)
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
-                                              target_point)
+                                              target)
 
-        return (self._robot_is_next_to_target_point() and
-                self._robot_has_correct_orientation(target))
+        return self._robot_is_next_to_target_point()
 
     def move_robot_to_target_zone(self, destination):
         self._update_robot_localization()
         self._robot_orientation = (self._robot_orientation + 180) % 360
-        destination_point = self._find_next_destination_point(destination)
+        destination_point = PointAdjustor().find_next_point(
+            self._robot_position, destination)
+        print("move to target zone dest point", destination_point)
+
         self._distance = PointAdjustor(). \
             calculate_distance_between_points(self._robot_position,
                                               destination_point)
@@ -257,17 +264,21 @@ class RobotController():
         # self._update_robot_localization()
 
         print("target zone y position: ", target_zone_position.y)
+        print("target zone x position: ", target_zone_position.x)
 
-        distance_x = self._robot_position.x - target_zone_position.x
+        distance_x = target_zone_position.x - self._robot_position.x
         distance_y = self._robot_position.y - target_zone_position.y - \
             config.Config().get_gripper_size() - \
             config.Config().get_robot_radius()
 
         print("droping distance", distance_y)
+        
+        cube_radius = config.Config().get_cube_radius()        
 
-        self._append_rotations(180)
-        self._robot.append_instruction(MoveForward(distance_x))
-        self._robot.append_instruction(MoveForward(distance_y))
+        self._append_rotations(-180)
+        self._robot.append_instruction(MoveForward(distance_y - cube_radius))
+        self._robot.append_instruction(MoveRight(distance_x))
+        self._robot.append_instruction(MoveForward(cube_radius))
         self._robot.execute_instructions()
 
     def move_backward(self):
@@ -365,7 +376,7 @@ class RobotController():
         self._append_rotations(rotation)
         if (self._distance >= config.Config().get_distance_min()):
             self._robot.append_instruction(MoveForward(-self._distance))
-        BaseStationClient().send_path(destination)
+        BaseStationClient().send_path([destination])
 
     def _robot_is_next_to_atlas(self):
         return self._distance <= \
@@ -383,8 +394,7 @@ class RobotController():
     def _robot_is_facing_correct_angle(self, rotation):
         angle_uncertainty = config.Config().get_orientation_uncertainty()
 
-        return (rotation <= angle_uncertainty and
-                rotation >= -angle_uncertainty)
+        return (abs(rotation) <= angle_uncertainty)
 
     def _append_rotations(self, rotation):
         print("appending rotation :", rotation)

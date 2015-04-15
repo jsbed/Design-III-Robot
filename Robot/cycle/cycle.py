@@ -157,6 +157,8 @@ class Cycle(Observer):
             self._robot_controller.move_robot_to(cube_position)
 
     def _push_cube_state(self):
+        BaseStationClient().remove_path()
+
         if (self._robot_controller.robot_is_facing_cube(self._cube)):
             self._state = CycleState.PICK_UP_CUBE
             self._robot_controller.push_cube(self._cube)
@@ -175,10 +177,11 @@ class Cycle(Observer):
 
     def _move_to_target_zone_state(self):
         target_zone = config.Config().get_target_zone_robot_position()
+        print("target zone :", target_zone)
 
         if(self._robot_controller.
-           robot_is_close_to_target_zone_with_correct_orientation(
-               target_zone)):
+           robot_is_close_to_target_zone(target_zone)):
+            print("robot is close to target zone with correct orientation")
             self._state = CycleState.MOVE_INTO_TARGET_ZONE
             self._next_state()
         else:
